@@ -1,7 +1,7 @@
 export const MainPage = () => {
     return (
       <section>
-        <div className="container">alo</div>
+        <div className="container">Agagasgashjnmtjmrytmkrmrt</div>
       </section>
     );
   };

@@ -1,0 +1,50 @@
+{
+  "measurements": [
+    {
+      "createdAt": "2024-09-25T10:27:35.869Z",
+      "updatedAt": "2024-09-25T10:27:35.869Z",
+      "overnight": 85
+    },
+    {
+      "createdAt": "2024-09-25T22:27:35.869Z",
+      "updatedAt": "2024-09-25T22:27:35.869Z",
+      "bedTime": 666
+    },
+    {
+      "createdAt": "2024-09-26T12:27:35.869Z",
+      "updatedAt": "2024-09-26T12:27:35.869Z",
+      "overnight": 85
+    },
+    {
+      "createdAt": "2024-09-26T13:27:35.869Z",
+      "updatedAt": "2024-09-26T13:27:35.869Z",
+      "beforeMeal": 93
+    },
+    {
+      "createdAt": "2024-09-26T15:27:35.869Z",
+      "updatedAt": "2024-09-26T15:27:35.869Z",
+      "afterMeal": {
+        "measurement": 110,
+        "meal": {
+          "portion": 150,
+          "dish": "Гречка с сельдереем"
+        }
+      }
+    },
+    {
+      "createdAt": "2024-09-26T16:27:35.869Z",
+      "updatedAt": "2024-09-26T16:27:35.869Z",
+      "justMeasurement": 111
+    },
+    {
+      "createdAt": "2024-09-26T17:27:35.869Z",
+      "updatedAt": "2024-09-26T17:27:35.869Z",
+      "justMeasurement": 112
+    },
+    {
+      "createdAt": "2024-09-26T23:27:35.869Z",
+      "updatedAt": "2024-09-26T23:27:35.869Z",
+      "bedTime": 33
+    }
+  ]
+}
