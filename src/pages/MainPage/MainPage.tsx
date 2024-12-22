@@ -1,8 +1,11 @@
+import { v7 as uuidv4 } from "uuid";
+
 export const MainPage = () => {
-    return (
-      <section>
-        <div className="container">Agagasgashjnmtjmrytmkrmrt</div>
-      </section>
-    );
-  };
-  
+  const id = uuidv4();
+
+  return (
+    <section>
+      <div className="container">{id}</div>
+    </section>
+  );
+};
