@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { API_URL } from "../constants/constants";
+import { validateResponse } from "./validationResponse";
 
 const MealSchema = z.object({
   portion: z.number(),
@@ -21,8 +22,21 @@ const MeasurementSchema = z.object({
   justMeasurement: z.number().optional(),
 });
 
-const Measurementschema = z.object({
-  measurements: z.array(MeasurementSchema),
-});
+const MeasurementsSchema = z.array(MeasurementSchema);
 
-export type Measurements = z.infer<typeof Measurementschema>;
+export type Measurement = z.infer<typeof MeasurementSchema>;
+export type Measurements = z.infer<typeof MeasurementsSchema>;
+
+export const getMeasurements = async () => {
+  console.log("here");
+  return fetch(`${API_URL}/measurements`, {
+    method: "GET",
+  })
+    .then(validateResponse)
+    .then((res) => res.json())
+    .then((data) => MeasurementsSchema.parse(data))
+    .catch((err) => {
+      console.log("getMeasurements functions error", err);
+      throw err;
+    });
+};

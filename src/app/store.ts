@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { measurementsSlice } from "../features/diaryData/diaryDataSlice";
 
 // Глобальный стейт приложения
 export const store = configureStore({
-  reducer: {},
+  reducer: { measurements: measurementsSlice.reducer },
 });
 
 console.log("store", store.getState()); // Будет пустой, вроде потому что увижу только при первом рендере
