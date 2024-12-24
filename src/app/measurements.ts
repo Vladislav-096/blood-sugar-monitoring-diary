@@ -27,7 +27,7 @@ const MeasurementsSchema = z.array(MeasurementSchema);
 export type Measurement = z.infer<typeof MeasurementSchema>;
 export type Measurements = z.infer<typeof MeasurementsSchema>;
 
-export const getMeasurements = async () => {
+export const getMeasurements = async (): Promise<Measurement[]> => {
   console.log("here");
   return fetch(`${API_URL}/measurements`, {
     method: "GET",

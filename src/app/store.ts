@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { measurementsSlice } from "../features/diaryData/diaryDataSlice";
+import { measurementsSlice } from "../features/diaryTable/diaryTableSlice";
 
 // Глобальный стейт приложения
 export const store = configureStore({
