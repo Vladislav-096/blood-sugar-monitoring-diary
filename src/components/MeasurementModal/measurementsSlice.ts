@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getMeasurements, Measurement } from "../../app/measurements";
+import { CheckoutState } from "../../types/types";
 
-type CheckoutState = "LOADING" | "READY" | "ERROR";
-export interface MeasurementsState {
+interface MeasurementsState {
   measurements: Measurement[];
   checkoutState: CheckoutState;
   errorMessage: string;

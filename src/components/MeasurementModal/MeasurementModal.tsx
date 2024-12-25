@@ -7,9 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import styles from "./createMeasurementModal.module.scss";
+import styles from "./measurementModal.module.scss";
 
-interface CreateMeasurementModal {
+interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
 }
@@ -26,10 +26,7 @@ const testRules = {
   required: "Надо заполнить",
 };
 
-export const CreateMeasurementModal = ({
-  open,
-  handleClose,
-}: CreateMeasurementModal) => {
+export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -69,6 +66,20 @@ export const CreateMeasurementModal = ({
     resetValues();
   };
 
+  //   <TextField
+  // id="outlined-select-currency"
+  // select
+  // label="Select"
+  // defaultValue="EUR"
+  // helperText="Please select your currency"
+  // >
+  // {currencies.map((option) => (
+  //   <MenuItem key={option.value} value={option.value}>
+  //     {option.label}
+  //   </MenuItem>
+  // ))}
+  // </TextField>
+
   return (
     <Modal
       open={open}
@@ -101,6 +112,7 @@ export const CreateMeasurementModal = ({
               render={({ field }) => (
                 <TextField
                   {...field}
+                  select
                   error={errors.typeOfMeasurement ? true : false}
                   helperText={
                     errors.typeOfMeasurement

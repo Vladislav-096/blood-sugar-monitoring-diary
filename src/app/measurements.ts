@@ -25,7 +25,11 @@ const MeasurementSchema = z.object({
 const MeasurementsSchema = z.array(MeasurementSchema);
 
 export type Measurement = z.infer<typeof MeasurementSchema>;
-export type Measurements = z.infer<typeof MeasurementsSchema>;
+
+const TypesOfMeasurementsSchema = z.array(z.string());
+
+export type TypesOfMeasurements = z.infer<typeof TypesOfMeasurementsSchema>;
+// export type Measurements = z.infer<typeof MeasurementsSchema>;
 
 export const getMeasurements = async (): Promise<Measurement[]> => {
   console.log("here");
@@ -38,5 +42,18 @@ export const getMeasurements = async (): Promise<Measurement[]> => {
     .catch((err) => {
       console.log("getMeasurements functions error", err);
       throw err;
+    });
+};
+
+export const getTypesOfMeasuremens = async () => {
+  return fetch(`${API_URL}/types`, {
+    method: "GET",
+  })
+    .then(validateResponse)
+    .then((res) => res.json())
+    .then((data) => TypesOfMeasurementsSchema.parse(data))
+    .catch((err) => {
+      console.log(err);
+      return err;
     });
 };

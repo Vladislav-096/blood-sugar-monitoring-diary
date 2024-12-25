@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { recieveMeasurements } from "./diaryTableSlice";
+import { recieveMeasurements } from "../../components/MeasurementModal/measurementsSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { Button } from "@mui/material";
-import { CreateMeasurementModal } from "../../components/CreateMeasurementModal/CreateMeasurementModal";
+import { MeasurementModal } from "../../components/MeasurementModal/MeasurementModal";
 
 export const DiaryTable = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -19,7 +19,7 @@ export const DiaryTable = () => {
       <Button onClick={handleOpen} variant="contained">
         open modal
       </Button>
-      <CreateMeasurementModal open={open} handleClose={handleClose} />
+      <MeasurementModal open={open} handleClose={handleClose} />
     </>
   );
 };
