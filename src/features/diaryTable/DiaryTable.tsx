@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { recieveMeasurements } from "../../components/MeasurementModal/measurementsSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { Button } from "@mui/material";
 import { MeasurementModal } from "../../components/MeasurementModal/MeasurementModal";
+import { recieveMeasurements } from "../../components/MeasurementModal/measurementsSlice";
 
 export const DiaryTable = () => {
   const [open, setOpen] = useState<boolean>(false);

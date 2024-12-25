@@ -1,9 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   getTypesOfMeasuremens,
   TypesOfMeasurements,
 } from "../../app/measurements";
 import { CheckoutState } from "../../types/types";
+import { RootState } from "@reduxjs/toolkit/query";
 
 interface TypesOfMeasurementsState {
   typesOfMeasurements: TypesOfMeasurements;
@@ -47,3 +48,7 @@ export const typesOfMeasurementsSlice = createSlice({
     });
   },
 });
+
+// const recieveTypesOfMeasuremens = createSelector(
+//     (state: RootState) => state.
+// )

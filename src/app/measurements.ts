@@ -13,6 +13,7 @@ const AfterMealSchema = z.object({
 });
 
 const MeasurementSchema = z.object({
+  id: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
   overnight: z.number().optional(),
@@ -23,11 +24,14 @@ const MeasurementSchema = z.object({
 });
 
 const MeasurementsSchema = z.array(MeasurementSchema);
-
 export type Measurement = z.infer<typeof MeasurementSchema>;
 
-const TypesOfMeasurementsSchema = z.array(z.string());
+const TypeOfMeasurementsSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+});
 
+const TypesOfMeasurementsSchema = z.array(TypeOfMeasurementsSchema);
 export type TypesOfMeasurements = z.infer<typeof TypesOfMeasurementsSchema>;
 // export type Measurements = z.infer<typeof MeasurementsSchema>;
 
@@ -53,7 +57,7 @@ export const getTypesOfMeasuremens = async () => {
     .then((res) => res.json())
     .then((data) => TypesOfMeasurementsSchema.parse(data))
     .catch((err) => {
-      console.log(err);
-      return err;
+      console.log("getTypesOfMeasuremens functions error", err);
+      throw err;
     });
 };
