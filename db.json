@@ -56,10 +56,12 @@
     }
   ],
   "typesOfMeasuremens": [
-    { "id": "1", "name": "Before meal" },
-    { "id": "2", "name": "After meal" },
-    { "id": "3", "name": "Just Measurement" },
-    { "id": "4", "name": "Overnight" },
-    { "id": "5", "name": "Evening" }
+    { "id": "1", "label": "Before meal", "name": "beforeMeal" },
+    { "id": "2", "label": "After meal", "name": "afterMeal" },
+    { "id": "3", "label": "Just Measurement" , "name": "justMeasurement"},
+    { "id": "4", "label": "Overnight", "name": "overnight" },
+    { "id": "5", "label": "Evening", "name": "evening" }
   ]
 }
+
+

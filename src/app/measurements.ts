@@ -28,6 +28,7 @@ export type Measurement = z.infer<typeof MeasurementSchema>;
 
 const TypeOfMeasurementsSchema = z.object({
   id: z.string(),
+  label: z.string(),
   name: z.string(),
 });
 

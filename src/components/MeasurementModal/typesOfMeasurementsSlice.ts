@@ -37,8 +37,9 @@ export const typesOfMeasurementsSlice = createSlice({
       recieveTypesOfMeasurements.fulfilled,
       (state, action: PayloadAction<TypesOfMeasurements>) => {
         state.checkoutState = "READY";
-        const measurements = action.payload;
-        state.typesOfMeasurements = measurements;
+        const typesOfMeasurements = action.payload;
+        console.log("typesOfMeasurements", typesOfMeasurements);
+        state.typesOfMeasurements = typesOfMeasurements;
       }
     );
     builder.addCase(recieveTypesOfMeasurements.rejected, (state, action) => {
