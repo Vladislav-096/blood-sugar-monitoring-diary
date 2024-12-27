@@ -4,64 +4,72 @@
       "id": "1",
       "createdAt": 1727260055,
       "updatedAt": 1727260055,
-      "overnight": 85
+      "typeOfMeasurement": "Overnight",
+      "measurement": 85
     },
     {
       "id": "2",
       "createdAt": 1727303255,
       "updatedAt": 1727303255,
-      "bedTime": 666
+      "typeOfMeasurement": "Bed time",
+      "measurement": 666
     },
     {
       "id": "3",
       "createdAt": 1727353655,
       "updatedAt": 1727353655,
-      "overnight": 85
+      "typeOfMeasurement": "Overnight",
+      "measurement": 85
     },
     {
       "id": "4",
       "createdAt": 1727357255,
       "updatedAt": 1727357255,
-      "beforeMeal": 93
+      "typeOfMeasurement": "Before meal",
+      "measurement": 93
     },
     {
       "id": "5",
       "createdAt": 1727364455,
       "updatedAt": 1727364455,
-      "afterMeal": {
-        "measurement": 110,
-        "meal": {
-          "portion": 150,
-          "dish": "Гречка с сельдереем"
-        }
+      "typeOfMeasurement": "After meal",
+      "measurement": 110,
+      "afterMealMeasurement": {
+        "meal": [
+          {
+            "portion": 150,
+            "dish": "Гречка с сельдереем"
+          }
+        ]
       }
     },
     {
       "id": "6",
       "createdAt": 1727368055,
       "updatedAt": 1727368055,
-      "justMeasurement": 111
+      "typeOfMeasurement": "Just Measurement",
+      "measurement": 111
     },
     {
       "id": "7",
       "createdAt": 1727371655,
       "updatedAt": 1727371655,
-      "justMeasurement": 112
+      "typeOfMeasurement": "Just Measurement",
+      "measurement": 112
     },
     {
       "id": "8",
       "createdAt": 1727393255,
       "updatedAt": 1727393255,
-      "bedTime": 33
+      "typeOfMeasurement": "Bed time",
+      "measurement": 33
     }
   ],
   "typesOfMeasuremens": [
-    { "id": "1", "label": "Before meal", "name": "beforeMeal" },
-    { "id": "2", "label": "After meal", "name": "afterMeal" },
-    { "id": "3", "label": "Just Measurement" , "name": "justMeasurement"},
-    { "id": "4", "label": "Overnight", "name": "overnight" },
-    { "id": "5", "label": "Evening", "name": "evening" }
+    { "id": "1", "name": "Before meal" },
+    { "id": "2", "name": "After meal" },
+    { "id": "3", "name": "Just Measurement" },
+    { "id": "4", "name": "Overnight" },
+    { "id": "5", "name": "Bed time" }
   ]
 }
-
-

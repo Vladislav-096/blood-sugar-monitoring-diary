@@ -1,15 +1,17 @@
 import {
   Backdrop,
   Box,
+  Button,
   Fade,
+  MenuItem,
   Modal,
   TextField,
   Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import styles from "./measurementModal.module.scss";
-import { useAppDispatch } from "../../app/hooks";
-import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useEffect, useState } from "react";
 import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 
 interface MeasurementModal {
@@ -30,15 +32,20 @@ const testRules = {
 };
 
 export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
+  const [measurementType, setMeasurementType] = useState<string>("");
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(recieveTypesOfMeasurements());
   }, [dispatch]);
 
-  // const typeOfMeasurementsState = useAppSelector(
-  //   (state) => state.typesOfMeasurements
-  // );
+  const typeOfMeasurementsState = useAppSelector(
+    (state) => state.typesOfMeasurements
+  );
+
+  const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
+  console.log("typesOptions", typesOptions);
 
   const modalContentStyles = {
     position: "absolute",
@@ -52,6 +59,15 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     textAlign: "center",
   };
 
+  const handleTypeOfMeasurementChange = (value: string) => {
+    if (!value) return;
+
+    const type = typesOptions.filter((item) => item.label === value);
+    if (type.length > 0) {
+      setValue("typeOfMeasurement", type[0].name);
+    }
+  };
+
   const {
     control,
     handleSubmit,
@@ -60,13 +76,13 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     formState: { errors },
     clearErrors,
   } = useForm<FormTypes>({
-    defaultValues: {
-      typeOfMeasurement: "", // Задаем начальное значение для поля
-      food: "", // Если это поле тоже существует в форме
-      measurement: "",
-      createdAt: "",
-      updatedAt: "",
-    },
+    // defaultValues: {
+    //   typeOfMeasurement: "", // Задаем начальное значение для поля
+    //   food: "", // Если это поле тоже существует в форме
+    //   measurement: "",
+    //   createdAt: "",
+    //   updatedAt: "",
+    // },
   });
 
   const resetValues = () => {
@@ -80,18 +96,18 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   };
 
   // <TextField
-  // id="outlined-select-currency"
-  // select
-  // label="Select"
-  // defaultValue="EUR"
-  // helperText="Please select your currency"
+  //   id="outlined-select-currency"
+  //   select
+  //   label="Select"
+  //   defaultValue="EUR"
+  //   helperText="Please select your currency"
   // >
-  // {currencies.map((option) => (
-  //   <MenuItem key={option.value} value={option.value}>
-  //     {option.label}
-  //   </MenuItem>
-  // ))}
-  // </TextField>
+  //   {currencies.map((option) => (
+  //     <MenuItem key={option.value} value={option.value}>
+  //       {option.label}
+  //     </MenuItem>
+  //   ))}
+  // </TextField>;
 
   return (
     <Modal
@@ -115,18 +131,20 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
             component="h2"
             sx={{ fontFamily: '"Play"', color: "#f0f6fc" }}
           >
-            Text in a modal
+            Add new measurement
           </Typography>
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <Controller
               name="typeOfMeasurement"
               control={control}
               rules={testRules}
-              render={({ field }) => (
+              render={() => (
                 <TextField
-                  {...field}
+                  required
                   select
                   error={errors.typeOfMeasurement ? true : false}
+                  // onChange={}
+                  // value={}
                   helperText={
                     errors.typeOfMeasurement
                       ? errors.typeOfMeasurement.message
@@ -134,9 +152,18 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   }
                   label="Type of measurement"
                   variant="outlined"
-                />
+                >
+                  {typesOptions.map((option) => (
+                    <MenuItem key={option.id} value={option.label}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
               )}
             />
+            <Button type="submit" variant="contained">
+              submit
+            </Button>
           </form>
         </Box>
       </Fade>

@@ -7,20 +7,17 @@ const MealSchema = z.object({
   dish: z.string(),
 });
 
-const AfterMealSchema = z.object({
-  measurement: z.number(),
-  meal: MealSchema,
+const AfterMealMeasurementSchema = z.object({
+  meal: z.array(MealSchema),
 });
 
 const MeasurementSchema = z.object({
   id: z.string(),
   createdAt: z.number(),
   updatedAt: z.number(),
-  overnight: z.number().optional(),
-  bedTime: z.number().optional(),
-  beforeMeal: z.number().optional(),
-  afterMeal: AfterMealSchema.optional(),
-  justMeasurement: z.number().optional(),
+  typeOfMeasurement: z.string(),
+  measurement: z.number(),
+  afterMealMeasurement: AfterMealMeasurementSchema.optional(),
 });
 
 const MeasurementsSchema = z.array(MeasurementSchema);
@@ -28,7 +25,6 @@ export type Measurement = z.infer<typeof MeasurementSchema>;
 
 const TypeOfMeasurementsSchema = z.object({
   id: z.string(),
-  label: z.string(),
   name: z.string(),
 });
 
