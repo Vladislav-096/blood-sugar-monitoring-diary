@@ -2,32 +2,32 @@
   "measurements": [
     {
       "id": "1",
-      "createdAt": "2024-09-25T10:27:35.869Z",
-      "updatedAt": "2024-09-25T10:27:35.869Z",
+      "createdAt": 1727260055,
+      "updatedAt": 1727260055,
       "overnight": 85
     },
     {
       "id": "2",
-      "createdAt": "2024-09-25T22:27:35.869Z",
-      "updatedAt": "2024-09-25T22:27:35.869Z",
+      "createdAt": 1727303255,
+      "updatedAt": 1727303255,
       "bedTime": 666
     },
     {
       "id": "3",
-      "createdAt": "2024-09-26T12:27:35.869Z",
-      "updatedAt": "2024-09-26T12:27:35.869Z",
+      "createdAt": 1727353655,
+      "updatedAt": 1727353655,
       "overnight": 85
     },
     {
       "id": "4",
-      "createdAt": "2024-09-26T13:27:35.869Z",
-      "updatedAt": "2024-09-26T13:27:35.869Z",
+      "createdAt": 1727357255,
+      "updatedAt": 1727357255,
       "beforeMeal": 93
     },
     {
       "id": "5",
-      "createdAt": "2024-09-26T15:27:35.869Z",
-      "updatedAt": "2024-09-26T15:27:35.869Z",
+      "createdAt": 1727364455,
+      "updatedAt": 1727364455,
       "afterMeal": {
         "measurement": 110,
         "meal": {
@@ -38,20 +38,20 @@
     },
     {
       "id": "6",
-      "createdAt": "2024-09-26T16:27:35.869Z",
-      "updatedAt": "2024-09-26T16:27:35.869Z",
+      "createdAt": 1727368055,
+      "updatedAt": 1727368055,
       "justMeasurement": 111
     },
     {
       "id": "7",
-      "createdAt": "2024-09-26T17:27:35.869Z",
-      "updatedAt": "2024-09-26T17:27:35.869Z",
+      "createdAt": 1727371655,
+      "updatedAt": 1727371655,
       "justMeasurement": 112
     },
     {
       "id": "8",
-      "createdAt": "2024-09-26T23:27:35.869Z",
-      "updatedAt": "2024-09-26T23:27:35.869Z",
+      "createdAt": 1727393255,
+      "updatedAt": 1727393255,
       "bedTime": 33
     }
   ],

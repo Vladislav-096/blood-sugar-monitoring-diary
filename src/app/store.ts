@@ -1,9 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { measurementsSlice } from "../components/MeasurementModal/measurementsSlice";
+import { measurementsSlice } from "../features/diaryTable/measurementsSlice";
+import { typesOfMeasurementsSlice } from "../components/MeasurementModal/typesOfMeasurementsSlice";
+import { oneDayMeasurementsSlice } from "../features/diaryTable/oneDayMeasurementsSlice";
 
 // Глобальный стейт приложения
 export const store = configureStore({
-  reducer: { measurements: measurementsSlice.reducer },
+  reducer: {
+    measurements: measurementsSlice.reducer,
+    typesOfMeasurements: typesOfMeasurementsSlice.reducer,
+    oneDayMeasurementsSlice: oneDayMeasurementsSlice.reducer,
+  },
 });
 
 console.log("store", store.getState()); // Будет пустой, вроде потому что увижу только при первом рендере

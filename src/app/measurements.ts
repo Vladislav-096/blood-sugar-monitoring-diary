@@ -14,8 +14,8 @@ const AfterMealSchema = z.object({
 
 const MeasurementSchema = z.object({
   id: z.string(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.number(),
+  updatedAt: z.number(),
   overnight: z.number().optional(),
   bedTime: z.number().optional(),
   beforeMeal: z.number().optional(),
@@ -35,9 +35,27 @@ const TypesOfMeasurementsSchema = z.array(TypeOfMeasurementsSchema);
 export type TypesOfMeasurements = z.infer<typeof TypesOfMeasurementsSchema>;
 // export type Measurements = z.infer<typeof MeasurementsSchema>;
 
-export const getMeasurements = async (): Promise<Measurement[]> => {
-  console.log("here");
-  return fetch(`${API_URL}/measurements`, {
+export interface filters extends Record<string, string> {
+  createdAt_gte: string;
+  createdAt_lte: string;
+}
+
+export const getMeasurements = async (
+  filters?: filters
+): Promise<Measurement[]> => {
+  let url = `${API_URL}/measurements`;
+
+  if (filters) {
+    const queryParams = new URLSearchParams(filters).toString();
+    url = `${url}?${queryParams}`;
+  }
+
+  // if (filters) {
+  //   url =
+  //     "http://localhost:8653/measurements?createdAt_gte=2024-09-25T00:00:00.000Z&createdAt_lte=2024-09-25T23:59:59.999Z";
+  // }
+
+  return fetch(url, {
     method: "GET",
   })
     .then(validateResponse)
@@ -50,7 +68,7 @@ export const getMeasurements = async (): Promise<Measurement[]> => {
 };
 
 export const getTypesOfMeasuremens = async () => {
-  return fetch(`${API_URL}/types`, {
+  return fetch(`${API_URL}/typesOfMeasuremens`, {
     method: "GET",
   })
     .then(validateResponse)

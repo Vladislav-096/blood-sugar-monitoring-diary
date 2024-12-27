@@ -8,6 +8,9 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import styles from "./measurementModal.module.scss";
+import { useAppDispatch } from "../../app/hooks";
+import { useEffect } from "react";
+import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 
 interface MeasurementModal {
   open: boolean;
@@ -27,7 +30,17 @@ const testRules = {
 };
 
 export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
-  const style = {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(recieveTypesOfMeasurements());
+  }, [dispatch]);
+
+  // const typeOfMeasurementsState = useAppSelector(
+  //   (state) => state.typesOfMeasurements
+  // );
+
+  const modalContentStyles = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -95,7 +108,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       }}
     >
       <Fade in={open}>
-        <Box sx={style}>
+        <Box sx={modalContentStyles}>
           <Typography
             id="modal-modal-title"
             variant="h6"
