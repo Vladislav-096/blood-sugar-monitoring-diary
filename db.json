@@ -4,35 +4,35 @@
       "id": "1",
       "createdAt": 1727260055,
       "updatedAt": 1727260055,
-      "typeOfMeasurement": "Overnight",
+      "typeOfMeasurement": "4",
       "measurement": 85
     },
     {
       "id": "2",
       "createdAt": 1727303255,
       "updatedAt": 1727303255,
-      "typeOfMeasurement": "Bed time",
+      "typeOfMeasurement": "5",
       "measurement": 666
     },
     {
       "id": "3",
       "createdAt": 1727353655,
       "updatedAt": 1727353655,
-      "typeOfMeasurement": "Overnight",
+      "typeOfMeasurement": "4",
       "measurement": 85
     },
     {
       "id": "4",
       "createdAt": 1727357255,
       "updatedAt": 1727357255,
-      "typeOfMeasurement": "Before meal",
+      "typeOfMeasurement": "1",
       "measurement": 93
     },
     {
       "id": "5",
       "createdAt": 1727364455,
       "updatedAt": 1727364455,
-      "typeOfMeasurement": "After meal",
+      "typeOfMeasurement": "2",
       "measurement": 110,
       "afterMealMeasurement": {
         "meal": [
@@ -47,21 +47,21 @@
       "id": "6",
       "createdAt": 1727368055,
       "updatedAt": 1727368055,
-      "typeOfMeasurement": "Just Measurement",
+      "typeOfMeasurement": "3",
       "measurement": 111
     },
     {
       "id": "7",
       "createdAt": 1727371655,
       "updatedAt": 1727371655,
-      "typeOfMeasurement": "Just Measurement",
+      "typeOfMeasurement": "3",
       "measurement": 112
     },
     {
       "id": "8",
       "createdAt": 1727393255,
       "updatedAt": 1727393255,
-      "typeOfMeasurement": "Bed time",
+      "typeOfMeasurement": "5",
       "measurement": 33
     }
   ],
