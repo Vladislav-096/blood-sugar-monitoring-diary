@@ -31,11 +31,21 @@ interface AfterMealMeasurement {
 
 interface FormTypes {
   typeOfMeasurement: string;
-  afterMealMeasurement?: AfterMealMeasurement;
+  afterMealMeasurement: AfterMealMeasurement;
   measurement: string;
   createdAt: string;
   updatedAt: string;
 }
+
+type FieldName =
+  | "typeOfMeasurement"
+  | "measurement"
+  | "createdAt"
+  | "updatedAt"
+  | "afterMealMeasurement"
+  | `afterMealMeasurement.meal.${number}`
+  | `afterMealMeasurement.meal.${number}.portion`
+  | `afterMealMeasurement.meal.${number}.dish`;
 
 const testRules = {
   required: "Надо заполнить",
@@ -56,10 +66,6 @@ const modalContentStyles = {
 export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const dispatch = useAppDispatch();
   const [measurementType, setMeasurementType] = useState<string>("");
-
-  useEffect(() => {
-    dispatch(recieveTypesOfMeasurements());
-  }, [dispatch]);
 
   const typeOfMeasurementsState = useAppSelector(
     (state) => state.typesOfMeasurements
@@ -90,14 +96,27 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
+    const fieldName = `afterMealMeasurement.meal.${index}.portion`;
+    formatInputValueToNumbers(event, fieldName as FieldName);
+  };
+
+  const handleMeasurementChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const fieldName = "measurement";
+    formatInputValueToNumbers(event, fieldName);
+  };
+
+  const formatInputValueToNumbers = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    fieldName: FieldName
+  ) => {
     const { value } = event.target;
-
     const pettern = /[^0-9]/g;
-
     const numericValue = value.replace(pettern, "");
 
-    setValue(`afterMealMeasurement.meal.${index}.portion`, numericValue);
-    trigger(`afterMealMeasurement.meal.${index}.portion`);
+    setValue(fieldName, numericValue);
+    trigger(fieldName);
   };
 
   const {
@@ -126,6 +145,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     console.log("formData", formData);
     resetValues();
   };
+
+  useEffect(() => {
+    dispatch(recieveTypesOfMeasurements());
+  }, [dispatch]);
 
   return (
     <Modal
@@ -228,7 +251,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                               errors.afterMealMeasurement?.meal?.[index]
                                 ?.portion?.message
                             }
-                            // type="number"
                           />
                         )}
                       />
@@ -251,6 +273,25 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                 </Button>
               </Box>
             )}
+
+            <FormControl fullWidth>
+              <Controller
+                name="measurement"
+                control={control}
+                rules={testRules}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    value={field.value || ""}
+                    onChange={handleMeasurementChange}
+                    label="Measurement"
+                    variant="outlined"
+                    error={errors.measurement ? true : false}
+                    helperText={errors.measurement?.message}
+                  />
+                )}
+              />
+            </FormControl>
 
             <Button type="submit" variant="contained">
               submit
