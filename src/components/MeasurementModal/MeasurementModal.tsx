@@ -76,6 +76,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
 
     setMeasurementType(value);
 
+    if (value !== "After meal") {
+      remove();
+    }
+
     const typeId = typesOptions.filter((item) => item.name === value);
     if (typeId.length > 0) {
       setValue("typeOfMeasurement", typeId[0].name);
@@ -91,10 +95,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     const pettern = /[^0-9]/g;
 
     const numericValue = value.replace(pettern, "");
-
-    // if (!pettern.test(value)) {
-    //   clearErrors(`afterMealMeasurement.meal.${index}.portion`);
-    // }
 
     setValue(`afterMealMeasurement.meal.${index}.portion`, numericValue);
     trigger(`afterMealMeasurement.meal.${index}.portion`);
@@ -119,6 +119,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     reset();
     clearErrors();
     setMeasurementType("");
+    remove();
   };
 
   const onSubmit = (formData: FormTypes) => {
@@ -211,7 +212,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                       <Controller
                         name={`afterMealMeasurement.meal.${index}.portion`}
                         control={control}
-                        rules={testRules}
                         render={({ field }) => (
                           <TextField
                             {...field}
