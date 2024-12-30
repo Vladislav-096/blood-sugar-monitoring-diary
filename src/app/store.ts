@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { measurementsSlice } from "../features/diaryTable/measurementsSlice";
-import { typesOfMeasurementsSlice } from "../components/MeasurementModal/typesOfMeasurementsSlice";
+import { measurementsSlice } from "../features/shared/slices/measurementsSlice";
+import { typesOfMeasurementsSlice } from "../features/measurementModal/typesOfMeasurementsSlice";
 import { oneDayMeasurementsSlice } from "../features/diaryTable/oneDayMeasurementsSlice";
 
 // Глобальный стейт приложения
@@ -8,7 +8,7 @@ export const store = configureStore({
   reducer: {
     measurements: measurementsSlice.reducer,
     typesOfMeasurements: typesOfMeasurementsSlice.reducer,
-    oneDayMeasurementsSlice: oneDayMeasurementsSlice.reducer,
+    oneDayMeasurements: oneDayMeasurementsSlice.reducer,
   },
 });
 

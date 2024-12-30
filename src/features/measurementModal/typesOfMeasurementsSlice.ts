@@ -38,7 +38,6 @@ export const typesOfMeasurementsSlice = createSlice({
       (state, action: PayloadAction<TypesOfMeasurements>) => {
         state.checkoutState = "READY";
         const typesOfMeasurements = action.payload;
-        console.log("typesOfMeasurements", typesOfMeasurements);
         state.typesOfMeasurements = typesOfMeasurements;
       }
     );

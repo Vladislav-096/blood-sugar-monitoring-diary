@@ -63,13 +63,49 @@
       "updatedAt": 1727393255,
       "typeOfMeasurement": "5",
       "measurement": 33
+    },
+    {
+      "id": "0194179e-a151-75e9-8d62-358c9dfa3825",
+      "createdAt": 1735563059,
+      "updatedAt": 1735563059,
+      "typeOfMeasurement": "1",
+      "measurement": 11241
+    },
+    {
+      "id": "019417f4-fe93-74f4-b021-94677767c255",
+      "createdAt": 1735568719,
+      "updatedAt": 1735568719,
+      "typeOfMeasurement": "1",
+      "measurement": 1214
+    },
+    {
+      "id": "01941804-fb78-76ce-b76b-af361a3b4a36",
+      "createdAt": 1735569767,
+      "updatedAt": 1735569767,
+      "typeOfMeasurement": "1",
+      "measurement": 12312
     }
   ],
   "typesOfMeasuremens": [
-    { "id": "1", "name": "Before meal" },
-    { "id": "2", "name": "After meal" },
-    { "id": "3", "name": "Just Measurement" },
-    { "id": "4", "name": "Overnight" },
-    { "id": "5", "name": "Bed time" }
+    {
+      "id": "1",
+      "name": "Before meal"
+    },
+    {
+      "id": "2",
+      "name": "After meal"
+    },
+    {
+      "id": "3",
+      "name": "Just Measurement"
+    },
+    {
+      "id": "4",
+      "name": "Overnight"
+    },
+    {
+      "id": "5",
+      "name": "Bed time"
+    }
   ]
 }

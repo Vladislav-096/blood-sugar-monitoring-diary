@@ -14,6 +14,8 @@ import styles from "./measurementModal.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
 import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
+import { v7 as uuidv4 } from "uuid";
+import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
 
 interface MeasurementModal {
   open: boolean;
@@ -35,6 +37,19 @@ interface FormTypes {
   measurement: string;
   createdAt: string;
   updatedAt: string;
+}
+
+type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
+
+export interface MeasurementData {
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+  typeOfMeasurement: string;
+  measurement: number;
+  afterMealMeasurement?: {
+    meal: ModifiedMeal[];
+  };
 }
 
 type FieldName =
@@ -77,7 +92,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = event.target;
-    console.log("value", value);
     if (!value) return;
 
     setMeasurementType(value);
@@ -142,7 +156,34 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   };
 
   const onSubmit = (formData: FormTypes) => {
-    console.log("formData", formData);
+    const measurementId = uuidv4();
+    const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
+    const measurement = Number(formData.measurement);
+    const typeOfMeasurement = typesOptions.filter(
+      (item) => item.name === formData.typeOfMeasurement
+    );
+
+    let data: MeasurementData = {
+      id: measurementId,
+      createdAt: unixTimestampDate,
+      updatedAt: unixTimestampDate,
+      typeOfMeasurement: typeOfMeasurement[0].id,
+      measurement: measurement,
+    };
+
+    if (formData.afterMealMeasurement.meal.length > 0) {
+      data = {
+        ...data,
+        afterMealMeasurement: {
+          meal: formData.afterMealMeasurement.meal.map((item) => {
+            return { portion: Number(item.portion), dish: item.dish };
+          }),
+        },
+      };
+    }
+
+    // console.log("data", data);
+    dispatch(fetchAddMeasurement(data));
     resetValues();
   };
 

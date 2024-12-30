@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Button } from "@mui/material";
-import { MeasurementModal } from "../../components/MeasurementModal/MeasurementModal";
-import { recieveMeasurements } from "./measurementsSlice";
+import { MeasurementModal } from "../measurementModal/MeasurementModal";
+import { fetchGetMeasurements } from "../shared/slices/measurementsSlice";
 import { recieveFilteredMeasurements } from "./oneDayMeasurementsSlice";
 import { useNavigate } from "react-router";
 
@@ -14,7 +14,7 @@ export const DiaryTable = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(recieveMeasurements());
+    dispatch(fetchGetMeasurements());
   }, [dispatch]);
 
   const dispatchFilteredMeasurements = (data: number) => {
@@ -25,6 +25,8 @@ export const DiaryTable = () => {
   const measurements = useAppSelector(
     (state) => state.measurements.measurements
   );
+
+  console.log("measurements", measurements);
 
   return (
     <>

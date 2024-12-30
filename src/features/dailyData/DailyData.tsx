@@ -2,7 +2,7 @@ import { useAppSelector } from "../../app/hooks";
 
 export const DailyData = () => {
   const filteredMeasurements = useAppSelector(
-    (state) => state.oneDayMeasurementsSlice.oneDayMeasurements
+    (state) => state.oneDayMeasurements.oneDayMeasurements
   );
 
   console.log("filteredMeasurements", filteredMeasurements);
