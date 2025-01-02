@@ -84,6 +84,20 @@
       "updatedAt": 1735569767,
       "typeOfMeasurement": "1",
       "measurement": 12312
+    },
+    {
+      "id": "019427d2-c7cd-70ca-8ddb-af12ee429409",
+      "createdAt": 1735834912,
+      "updatedAt": 1735834912,
+      "typeOfMeasurement": "2",
+      "measurement": 222
+    },
+    {
+      "id": "019427ed-89f3-760f-952c-0145e9d037ce",
+      "createdAt": 1735836666,
+      "updatedAt": 1735836666,
+      "typeOfMeasurement": "1",
+      "measurement": 333
     }
   ],
   "typesOfMeasuremens": [

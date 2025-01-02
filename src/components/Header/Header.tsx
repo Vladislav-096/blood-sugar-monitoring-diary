@@ -4,9 +4,9 @@ export const Header = () => {
   return (
     <div className="container">
       <Link to={"/"} style={{ marginRight: "22px" }}>
-        main
+        Main
       </Link>
-      <Link to={"/daily"}>measurements</Link>
+      <Link to={"/daily"}>Daily</Link>
     </div>
   );
 };

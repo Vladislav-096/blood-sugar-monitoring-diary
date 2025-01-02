@@ -5,6 +5,7 @@ import { MeasurementModal } from "../measurementModal/MeasurementModal";
 import { fetchGetMeasurements } from "../shared/slices/measurementsSlice";
 import { recieveFilteredMeasurements } from "./oneDayMeasurementsSlice";
 import { useNavigate } from "react-router";
+import { Table } from "../../components/Table/Table";
 
 export const DiaryTable = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -26,20 +27,19 @@ export const DiaryTable = () => {
     (state) => state.measurements.measurements
   );
 
+  const typesOfMeasurement = useAppSelector(
+    (state) => state.typesOfMeasurements.typesOfMeasurements
+  );
+
   console.log("measurements", measurements);
 
   return (
     <>
-      <div>
-        {measurements.map((item, index) => (
-          <div
-            key={index}
-            onClick={() => dispatchFilteredMeasurements(item.createdAt || 0)}
-          >
-            {item.id}
-          </div>
-        ))}
-      </div>
+      <Table
+        rows={measurements}
+        typesOfMeasurement={typesOfMeasurement}
+        dispatchFilteredMeasurements={dispatchFilteredMeasurements}
+      />
       <Button onClick={handleOpen} variant="contained">
         open modal
       </Button>

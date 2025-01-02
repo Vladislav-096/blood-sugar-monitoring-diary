@@ -8,8 +8,11 @@ const MealSchema = z.object({
   dish: z.string(),
 });
 
+const MealsSchema = z.array(MealSchema);
+export type Meals = z.infer<typeof MealsSchema>;
+
 const AfterMealMeasurementSchema = z.object({
-  meal: z.array(MealSchema),
+  meal: MealsSchema,
 });
 
 const MeasurementSchema = z.object({
@@ -90,4 +93,3 @@ export const addMeasurement = async (data: MeasurementData) => {
       throw err;
     });
 };
-
