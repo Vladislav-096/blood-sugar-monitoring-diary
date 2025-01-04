@@ -9,6 +9,7 @@ import { Button, Paper, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
+import { useState } from "react";
 
 interface Table {
   rows: Measurement[];
@@ -74,7 +75,7 @@ export const Table = ({
     {
       field: "measurement",
       headerName: "Measurement",
-      width: 160,
+      width: 165,
       renderCell: (param) => {
         const currentRow: Measurement = param.row;
         if (
@@ -129,7 +130,19 @@ export const Table = ({
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 15 };
+  // const paginationModel = { page: 0, pageSize: 5 };
+
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
+
+  const handlePaginationModelChange = (newPaginationModel: {
+    page: number;
+    pageSize: number;
+  }) => {
+    setPaginationModel(newPaginationModel);
+  };
 
   const handleRowClick = (createdAt: number) => {
     dispatchFilteredMeasurements(createdAt);
@@ -140,8 +153,9 @@ export const Table = ({
       <DataGrid
         rows={rows}
         columns={columns}
-        initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10, 15]}
+        // initialState={{ pagination: { paginationModel } }}
+        paginationModel={paginationModel}
+        pageSizeOptions={[5]}
         // onRowClick={handleRowClick}
         // checkboxSelection={false}
         // disableColumnMenu
@@ -150,6 +164,7 @@ export const Table = ({
         sx={{ border: 0 }}
         // disableMultipleRowSelection
         disableRowSelectionOnClick
+        onPaginationModelChange={handlePaginationModelChange}
       />
     </Paper>
   );
