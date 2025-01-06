@@ -89,7 +89,19 @@ export const addMeasurement = async (data: MeasurementData) => {
   })
     .then(validateResponse)
     .catch((err) => {
-      console.log(err);
+      console.log("addMeasurement function error", err);
+      throw err;
+    });
+};
+
+export const removeMeasurement = async (id: string) => {
+  return fetch(`${API_URL}/measurements/${id}`, {
+    method: "DELETE",
+    headers: { "Content-type": "application/json" },
+  })
+    .then(validateResponse)
+    .catch((err) => {
+      console.log("removeMeasurement function error", err);
       throw err;
     });
 };

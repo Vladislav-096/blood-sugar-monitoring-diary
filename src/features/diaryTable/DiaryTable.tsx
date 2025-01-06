@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Button } from "@mui/material";
 import { MeasurementModal } from "../measurementModal/MeasurementModal";
-import { fetchGetMeasurements } from "../shared/slices/measurementsSlice";
+import {
+  fetchGetMeasurements,
+  fetchRemoveMeasurement,
+} from "../shared/slices/measurementsSlice";
 import { recieveFilteredMeasurements } from "./oneDayMeasurementsSlice";
 import { useNavigate } from "react-router";
 import { Table } from "../../components/Table/Table";
@@ -23,6 +26,10 @@ export const DiaryTable = () => {
     navigate("./daily");
   };
 
+  const dispatchRemoveMeasurement = (id: string) => {
+    dispatch(fetchRemoveMeasurement(id));
+  };
+
   const measurements = useAppSelector(
     (state) => state.measurements.measurements
   );
@@ -39,6 +46,7 @@ export const DiaryTable = () => {
         rows={measurements}
         typesOfMeasurement={typesOfMeasurement}
         dispatchFilteredMeasurements={dispatchFilteredMeasurements}
+        dispatchRemoveMeasurement={dispatchRemoveMeasurement}
       />
       <Button onClick={handleOpen} variant="contained">
         open modal

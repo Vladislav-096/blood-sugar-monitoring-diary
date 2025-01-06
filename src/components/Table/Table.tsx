@@ -10,18 +10,26 @@ import { styled } from "@mui/material/styles";
 import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import { useState } from "react";
+import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 
 interface Table {
   rows: Measurement[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchFilteredMeasurements: (data: number) => void;
+  dispatchRemoveMeasurement: (id: string) => void;
 }
 
 export const Table = ({
   rows,
   typesOfMeasurement,
   dispatchFilteredMeasurements,
+  dispatchRemoveMeasurement,
 }: Table) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [idToRemove, setIdToRemove] = useState<string>("");
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -109,22 +117,36 @@ export const Table = ({
       // editable: true,
     },
     {
-      field: "action",
-      headerName: "Action",
-      width: 160,
+      field: "actions",
+      headerName: "Actions",
+      width: 180,
+      headerAlign: "center",
       sortable: false,
       disableColumnMenu: true,
       renderCell: (param) => {
         const currentRow: Measurement = param.row;
         return (
-          <Button
-            variant="text"
-            color="primary"
-            sx={{ textTransform: "none" }}
-            onClick={() => handleRowClick(currentRow.createdAt)}
-          >
-            Go to daily
-          </Button>
+          <>
+            <Button
+              variant="text"
+              color="primary"
+              sx={{ textTransform: "none" }}
+              onClick={() => handleRowClick(currentRow.createdAt)}
+            >
+              Go to daily
+            </Button>
+            <Button
+              variant="text"
+              color="primary"
+              sx={{ textTransform: "none", color: "red" }}
+              onClick={() => {
+                setIdToRemove(currentRow.id);
+                handleOpen();
+              }}
+            >
+              Remove
+            </Button>
+          </>
         );
       },
     },
@@ -149,23 +171,32 @@ export const Table = ({
   };
 
   return (
-    <Paper sx={{ height: "83.5vh", width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        // initialState={{ pagination: { paginationModel } }}
-        paginationModel={paginationModel}
-        pageSizeOptions={[5]}
-        // onRowClick={handleRowClick}
-        // checkboxSelection={false}
-        // disableColumnMenu
-        // disableColumnResize
-        disableColumnSelector
-        sx={{ border: 0 }}
-        // disableMultipleRowSelection
-        disableRowSelectionOnClick
-        onPaginationModelChange={handlePaginationModelChange}
+    <>
+      <Paper sx={{ height: "83.5vh", width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          // initialState={{ pagination: { paginationModel } }}
+          paginationModel={paginationModel}
+          pageSizeOptions={[5]}
+          // onRowClick={handleRowClick}
+          // checkboxSelection={false}
+          // disableColumnMenu
+          // disableColumnResize
+          disableColumnSelector
+          sx={{ border: 0 }}
+          // disableMultipleRowSelection
+          disableRowSelectionOnClick
+          onPaginationModelChange={handlePaginationModelChange}
+        />
+      </Paper>
+      <ConfirmModal
+        open={open}
+        idToRemove={idToRemove}
+        handleClose={handleClose}
+        dispatchRemoveMeasurement={dispatchRemoveMeasurement}
+        title={"Are you sure you'd like to remove the measurement?"}
       />
-    </Paper>
+    </>
   );
 };
