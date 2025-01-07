@@ -16,15 +16,11 @@ import { useEffect, useState } from "react";
 import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 import { v7 as uuidv4 } from "uuid";
 import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
+import { Meal, MeasurementData } from "../../types/types";
 
 interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
-}
-
-interface Meal {
-  portion: string;
-  dish: string;
 }
 
 interface AfterMealMeasurement {
@@ -39,18 +35,6 @@ interface FormTypes {
   updatedAt: string;
 }
 
-type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
-
-export interface MeasurementData {
-  id: string;
-  createdAt: number;
-  updatedAt: number;
-  typeOfMeasurement: string;
-  measurement: number;
-  afterMealMeasurement?: {
-    meal: ModifiedMeal[];
-  };
-}
 
 type FieldName =
   | "typeOfMeasurement"

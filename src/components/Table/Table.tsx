@@ -3,20 +3,30 @@ import {
   Measurement,
   TypesOfMeasurements,
 } from "../../app/measurements";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridCellParams,
+  GridColDef,
+  GridRenderCellParams,
+  GridRenderEditCellParams,
+  MuiBaseEvent,
+  MuiEvent,
+} from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
-import { Button, Paper, Tooltip } from "@mui/material";
+import { Button, Paper, TextField, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
+import { EditMeasurement } from "../../types/types";
 
 interface Table {
   rows: Measurement[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchFilteredMeasurements: (data: number) => void;
   dispatchRemoveMeasurement: (id: string) => void;
+  dispatchEditMeasurement: (data: EditMeasurement) => void;
 }
 
 export const Table = ({
@@ -24,6 +34,7 @@ export const Table = ({
   typesOfMeasurement,
   dispatchFilteredMeasurements,
   dispatchRemoveMeasurement,
+  dispatchEditMeasurement,
 }: Table) => {
   const [open, setOpen] = useState<boolean>(false);
   const [idToRemove, setIdToRemove] = useState<string>("");
@@ -56,6 +67,7 @@ export const Table = ({
       headerName: "ID",
       width: 90,
       renderCell: commonRenderCell,
+
       // editable: true,
     },
     {
@@ -84,6 +96,27 @@ export const Table = ({
       field: "measurement",
       headerName: "Measurement",
       width: 165,
+      renderEditCell: (params) => {
+        // Функция для отслеживания ввода и вывода в консоль
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+          console.log("Editing value:", e.target.value); // Выводим значение, которое вводим
+
+          params.api.setEditCellValue({
+            id: params.id,
+            field: params.field,
+            value: e.target.value,
+          });
+        };
+
+        // Возвращаем стандартный TextField для редактирования
+        return (
+          <TextField
+            autoFocus
+            defaultValue={params.value} // Изначальное значение ячейки
+            onChange={handleChange} // Обработчик для отслеживания изменений
+          />
+        );
+      },
       renderCell: (param) => {
         const currentRow: Measurement = param.row;
         if (
@@ -114,7 +147,7 @@ export const Table = ({
           return <span>{param.row.measurement}</span>;
         }
       },
-      // editable: true,
+      editable: true,
     },
     {
       field: "actions",
@@ -170,6 +203,17 @@ export const Table = ({
     dispatchFilteredMeasurements(createdAt);
   };
 
+  const handleCellEditStop = (params: GridCellParams) => {
+    console.log(params.value);
+    // console.log(params.id);
+    // const fieldName = params.field;
+    // const data = {
+    //   id: params.id as string,
+    //   data: { [fieldName]: params.value },
+    // };
+    // dispatchEditMeasurement(data);
+  };
+
   return (
     <>
       <Paper sx={{ height: "83.5vh", width: "100%" }}>
@@ -188,6 +232,7 @@ export const Table = ({
           // disableMultipleRowSelection
           disableRowSelectionOnClick
           onPaginationModelChange={handlePaginationModelChange}
+          // onCellEditStop={handleCellEditStop}
         />
       </Paper>
       <ConfirmModal
@@ -200,3 +245,7 @@ export const Table = ({
     </>
   );
 };
+
+// onCellEditStop
+// onCellEditStart
+// onCellDoubleClick

@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { API_URL } from "../constants/constants";
 import { validateResponse } from "./validationResponse";
-import { MeasurementData } from "../features/measurementModal/MeasurementModal";
+import {
+  EditMeasurement,
+  MeasurementData,
+} from "../types/types";
 
 const MealSchema = z.object({
   portion: z.number(),
@@ -90,6 +93,19 @@ export const addMeasurement = async (data: MeasurementData) => {
     .then(validateResponse)
     .catch((err) => {
       console.log("addMeasurement function error", err);
+      throw err;
+    });
+};
+
+export const editMeasurement = async ({ id, data }: EditMeasurement) => {
+  return fetch(`${API_URL}/measurements/${id}`, {
+    method: "PATCH",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then(validateResponse)
+    .catch((err) => {
+      console.log("editMeasurement function error", err);
       throw err;
     });
 };

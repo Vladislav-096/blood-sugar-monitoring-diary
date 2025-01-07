@@ -1,21 +1,27 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   addMeasurement,
+  editMeasurement,
   getMeasurements,
   Measurement,
   removeMeasurement,
 } from "../../../app/measurements";
-import { CheckoutState } from "../../../types/types";
-import { MeasurementData } from "../../measurementModal/MeasurementModal";
+import {
+  CheckoutState,
+  EditMeasurement,
+  MeasurementData,
+} from "../../../types/types";
 
 interface MeasurementsState {
   measurements: Measurement[];
   checkoutGetMeasurementsState: CheckoutState;
   checkoutAddMeasurementState: CheckoutState;
   checkoutRemoveMeasurementState: CheckoutState;
+  checkoutEditMeasurementState: CheckoutState;
   errorGetMeasurementsMessage: string;
   errorAddMeasurementsMessage: string;
   errorRemoveMeasurementsMessage: string;
+  errorEditMeasurementsMessage: string;
 }
 
 const initialState: MeasurementsState = {
@@ -23,9 +29,11 @@ const initialState: MeasurementsState = {
   checkoutGetMeasurementsState: "READY",
   checkoutAddMeasurementState: "READY",
   checkoutRemoveMeasurementState: "READY",
+  checkoutEditMeasurementState: "READY",
   errorGetMeasurementsMessage: "",
   errorAddMeasurementsMessage: "",
   errorRemoveMeasurementsMessage: "",
+  errorEditMeasurementsMessage: "",
 };
 
 export const fetchGetMeasurements = createAsyncThunk(
@@ -49,6 +57,15 @@ export const fetchRemoveMeasurement = createAsyncThunk(
   "measurements/fetchRemoveMeasurement",
   async (id: string) => {
     const response = await removeMeasurement(id);
+    const data = await response.json();
+    return data;
+  }
+);
+
+export const fetchEditMeasurement = createAsyncThunk(
+  "measurement/fetchEditMeasurement",
+  async (arg: EditMeasurement) => {
+    const response = await editMeasurement(arg);
     const data = await response.json();
     return data;
   }
@@ -108,6 +125,27 @@ export const measurementsSlice = createSlice({
     builder.addCase(fetchRemoveMeasurement.rejected, (state, action) => {
       state.checkoutRemoveMeasurementState = "ERROR";
       state.errorAddMeasurementsMessage = action.error.message || "";
+    });
+    // edit
+    builder.addCase(fetchEditMeasurement.pending, (state) => {
+      state.checkoutEditMeasurementState = "LOADING";
+    });
+    builder.addCase(
+      fetchEditMeasurement.fulfilled,
+      (state, action: PayloadAction<MeasurementData>) => {
+        state.checkoutEditMeasurementState = "READY";
+        const index = state.measurements.findIndex(
+          (item) => item.id === action.payload.id
+        );
+
+        if (index !== -1) {
+          state.measurements[index] = action.payload;
+        }
+      }
+    );
+    builder.addCase(fetchEditMeasurement.rejected, (state, action) => {
+      state.checkoutEditMeasurementState = "ERROR";
+      state.errorEditMeasurementsMessage = action.error.message || "";
     });
   },
 });
