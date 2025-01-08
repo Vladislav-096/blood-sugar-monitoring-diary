@@ -9,6 +9,7 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridRenderEditCellParams,
+  GridValueSetter,
   MuiBaseEvent,
   MuiEvent,
 } from "@mui/x-data-grid";
@@ -61,6 +62,20 @@ export const Table = ({
     );
   };
 
+  type Row = (typeof rows)[number];
+
+  const editValue: GridValueSetter<Row> = (value, row) => {
+    Promise.resolve().then(() => {
+      const data = {
+        id: row.id as string,
+        data: { measurement: Number(value) },
+      };
+      dispatchEditMeasurement(data);
+    });
+
+    return { ...row, measurement: Number(value) };
+  };
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -96,27 +111,36 @@ export const Table = ({
       field: "measurement",
       headerName: "Measurement",
       width: 165,
-      renderEditCell: (params) => {
-        // Функция для отслеживания ввода и вывода в консоль
-        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-          console.log("Editing value:", e.target.value); // Выводим значение, которое вводим
+      // renderEditCell: (params) => {
+      //   // Функция для отслеживания ввода и вывода в консоль
+      //   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      //     // console.log("params.id", params.id);
+      //     // console.log("params.field", params.field);
 
-          params.api.setEditCellValue({
-            id: params.id,
-            field: params.field,
-            value: e.target.value,
-          });
-        };
+      //     params.api.setEditCellValue({
+      //       id: params.id,
+      //       field: params.field,
+      //       value: e.target.value,
+      //     });
 
-        // Возвращаем стандартный TextField для редактирования
-        return (
-          <TextField
-            autoFocus
-            defaultValue={params.value} // Изначальное значение ячейки
-            onChange={handleChange} // Обработчик для отслеживания изменений
-          />
-        );
-      },
+      //     const value = e.target.value;
+      //     const fieldName = params.field;
+      //     const data = {
+      //       id: params.id as string,
+      //       data: { [fieldName]: value },
+      //     };
+      //     dispatchEditMeasurement(data);
+      //   };
+
+      //   // Возвращаем стандартный TextField для редактирования
+      //   return (
+      //     <input
+      //       autoFocus
+      //       defaultValue={params.value}
+      //       onBlur={handleChange}
+      //     />
+      //   );
+      // },
       renderCell: (param) => {
         const currentRow: Measurement = param.row;
         if (
@@ -147,6 +171,7 @@ export const Table = ({
           return <span>{param.row.measurement}</span>;
         }
       },
+      valueSetter: editValue,
       editable: true,
     },
     {
@@ -203,7 +228,7 @@ export const Table = ({
     dispatchFilteredMeasurements(createdAt);
   };
 
-  const handleCellEditStop = (params: GridCellParams) => {
+  const handleCellEditStop = (params: GridCellParams, event: MuiEvent) => {
     console.log(params.value);
     // console.log(params.id);
     // const fieldName = params.field;

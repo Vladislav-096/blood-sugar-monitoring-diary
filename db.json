@@ -5,7 +5,7 @@
       "createdAt": 1727260055,
       "updatedAt": 1727260055,
       "typeOfMeasurement": "4",
-      "measurement": 11
+      "measurement": 111
     },
     {
       "id": "2",
@@ -26,7 +26,7 @@
       "createdAt": 1727364455,
       "updatedAt": 1727364455,
       "typeOfMeasurement": "2",
-      "measurement": 110,
+      "measurement": 111,
       "afterMealMeasurement": {
         "meal": [
           {

@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import {
   addMeasurement,
   editMeasurement,
@@ -149,3 +153,8 @@ export const measurementsSlice = createSlice({
     });
   },
 });
+
+// export const getMemoizedFilteredMeasurements = createSelector(
+//   (state: RootState) => state.oneDayMeasurements.oneDayMeasurements,
+//   (filteredMeasurements) => filteredMeasurements
+// );
