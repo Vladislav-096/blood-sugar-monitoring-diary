@@ -5,6 +5,20 @@ export interface Meal {
   dish: string;
 }
 
+export interface AfterMealMeasurement {
+  meal: Meal[];
+}
+
+export type FieldName =
+  | "typeOfMeasurement"
+  | "measurement"
+  | "createdAt"
+  | "updatedAt"
+  | "afterMealMeasurement"
+  | `afterMealMeasurement.meal.${number}`
+  | `afterMealMeasurement.meal.${number}.portion`
+  | `afterMealMeasurement.meal.${number}.dish`;
+
 type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
 
 export interface MeasurementData {

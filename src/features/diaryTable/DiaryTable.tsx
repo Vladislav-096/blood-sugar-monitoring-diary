@@ -44,7 +44,6 @@ export const DiaryTable = () => {
     (state) => state.typesOfMeasurements.typesOfMeasurements
   );
 
-  console.log("measurements", measurements);
 
   return (
     <>

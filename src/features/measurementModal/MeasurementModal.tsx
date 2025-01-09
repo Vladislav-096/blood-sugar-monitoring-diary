@@ -16,15 +16,16 @@ import { useEffect, useState } from "react";
 import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 import { v7 as uuidv4 } from "uuid";
 import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
-import { Meal, MeasurementData } from "../../types/types";
+import {
+  AfterMealMeasurement,
+  FieldName,
+  MeasurementData,
+} from "../../types/types";
+import { modalContentStyles } from "../../utils/modalContentStyles";
 
 interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
-}
-
-interface AfterMealMeasurement {
-  meal: Meal[];
 }
 
 interface FormTypes {
@@ -35,31 +36,8 @@ interface FormTypes {
   updatedAt: string;
 }
 
-
-type FieldName =
-  | "typeOfMeasurement"
-  | "measurement"
-  | "createdAt"
-  | "updatedAt"
-  | "afterMealMeasurement"
-  | `afterMealMeasurement.meal.${number}`
-  | `afterMealMeasurement.meal.${number}.portion`
-  | `afterMealMeasurement.meal.${number}.dish`;
-
 const testRules = {
   required: "Надо заполнить",
-};
-
-const modalContentStyles = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 444,
-  bgcolor: "#151b23",
-  padding: "15px",
-  borderRadius: "5px",
-  textAlign: "center",
 };
 
 export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {

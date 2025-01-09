@@ -5,6 +5,7 @@ import {
 } from "../../app/measurements";
 import {
   DataGrid,
+  GridCallbackDetails,
   GridCellParams,
   GridColDef,
   GridRenderCellParams,
@@ -22,6 +23,7 @@ import AnnouncementIcon from "@mui/icons-material/Announcement";
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { EditMeasurement, PartialMeasurementData } from "../../types/types";
+import { EditAfterMealMeasurementModal } from "../EditAfterMealMeasurementModal/EditAfterMealMeasurementModal";
 
 interface Table {
   rows: Measurement[];
@@ -38,10 +40,22 @@ export const Table = ({
   dispatchRemoveMeasurement,
   dispatchEditMeasurement,
 }: Table) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [openRemoveConfirmModal, setOpenRemoveConfirmModal] =
+    useState<boolean>(false);
+  const handleOpenRemoveConfirmModal = () => setOpenRemoveConfirmModal(true);
+  const handleCloseRemoveConfirmCloseModal = () =>
+    setOpenRemoveConfirmModal(false);
+  const [
+    openEditAfterMealMeasurementModal,
+    setOpenEditAfterMealMeasurementModal,
+  ] = useState<boolean>(false);
+  const handleOpenEditAfterMealMeasurementModal = () =>
+    setOpenEditAfterMealMeasurementModal(true);
+  const handleCloseEditAfterMealMeasurementModal = () =>
+    setOpenEditAfterMealMeasurementModal(false);
   const [idToRemove, setIdToRemove] = useState<string>("");
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [editAfterMealMeasurementId, setEditAfterMealMeasurementId] =
+    useState<string>("");
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -168,9 +182,9 @@ export const Table = ({
               </HtmlTooltip>
             </>
           );
-        } else {
-          return <span>{param.row.measurement}</span>;
         }
+
+        return <span>{param.row.measurement}</span>;
       },
       // valueSetter: editValue,
       editable: true,
@@ -200,7 +214,7 @@ export const Table = ({
               sx={{ textTransform: "none", color: "red" }}
               onClick={() => {
                 setIdToRemove(currentRow.id);
-                handleOpen();
+                handleOpenRemoveConfirmModal();
               }}
             >
               Remove
@@ -240,13 +254,13 @@ export const Table = ({
     // dispatchEditMeasurement(data);
   };
 
-  const useMutation = () => {
+  const useEditMutation = () => {
     return React.useCallback((data: EditMeasurement) => {
       dispatchEditMeasurement(data);
     }, []);
   };
 
-  const mutateRow = useMutation();
+  const mutateRow = useEditMutation();
 
   const processRowUpdate = React.useCallback(
     async (newRow: GridRowModel) => {
@@ -269,6 +283,20 @@ export const Table = ({
     console.log("error", error);
   }, []);
 
+  const handleCellDoubleClick = (
+    params: GridCellParams,
+    event: MuiEvent,
+    details: GridCallbackDetails
+  ) => {
+    console.log(params);
+
+    if (params.field === "measurement" && params.row.afterMealMeasurement) {
+      setEditAfterMealMeasurementId(params.row.id);
+      handleOpenEditAfterMealMeasurementModal();
+      params.isEditable = false;
+    }
+  };
+
   return (
     <>
       <Paper sx={{ height: "83.5vh", width: "100%" }}>
@@ -290,14 +318,23 @@ export const Table = ({
           // onCellEditStop={handleCellEditStop}
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
+          onCellDoubleClick={handleCellDoubleClick}
         />
       </Paper>
       <ConfirmModal
-        open={open}
+        open={openRemoveConfirmModal}
         idToRemove={idToRemove}
-        handleClose={handleClose}
-        dispatchRemoveMeasurement={dispatchRemoveMeasurement}
+        handleClose={handleCloseRemoveConfirmCloseModal}
+        confirmFn={dispatchRemoveMeasurement}
         title={"Are you sure you'd like to remove the measurement?"}
+      />
+      <EditAfterMealMeasurementModal
+        openEditAfterMealMeasurementModal={openEditAfterMealMeasurementModal}
+        handleCloseEditAfterMealMeasurementModal={
+          handleCloseEditAfterMealMeasurementModal
+        }
+        editAfterMealMeasurementId={editAfterMealMeasurementId}
+        dispatchEditMeasurement={dispatchEditMeasurement}
       />
     </>
   );

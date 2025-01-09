@@ -7,32 +7,21 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { modalContentStyles } from "../../utils/modalContentStyles";
 
 interface ConfirmModal {
   open: boolean;
   idToRemove: string;
   handleClose: () => void;
-  dispatchRemoveMeasurement: (id: string) => void;
+  confirmFn: (id: string) => void;
   title: string;
 }
-
-const modalContentStyles = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 300,
-  bgcolor: "#151b23",
-  padding: "15px",
-  borderRadius: "5px",
-  textAlign: "center",
-};
 
 export const ConfirmModal = ({
   open,
   idToRemove,
   handleClose,
-  dispatchRemoveMeasurement,
+  confirmFn,
   title,
 }: ConfirmModal) => {
   return (
@@ -62,7 +51,7 @@ export const ConfirmModal = ({
           <Stack spacing={2} direction="row">
             <Button
               onClick={() => {
-                dispatchRemoveMeasurement(idToRemove);
+                confirmFn(idToRemove);
                 handleClose();
               }}
               variant="contained"
