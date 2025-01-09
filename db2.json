@@ -1,0 +1,33 @@
+{
+  "measurements": [
+    {
+      "id": "1",
+      "createdAt": 1727260055,
+      "updatedAt": 1727260055,
+      "typeOfMeasurement": "4",
+      "measurement": 1133
+    }
+  ],
+  "typesOfMeasuremens": [
+    {
+      "id": "1",
+      "name": "Before meal"
+    },
+    {
+      "id": "2",
+      "name": "After meal"
+    },
+    {
+      "id": "3",
+      "name": "Just Measurement"
+    },
+    {
+      "id": "4",
+      "name": "Overnight"
+    },
+    {
+      "id": "5",
+      "name": "Bed time"
+    }
+  ]
+}

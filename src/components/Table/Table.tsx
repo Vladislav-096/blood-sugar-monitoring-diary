@@ -9,6 +9,7 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridRenderEditCellParams,
+  GridRowModel,
   GridValueSetter,
   MuiBaseEvent,
   MuiEvent,
@@ -18,9 +19,9 @@ import { Button, Paper, TextField, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useCallback, useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { EditMeasurement } from "../../types/types";
+import { EditMeasurement, PartialMeasurementData } from "../../types/types";
 
 interface Table {
   rows: Measurement[];
@@ -62,19 +63,19 @@ export const Table = ({
     );
   };
 
-  type Row = (typeof rows)[number];
+  // type Row = (typeof rows)[number];
 
-  const editValue: GridValueSetter<Row> = (value, row) => {
-    Promise.resolve().then(() => {
-      const data = {
-        id: row.id as string,
-        data: { measurement: Number(value) },
-      };
-      dispatchEditMeasurement(data);
-    });
+  // const editValue: GridValueSetter<Row> = (value, row) => {
+  //   Promise.resolve().then(() => {
+  //     const data = {
+  //       id: row.id as string,valueSetter
+  //       data: { measurement: Number(value) },
+  //     };
+  //     dispatchEditMeasurement(data);
+  //   });
 
-    return { ...row, measurement: Number(value) };
-  };
+  //   return { ...row, measurement: Number(value) };
+  // };
 
   const columns: GridColDef[] = [
     {
@@ -171,7 +172,7 @@ export const Table = ({
           return <span>{param.row.measurement}</span>;
         }
       },
-      valueSetter: editValue,
+      // valueSetter: editValue,
       editable: true,
     },
     {
@@ -239,6 +240,35 @@ export const Table = ({
     // dispatchEditMeasurement(data);
   };
 
+  const useMutation = () => {
+    return React.useCallback((data: EditMeasurement) => {
+      dispatchEditMeasurement(data);
+    }, []);
+  };
+
+  const mutateRow = useMutation();
+
+  const processRowUpdate = React.useCallback(
+    async (newRow: GridRowModel) => {
+      const row = { ...newRow, measurement: Number(newRow.measurement) };
+
+      const data = {
+        id: newRow.id as string,
+        data: row,
+      };
+
+      mutateRow(data);
+
+      return newRow;
+    },
+
+    [mutateRow]
+  );
+
+  const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+    console.log("error", error);
+  }, []);
+
   return (
     <>
       <Paper sx={{ height: "83.5vh", width: "100%" }}>
@@ -258,6 +288,8 @@ export const Table = ({
           disableRowSelectionOnClick
           onPaginationModelChange={handlePaginationModelChange}
           // onCellEditStop={handleCellEditStop}
+          processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={handleProcessRowUpdateError}
         />
       </Paper>
       <ConfirmModal
@@ -274,3 +306,4 @@ export const Table = ({
 // onCellEditStop
 // onCellEditStart
 // onCellDoubleClick
+// processRowUpdate
