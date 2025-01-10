@@ -9,21 +9,18 @@ import {
   GridCellParams,
   GridColDef,
   GridRenderCellParams,
-  GridRenderEditCellParams,
   GridRowModel,
-  GridValueSetter,
-  MuiBaseEvent,
   MuiEvent,
 } from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
-import { Button, Paper, TextField, Tooltip } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
-import React, { ChangeEvent, useCallback, useState } from "react";
+import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { EditMeasurement, PartialMeasurementData } from "../../types/types";
-import { EditAfterMealMeasurementModal } from "../EditAfterMealMeasurementModal/EditAfterMealMeasurementModal";
+import { EditMeasurement, ModifiedMeal } from "../../types/types";
+import { MeasurementModal } from "../../features/measurementModal/MeasurementModal";
 
 interface Table {
   rows: Measurement[];
@@ -54,8 +51,14 @@ export const Table = ({
   const handleCloseEditAfterMealMeasurementModal = () =>
     setOpenEditAfterMealMeasurementModal(false);
   const [idToRemove, setIdToRemove] = useState<string>("");
-  const [editAfterMealMeasurementId, setEditAfterMealMeasurementId] =
+  const [afterMealMeasurementId, setAfterMealMeasurementId] =
     useState<string>("");
+  const [afterMealMeasurementMeasurement, setAfterMealMeasurementMeasurement] =
+    useState<number | null>(null);
+  const [afterMealMeasurementMeals, setAfterMealMeasurementMeals] = useState<
+    ModifiedMeal[]
+  >([]);
+  console.log("afterMealMeasurementMeals", afterMealMeasurementMeals);
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -291,10 +294,18 @@ export const Table = ({
     console.log(params);
 
     if (params.field === "measurement" && params.row.afterMealMeasurement) {
-      setEditAfterMealMeasurementId(params.row.id);
+      setAfterMealMeasurementId(params.row.id);
+      setAfterMealMeasurementMeasurement(params.row.measurement);
+      setAfterMealMeasurementMeals(params.row.afterMealMeasurement.meal);
       handleOpenEditAfterMealMeasurementModal();
       params.isEditable = false;
     }
+  };
+
+  const afterMealMeasurementData = {
+    afterMealMeasurementId,
+    afterMealMeasurementMeasurement,
+    afterMealMeasurementMeals,
   };
 
   return (
@@ -328,13 +339,10 @@ export const Table = ({
         confirmFn={dispatchRemoveMeasurement}
         title={"Are you sure you'd like to remove the measurement?"}
       />
-      <EditAfterMealMeasurementModal
-        openEditAfterMealMeasurementModal={openEditAfterMealMeasurementModal}
-        handleCloseEditAfterMealMeasurementModal={
-          handleCloseEditAfterMealMeasurementModal
-        }
-        editAfterMealMeasurementId={editAfterMealMeasurementId}
-        dispatchEditMeasurement={dispatchEditMeasurement}
+      <MeasurementModal
+        open={openEditAfterMealMeasurementModal}
+        handleClose={handleCloseEditAfterMealMeasurementModal}
+        afterMealMeasurementData={afterMealMeasurementData}
       />
     </>
   );

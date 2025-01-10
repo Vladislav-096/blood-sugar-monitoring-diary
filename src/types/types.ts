@@ -19,7 +19,7 @@ export type FieldName =
   | `afterMealMeasurement.meal.${number}.portion`
   | `afterMealMeasurement.meal.${number}.dish`;
 
-type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
+export type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
 
 export interface MeasurementData {
   id: string;

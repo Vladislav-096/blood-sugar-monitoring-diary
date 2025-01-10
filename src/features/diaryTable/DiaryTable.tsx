@@ -44,7 +44,6 @@ export const DiaryTable = () => {
     (state) => state.typesOfMeasurements.typesOfMeasurements
   );
 
-
   return (
     <>
       <Table
@@ -52,7 +51,7 @@ export const DiaryTable = () => {
         typesOfMeasurement={typesOfMeasurement}
         dispatchFilteredMeasurements={dispatchFilteredMeasurements}
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}
-        dispatchEditMeasurement = {dispatchEditMeasurement}
+        dispatchEditMeasurement={dispatchEditMeasurement}
       />
       <Button onClick={handleOpen} variant="contained">
         open modal

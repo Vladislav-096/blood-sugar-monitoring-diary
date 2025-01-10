@@ -15,17 +15,28 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
 import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 import { v7 as uuidv4 } from "uuid";
-import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
+import {
+  fetchAddMeasurement,
+  fetchEditMeasurement,
+} from "../shared/slices/measurementsSlice";
 import {
   AfterMealMeasurement,
   FieldName,
   MeasurementData,
+  ModifiedMeal,
 } from "../../types/types";
 import { modalContentStyles } from "../../utils/modalContentStyles";
+
+interface afterMealMeasurementData {
+  afterMealMeasurementId: string;
+  afterMealMeasurementMeasurement: number | null;
+  afterMealMeasurementMeals: ModifiedMeal[];
+}
 
 interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
+  afterMealMeasurementData?: afterMealMeasurementData;
 }
 
 interface FormTypes {
@@ -36,19 +47,36 @@ interface FormTypes {
   updatedAt: string;
 }
 
+interface afterMealFields {
+  id: string;
+  dish: string;
+  portion: string;
+}
+
 const testRules = {
   required: "Надо заполнить",
 };
 
-export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
+export const MeasurementModal = ({
+  open,
+  handleClose,
+  afterMealMeasurementData,
+}: MeasurementModal) => {
   const dispatch = useAppDispatch();
   const [measurementType, setMeasurementType] = useState<string>("");
-
   const typeOfMeasurementsState = useAppSelector(
     (state) => state.typesOfMeasurements
   );
-
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
+  const [afterMealFields, setAfterMealFields] = useState<afterMealFields[]>([]);
+  console.log("afterMealFields", afterMealFields);
+
+  // console.log(
+  //   "afterMealMeasurementData",
+  //   afterMealMeasurementData?.afterMealMeasurementMeals
+  // );
+
+  console.log("test", afterMealMeasurementData?.afterMealMeasurementMeals);
 
   const handleTypeOfMeasurementChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -113,41 +141,87 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const resetValues = () => {
     reset();
     clearErrors();
-    setMeasurementType("");
     remove();
   };
 
   const onSubmit = (formData: FormTypes) => {
-    const measurementId = uuidv4();
-    const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
-    const measurement = Number(formData.measurement);
-    const typeOfMeasurement = typesOptions.filter(
-      (item) => item.name === formData.typeOfMeasurement
-    );
+    if (!afterMealMeasurementData?.afterMealMeasurementId) {
+      const measurementId = uuidv4();
+      const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
+      const measurement = Number(formData.measurement);
+      const typeOfMeasurement = typesOptions.filter(
+        (item) => item.name === formData.typeOfMeasurement
+      );
 
-    let data: MeasurementData = {
-      id: measurementId,
-      createdAt: unixTimestampDate,
-      updatedAt: unixTimestampDate,
-      typeOfMeasurement: typeOfMeasurement[0].id,
-      measurement: measurement,
-    };
+      let data: MeasurementData = {
+        id: measurementId,
+        createdAt: unixTimestampDate,
+        updatedAt: unixTimestampDate,
+        typeOfMeasurement: typeOfMeasurement[0].id,
+        measurement: measurement,
+      };
 
-    if (formData.afterMealMeasurement.meal.length > 0) {
-      data = {
-        ...data,
-        afterMealMeasurement: {
-          meal: formData.afterMealMeasurement.meal.map((item) => {
-            return { portion: Number(item.portion), dish: item.dish };
+      if (formData.afterMealMeasurement.meal.length > 0) {
+        data = {
+          ...data,
+          afterMealMeasurement: {
+            meal: formData.afterMealMeasurement.meal.map((item) => {
+              return { portion: Number(item.portion), dish: item.dish };
+            }),
+          },
+        };
+      }
+
+      // console.log("data", data);
+      dispatch(fetchAddMeasurement(data));
+      setMeasurementType("");
+    } else {
+      const data = {
+        id: afterMealMeasurementData.afterMealMeasurementId,
+        data: {
+          measurement: Number(formData.measurement),
+          ...(formData.afterMealMeasurement && {
+            afterMealMeasurement: {
+              meal: formData.afterMealMeasurement.meal.map((item) => {
+                return { portion: Number(item.portion), dish: item.dish };
+              }),
+            },
           }),
         },
       };
-    }
 
-    // console.log("data", data);
-    dispatch(fetchAddMeasurement(data));
+      console.log(data);
+      dispatch(fetchEditMeasurement(data));
+    }
     resetValues();
   };
+
+  useEffect(() => {
+    console.log("here");
+    if (afterMealMeasurementData) {
+      setValue(
+        "measurement",
+        afterMealMeasurementData?.afterMealMeasurementMeasurement?.toString() as FieldName
+      );
+
+      const afterMealfieldsdata =
+        afterMealMeasurementData?.afterMealMeasurementMeals.map(
+          (item, index) => {
+            return {
+              id: index.toString(),
+              portion: item.portion.toString(),
+              dish: item.dish,
+            };
+          }
+        );
+
+      // console.log("afterMealfieldsdata", afterMealfieldsdata);
+
+      setAfterMealFields(afterMealfieldsdata);
+    } else {
+      setAfterMealFields(fields);
+    }
+  }, [afterMealMeasurementData, fields, setValue]);
 
   useEffect(() => {
     dispatch(recieveTypesOfMeasurements());
@@ -188,10 +262,13 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                     select
                     error={errors.typeOfMeasurement ? true : false}
                     onChange={handleTypeOfMeasurementChange}
-                    value={measurementType}
+                    value={
+                      afterMealMeasurementData ? "After meal" : measurementType
+                    }
                     helperText={errors.typeOfMeasurement?.message}
                     label="Type of measurement"
                     variant="outlined"
+                    disabled={afterMealMeasurementData ? true : false}
                   >
                     {typesOptions.map((option) => (
                       <MenuItem
@@ -207,9 +284,9 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
               />
             </FormControl>
 
-            {measurementType === "After meal" && (
+            {(measurementType === "After meal" || afterMealMeasurementData) && (
               <Box>
-                {fields.map((item, index) => (
+                {afterMealFields.map((item, index) => (
                   <Box key={item.id}>
                     <FormControl fullWidth>
                       <Controller
