@@ -15,7 +15,7 @@ import {
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
 import { Button, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
@@ -28,6 +28,12 @@ interface Table {
   dispatchFilteredMeasurements: (data: number) => void;
   dispatchRemoveMeasurement: (id: string) => void;
   dispatchEditMeasurement: (data: EditMeasurement) => void;
+}
+
+interface afterMealMeasurementData {
+  afterMealMeasurementId: string;
+  afterMealMeasurementMeasurement: number | null;
+  afterMealMeasurementMeals: ModifiedMeal[];
 }
 
 export const Table = ({
@@ -51,14 +57,20 @@ export const Table = ({
   const handleCloseEditAfterMealMeasurementModal = () =>
     setOpenEditAfterMealMeasurementModal(false);
   const [idToRemove, setIdToRemove] = useState<string>("");
-  const [afterMealMeasurementId, setAfterMealMeasurementId] =
-    useState<string>("");
-  const [afterMealMeasurementMeasurement, setAfterMealMeasurementMeasurement] =
-    useState<number | null>(null);
-  const [afterMealMeasurementMeals, setAfterMealMeasurementMeals] = useState<
-    ModifiedMeal[]
-  >([]);
-  console.log("afterMealMeasurementMeals", afterMealMeasurementMeals);
+  // const [afterMealMeasurementId, setAfterMealMeasurementId] =
+  //   useState<string>("");
+  // const [afterMealMeasurementMeasurement, setAfterMealMeasurementMeasurement] =
+  //   useState<number | null>(null);
+  // const [afterMealMeasurementMeals, setAfterMealMeasurementMeals] = useState<
+  //   ModifiedMeal[]
+  // >([]);
+
+  const [afterMealMeasurementData, setAfterMealMeasurementData] =
+    useState<afterMealMeasurementData>({
+      afterMealMeasurementId: "",
+      afterMealMeasurementMeasurement: null,
+      afterMealMeasurementMeals: [],
+    });
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -247,7 +259,6 @@ export const Table = ({
   };
 
   const handleCellEditStop = (params: GridCellParams, event: MuiEvent) => {
-    console.log(params.value);
     // console.log(params.id);
     // const fieldName = params.field;
     // const data = {
@@ -291,22 +302,27 @@ export const Table = ({
     event: MuiEvent,
     details: GridCallbackDetails
   ) => {
-    console.log(params);
-
     if (params.field === "measurement" && params.row.afterMealMeasurement) {
-      setAfterMealMeasurementId(params.row.id);
-      setAfterMealMeasurementMeasurement(params.row.measurement);
-      setAfterMealMeasurementMeals(params.row.afterMealMeasurement.meal);
+      const data = {
+        afterMealMeasurementId: params.row.id,
+        afterMealMeasurementMeasurement: params.row.measurement,
+        afterMealMeasurementMeals: params.row.afterMealMeasurement.meal,
+      };
+
+      setAfterMealMeasurementData(data);
+      // setAfterMealMeasurementId(params.row.id);
+      // setAfterMealMeasurementMeasurement(params.row.measurement);
+      // setAfterMealMeasurementMeals(params.row.afterMealMeasurement.meal);
       handleOpenEditAfterMealMeasurementModal();
       params.isEditable = false;
     }
   };
 
-  const afterMealMeasurementData = {
-    afterMealMeasurementId,
-    afterMealMeasurementMeasurement,
-    afterMealMeasurementMeals,
-  };
+  // const afterMealMeasurementData = {
+  //   afterMealMeasurementId,
+  //   afterMealMeasurementMeasurement,
+  //   afterMealMeasurementMeals,
+  // };
 
   return (
     <>

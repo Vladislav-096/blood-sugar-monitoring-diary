@@ -47,11 +47,11 @@ interface FormTypes {
   updatedAt: string;
 }
 
-interface afterMealFields {
-  id: string;
-  dish: string;
-  portion: string;
-}
+// interface afterMealFields {
+//   id: string;
+//   dish: string;
+//   portion: string;
+// }
 
 const testRules = {
   required: "Надо заполнить",
@@ -68,15 +68,8 @@ export const MeasurementModal = ({
     (state) => state.typesOfMeasurements
   );
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
-  const [afterMealFields, setAfterMealFields] = useState<afterMealFields[]>([]);
-  console.log("afterMealFields", afterMealFields);
-
-  // console.log(
-  //   "afterMealMeasurementData",
-  //   afterMealMeasurementData?.afterMealMeasurementMeals
-  // );
-
-  console.log("test", afterMealMeasurementData?.afterMealMeasurementMeals);
+  // const [afterMealFields, setAfterMealFields] = useState<afterMealFields[]>([]);
+  console.log("afterMealMeasurementData", afterMealMeasurementData);
 
   const handleTypeOfMeasurementChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -172,7 +165,6 @@ export const MeasurementModal = ({
         };
       }
 
-      // console.log("data", data);
       dispatch(fetchAddMeasurement(data));
       setMeasurementType("");
     } else {
@@ -190,38 +182,26 @@ export const MeasurementModal = ({
         },
       };
 
-      console.log(data);
       dispatch(fetchEditMeasurement(data));
     }
     resetValues();
   };
 
   useEffect(() => {
-    console.log("here");
     if (afterMealMeasurementData) {
       setValue(
         "measurement",
         afterMealMeasurementData?.afterMealMeasurementMeasurement?.toString() as FieldName
       );
 
-      const afterMealfieldsdata =
-        afterMealMeasurementData?.afterMealMeasurementMeals.map(
-          (item, index) => {
-            return {
-              id: index.toString(),
-              portion: item.portion.toString(),
-              dish: item.dish,
-            };
-          }
-        );
-
-      // console.log("afterMealfieldsdata", afterMealfieldsdata);
-
-      setAfterMealFields(afterMealfieldsdata);
-    } else {
-      setAfterMealFields(fields);
+      afterMealMeasurementData?.afterMealMeasurementMeals.forEach((item) => {
+        append({
+          portion: item.portion.toString(),
+          dish: item.dish,
+        });
+      });
     }
-  }, [afterMealMeasurementData, fields, setValue]);
+  }, [afterMealMeasurementData, append, setValue]);
 
   useEffect(() => {
     dispatch(recieveTypesOfMeasurements());
@@ -230,7 +210,17 @@ export const MeasurementModal = ({
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        setMeasurementType("");
+        resetValues();
+        handleClose();
+        afterMealMeasurementData = {
+          afterMealMeasurementId: "",
+          afterMealMeasurementMeasurement: null,
+          afterMealMeasurementMeals: [],
+        };
+        console.log("here");
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       closeAfterTransition
@@ -286,7 +276,7 @@ export const MeasurementModal = ({
 
             {(measurementType === "After meal" || afterMealMeasurementData) && (
               <Box>
-                {afterMealFields.map((item, index) => (
+                {fields.map((item, index) => (
                   <Box key={item.id}>
                     <FormControl fullWidth>
                       <Controller
@@ -315,6 +305,7 @@ export const MeasurementModal = ({
                       <Controller
                         name={`afterMealMeasurement.meal.${index}.portion`}
                         control={control}
+                        rules={testRules}
                         render={({ field }) => (
                           <TextField
                             {...field}
