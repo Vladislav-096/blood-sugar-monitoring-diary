@@ -13,7 +13,6 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styles from "./measurementModal.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
-import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 import { v7 as uuidv4 } from "uuid";
 import {
   fetchAddMeasurement,
@@ -29,6 +28,7 @@ import {
   afterMealMeasurementSlice,
   initialState,
 } from "../diaryTable/afterMealMeasurementSlice";
+import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 
 interface MeasurementModal {
   open: boolean;
@@ -68,8 +68,8 @@ MeasurementModal) => {
   // const [afterMealFields, setAfterMealFields] = useState<afterMealFields[]>([]);
   // console.log("afterMealMeasurementData", afterMealMeasurementData);
 
-  const afterMealSeasurement = useAppSelector(
-    (state) => state.afterMealSeasurement.afterMealMeasurement
+  const afterMealMeasurement = useAppSelector(
+    (state) => state.afterMealMeasurement.afterMealMeasurement
   );
 
   const handleTypeOfMeasurementChange = (
@@ -139,7 +139,7 @@ MeasurementModal) => {
   };
 
   const onSubmit = (formData: FormTypes) => {
-    if (afterMealSeasurement.afterMealMeasurementMeals.length === 0) {
+    if (afterMealMeasurement.afterMealMeasurementMeals.length === 0) {
       const measurementId = uuidv4();
       const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
       const measurement = Number(formData.measurement);
@@ -170,7 +170,7 @@ MeasurementModal) => {
       setMeasurementType("");
     } else {
       const data = {
-        id: afterMealSeasurement.afterMealMeasurementId,
+        id: afterMealMeasurement.afterMealMeasurementId,
         data: {
           measurement: Number(formData.measurement),
           ...(formData.afterMealMeasurement && {
@@ -189,32 +189,34 @@ MeasurementModal) => {
   };
 
   useEffect(() => {
-    if (afterMealSeasurement.afterMealMeasurementMeals.length > 0) {
+    if (afterMealMeasurement.afterMealMeasurementMeals.length > 0) {
+      console.log("here");
       setValue(
         "measurement",
-        afterMealSeasurement?.afterMealMeasurementMeasurement?.toString() as FieldName
+        afterMealMeasurement?.afterMealMeasurementMeasurement?.toString() as FieldName
       );
 
-      afterMealSeasurement?.afterMealMeasurementMeals.forEach((item) => {
+      afterMealMeasurement?.afterMealMeasurementMeals.forEach((item) => {
         append({
           portion: item.portion.toString(),
           dish: item.dish,
         });
       });
-    } else {
-      setValue("measurement", ""); // test
     }
-  }, [afterMealSeasurement, append, setValue]);
+    // else {
+    //   resetValues();
+    // }
+  }, [afterMealMeasurement]);
 
-  useEffect(() => {
-    dispatch(recieveTypesOfMeasurements());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(recieveTypesOfMeasurements());
+  // }, [dispatch]);
 
   return (
     <Modal
       open={open}
       onClose={() => {
-        setMeasurementType("");
+        // setMeasurementType("");
         resetValues();
         dispatch(
           afterMealMeasurementSlice.actions.editAfterMealMeasurement(
@@ -256,7 +258,7 @@ MeasurementModal) => {
                     error={errors.typeOfMeasurement ? true : false}
                     onChange={handleTypeOfMeasurementChange}
                     value={
-                      afterMealSeasurement.afterMealMeasurementMeals.length > 0
+                      afterMealMeasurement.afterMealMeasurementMeals.length > 0
                         ? "After meal"
                         : measurementType
                     }
@@ -264,7 +266,7 @@ MeasurementModal) => {
                     label="Type of measurement"
                     variant="outlined"
                     disabled={
-                      afterMealSeasurement.afterMealMeasurementMeals.length > 0
+                      afterMealMeasurement.afterMealMeasurementMeals.length > 0
                         ? true
                         : false
                     }
@@ -284,7 +286,7 @@ MeasurementModal) => {
             </FormControl>
 
             {measurementType === "After meal" ||
-              (afterMealSeasurement.afterMealMeasurementMeals.length > 0 && (
+              (afterMealMeasurement.afterMealMeasurementMeals.length > 0 && (
                 <Box>
                   {fields.map((item, index) => (
                     <Box key={item.id}>

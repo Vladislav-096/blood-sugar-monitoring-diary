@@ -15,6 +15,7 @@ import {
   afterMealMeasurementData,
   afterMealMeasurementSlice,
 } from "./afterMealMeasurementSlice";
+import { recieveTypesOfMeasurements } from "../measurementModal/typesOfMeasurementsSlice";
 
 export const DiaryTable = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -22,10 +23,6 @@ export const DiaryTable = () => {
   const handleClose = () => setOpen(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    dispatch(fetchGetMeasurements());
-  }, [dispatch]);
 
   const dispatchFilteredMeasurements = (data: number) => {
     dispatch(recieveFilteredMeasurements(data));
@@ -51,6 +48,11 @@ export const DiaryTable = () => {
   const dispatchAfterMealMeasurement = (data: afterMealMeasurementData) => {
     dispatch(afterMealMeasurementSlice.actions.editAfterMealMeasurement(data));
   };
+
+  useEffect(() => {
+    dispatch(recieveTypesOfMeasurements());
+    dispatch(fetchGetMeasurements());
+  }, []);
 
   return (
     <>

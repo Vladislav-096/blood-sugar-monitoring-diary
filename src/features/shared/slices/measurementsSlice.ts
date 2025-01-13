@@ -1,8 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   addMeasurement,
   editMeasurement,
@@ -118,7 +114,6 @@ export const measurementsSlice = createSlice({
     builder.addCase(
       fetchRemoveMeasurement.fulfilled,
       (state, action: PayloadAction<MeasurementData>) => {
-        console.log("here");
         state.checkoutRemoveMeasurementState = "READY";
         const newData = state.measurements.filter(
           (item) => item.id !== action.payload.id

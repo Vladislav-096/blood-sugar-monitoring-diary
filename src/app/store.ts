@@ -10,7 +10,7 @@ export const store = configureStore({
     measurements: measurementsSlice.reducer,
     typesOfMeasurements: typesOfMeasurementsSlice.reducer,
     oneDayMeasurements: oneDayMeasurementsSlice.reducer,
-    afterMealSeasurement: afterMealMeasurementSlice.reducer,
+    afterMealMeasurement: afterMealMeasurementSlice.reducer,
   },
 });
 
