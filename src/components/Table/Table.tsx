@@ -19,8 +19,9 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { EditMeasurement, ModifiedMeal } from "../../types/types";
+import { EditMeasurement } from "../../types/types";
 import { MeasurementModal } from "../../features/measurementModal/MeasurementModal";
+import { afterMealMeasurementData } from "../../features/diaryTable/afterMealMeasurementSlice";
 
 interface Table {
   rows: Measurement[];
@@ -28,12 +29,7 @@ interface Table {
   dispatchFilteredMeasurements: (data: number) => void;
   dispatchRemoveMeasurement: (id: string) => void;
   dispatchEditMeasurement: (data: EditMeasurement) => void;
-}
-
-interface afterMealMeasurementData {
-  afterMealMeasurementId: string;
-  afterMealMeasurementMeasurement: number | null;
-  afterMealMeasurementMeals: ModifiedMeal[];
+  dispatchAfterMealMeasurement: (data: afterMealMeasurementData) => void;
 }
 
 export const Table = ({
@@ -42,6 +38,7 @@ export const Table = ({
   dispatchFilteredMeasurements,
   dispatchRemoveMeasurement,
   dispatchEditMeasurement,
+  dispatchAfterMealMeasurement,
 }: Table) => {
   const [openRemoveConfirmModal, setOpenRemoveConfirmModal] =
     useState<boolean>(false);
@@ -65,12 +62,12 @@ export const Table = ({
   //   ModifiedMeal[]
   // >([]);
 
-  const [afterMealMeasurementData, setAfterMealMeasurementData] =
-    useState<afterMealMeasurementData>({
-      afterMealMeasurementId: "",
-      afterMealMeasurementMeasurement: null,
-      afterMealMeasurementMeals: [],
-    });
+  // const [afterMealMeasurementData, setAfterMealMeasurementData] =
+  //   useState<afterMealMeasurementData>({
+  //     afterMealMeasurementId: "",
+  //     afterMealMeasurementMeasurement: null,
+  //     afterMealMeasurementMeals: [],
+  //   });
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -258,15 +255,15 @@ export const Table = ({
     dispatchFilteredMeasurements(createdAt);
   };
 
-  const handleCellEditStop = (params: GridCellParams, event: MuiEvent) => {
-    // console.log(params.id);
-    // const fieldName = params.field;
-    // const data = {
-    //   id: params.id as string,
-    //   data: { [fieldName]: params.value },
-    // };
-    // dispatchEditMeasurement(data);
-  };
+  // const handleCellEditStop = (params: GridCellParams, event: MuiEvent) => {
+  // console.log(params.id);
+  // const fieldName = params.field;
+  // const data = {
+  //   id: params.id as string,
+  //   data: { [fieldName]: params.value },
+  // };
+  // dispatchEditMeasurement(data);
+  // };
 
   const useEditMutation = () => {
     return React.useCallback((data: EditMeasurement) => {
@@ -298,9 +295,9 @@ export const Table = ({
   }, []);
 
   const handleCellDoubleClick = (
-    params: GridCellParams,
-    event: MuiEvent,
-    details: GridCallbackDetails
+    params: GridCellParams
+    // event: MuiEvent,
+    // details: GridCallbackDetails
   ) => {
     if (params.field === "measurement" && params.row.afterMealMeasurement) {
       const data = {
@@ -309,7 +306,9 @@ export const Table = ({
         afterMealMeasurementMeals: params.row.afterMealMeasurement.meal,
       };
 
-      setAfterMealMeasurementData(data);
+      dispatchAfterMealMeasurement(data);
+
+      // setAfterMealMeasurementData(data);
       // setAfterMealMeasurementId(params.row.id);
       // setAfterMealMeasurementMeasurement(params.row.measurement);
       // setAfterMealMeasurementMeals(params.row.afterMealMeasurement.meal);
@@ -317,12 +316,6 @@ export const Table = ({
       params.isEditable = false;
     }
   };
-
-  // const afterMealMeasurementData = {
-  //   afterMealMeasurementId,
-  //   afterMealMeasurementMeasurement,
-  //   afterMealMeasurementMeals,
-  // };
 
   return (
     <>
@@ -358,7 +351,7 @@ export const Table = ({
       <MeasurementModal
         open={openEditAfterMealMeasurementModal}
         handleClose={handleCloseEditAfterMealMeasurementModal}
-        afterMealMeasurementData={afterMealMeasurementData}
+        // afterMealMeasurementData={afterMealMeasurementData}
       />
     </>
   );

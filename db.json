@@ -78,20 +78,6 @@
       "updatedAt": 1735563059,
       "typeOfMeasurement": "1",
       "measurement": 11241
-    },
-    {
-      "id": "019417f4-fe93-74f4-b021-94677767c255",
-      "createdAt": 1735568719,
-      "updatedAt": 1735568719,
-      "typeOfMeasurement": "1",
-      "measurement": 99
-    },
-    {
-      "id": "01945574-342e-7573-8a7d-f9b016ba0fcc",
-      "createdAt": 1736600466,
-      "updatedAt": 1736600466,
-      "typeOfMeasurement": "2",
-      "measurement": 123
     }
   ],
   "typesOfMeasuremens": [

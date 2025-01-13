@@ -11,6 +11,10 @@ import { recieveFilteredMeasurements } from "./oneDayMeasurementsSlice";
 import { useNavigate } from "react-router";
 import { Table } from "../../components/Table/Table";
 import { EditMeasurement } from "../../types/types";
+import {
+  afterMealMeasurementData,
+  afterMealMeasurementSlice,
+} from "./afterMealMeasurementSlice";
 
 export const DiaryTable = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -44,6 +48,10 @@ export const DiaryTable = () => {
     (state) => state.typesOfMeasurements.typesOfMeasurements
   );
 
+  const dispatchAfterMealMeasurement = (data: afterMealMeasurementData) => {
+    dispatch(afterMealMeasurementSlice.actions.editAfterMealMeasurement(data));
+  };
+
   return (
     <>
       <Table
@@ -52,6 +60,7 @@ export const DiaryTable = () => {
         dispatchFilteredMeasurements={dispatchFilteredMeasurements}
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}
         dispatchEditMeasurement={dispatchEditMeasurement}
+        dispatchAfterMealMeasurement={dispatchAfterMealMeasurement}
       />
       <Button onClick={handleOpen} variant="contained">
         open modal

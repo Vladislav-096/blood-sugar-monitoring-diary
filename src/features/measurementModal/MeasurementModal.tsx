@@ -23,20 +23,17 @@ import {
   AfterMealMeasurement,
   FieldName,
   MeasurementData,
-  ModifiedMeal,
 } from "../../types/types";
 import { modalContentStyles } from "../../utils/modalContentStyles";
-
-interface afterMealMeasurementData {
-  afterMealMeasurementId: string;
-  afterMealMeasurementMeasurement: number | null;
-  afterMealMeasurementMeals: ModifiedMeal[];
-}
+import {
+  afterMealMeasurementSlice,
+  initialState,
+} from "../diaryTable/afterMealMeasurementSlice";
 
 interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
-  afterMealMeasurementData?: afterMealMeasurementData;
+  // afterMealMeasurementData?: afterMealMeasurementData;
 }
 
 interface FormTypes {
@@ -60,8 +57,8 @@ const testRules = {
 export const MeasurementModal = ({
   open,
   handleClose,
-  afterMealMeasurementData,
-}: MeasurementModal) => {
+}: // afterMealMeasurementData,
+MeasurementModal) => {
   const dispatch = useAppDispatch();
   const [measurementType, setMeasurementType] = useState<string>("");
   const typeOfMeasurementsState = useAppSelector(
@@ -69,7 +66,11 @@ export const MeasurementModal = ({
   );
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
   // const [afterMealFields, setAfterMealFields] = useState<afterMealFields[]>([]);
-  console.log("afterMealMeasurementData", afterMealMeasurementData);
+  // console.log("afterMealMeasurementData", afterMealMeasurementData);
+
+  const afterMealSeasurement = useAppSelector(
+    (state) => state.afterMealSeasurement.afterMealMeasurement
+  );
 
   const handleTypeOfMeasurementChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -138,7 +139,7 @@ export const MeasurementModal = ({
   };
 
   const onSubmit = (formData: FormTypes) => {
-    if (!afterMealMeasurementData?.afterMealMeasurementId) {
+    if (afterMealSeasurement.afterMealMeasurementMeals.length === 0) {
       const measurementId = uuidv4();
       const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
       const measurement = Number(formData.measurement);
@@ -169,7 +170,7 @@ export const MeasurementModal = ({
       setMeasurementType("");
     } else {
       const data = {
-        id: afterMealMeasurementData.afterMealMeasurementId,
+        id: afterMealSeasurement.afterMealMeasurementId,
         data: {
           measurement: Number(formData.measurement),
           ...(formData.afterMealMeasurement && {
@@ -188,20 +189,22 @@ export const MeasurementModal = ({
   };
 
   useEffect(() => {
-    if (afterMealMeasurementData) {
+    if (afterMealSeasurement.afterMealMeasurementMeals.length > 0) {
       setValue(
         "measurement",
-        afterMealMeasurementData?.afterMealMeasurementMeasurement?.toString() as FieldName
+        afterMealSeasurement?.afterMealMeasurementMeasurement?.toString() as FieldName
       );
 
-      afterMealMeasurementData?.afterMealMeasurementMeals.forEach((item) => {
+      afterMealSeasurement?.afterMealMeasurementMeals.forEach((item) => {
         append({
           portion: item.portion.toString(),
           dish: item.dish,
         });
       });
+    } else {
+      setValue("measurement", ""); // test
     }
-  }, [afterMealMeasurementData, append, setValue]);
+  }, [afterMealSeasurement, append, setValue]);
 
   useEffect(() => {
     dispatch(recieveTypesOfMeasurements());
@@ -213,13 +216,13 @@ export const MeasurementModal = ({
       onClose={() => {
         setMeasurementType("");
         resetValues();
+        dispatch(
+          afterMealMeasurementSlice.actions.editAfterMealMeasurement(
+            initialState.afterMealMeasurement
+          )
+        );
+
         handleClose();
-        afterMealMeasurementData = {
-          afterMealMeasurementId: "",
-          afterMealMeasurementMeasurement: null,
-          afterMealMeasurementMeals: [],
-        };
-        console.log("here");
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -253,12 +256,18 @@ export const MeasurementModal = ({
                     error={errors.typeOfMeasurement ? true : false}
                     onChange={handleTypeOfMeasurementChange}
                     value={
-                      afterMealMeasurementData ? "After meal" : measurementType
+                      afterMealSeasurement.afterMealMeasurementMeals.length > 0
+                        ? "After meal"
+                        : measurementType
                     }
                     helperText={errors.typeOfMeasurement?.message}
                     label="Type of measurement"
                     variant="outlined"
-                    disabled={afterMealMeasurementData ? true : false}
+                    disabled={
+                      afterMealSeasurement.afterMealMeasurementMeals.length > 0
+                        ? true
+                        : false
+                    }
                   >
                     {typesOptions.map((option) => (
                       <MenuItem
@@ -274,76 +283,77 @@ export const MeasurementModal = ({
               />
             </FormControl>
 
-            {(measurementType === "After meal" || afterMealMeasurementData) && (
-              <Box>
-                {fields.map((item, index) => (
-                  <Box key={item.id}>
-                    <FormControl fullWidth>
-                      <Controller
-                        name={`afterMealMeasurement.meal.${index}.dish`}
-                        control={control}
-                        rules={testRules}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            label="Dish"
-                            variant="outlined"
-                            error={
-                              errors.afterMealMeasurement?.meal?.[index]?.dish
-                                ? true
-                                : false
-                            }
-                            helperText={
-                              errors.afterMealMeasurement?.meal?.[index]?.dish
-                                ?.message
-                            }
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    <FormControl fullWidth>
-                      <Controller
-                        name={`afterMealMeasurement.meal.${index}.portion`}
-                        control={control}
-                        rules={testRules}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            onChange={(e) => handlePortionChange(e, index)}
-                            label="Portion (grams)"
-                            variant="outlined"
-                            error={
-                              errors.afterMealMeasurement?.meal?.[index]
-                                ?.portion
-                                ? true
-                                : false
-                            }
-                            helperText={
-                              errors.afterMealMeasurement?.meal?.[index]
-                                ?.portion?.message
-                            }
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => remove(index)}
-                    >
-                      Remove
-                    </Button>
-                  </Box>
-                ))}
+            {measurementType === "After meal" ||
+              (afterMealSeasurement.afterMealMeasurementMeals.length > 0 && (
+                <Box>
+                  {fields.map((item, index) => (
+                    <Box key={item.id}>
+                      <FormControl fullWidth>
+                        <Controller
+                          name={`afterMealMeasurement.meal.${index}.dish`}
+                          control={control}
+                          rules={testRules}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Dish"
+                              variant="outlined"
+                              error={
+                                errors.afterMealMeasurement?.meal?.[index]?.dish
+                                  ? true
+                                  : false
+                              }
+                              helperText={
+                                errors.afterMealMeasurement?.meal?.[index]?.dish
+                                  ?.message
+                              }
+                            />
+                          )}
+                        />
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <Controller
+                          name={`afterMealMeasurement.meal.${index}.portion`}
+                          control={control}
+                          rules={testRules}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              onChange={(e) => handlePortionChange(e, index)}
+                              label="Portion (grams)"
+                              variant="outlined"
+                              error={
+                                errors.afterMealMeasurement?.meal?.[index]
+                                  ?.portion
+                                  ? true
+                                  : false
+                              }
+                              helperText={
+                                errors.afterMealMeasurement?.meal?.[index]
+                                  ?.portion?.message
+                              }
+                            />
+                          )}
+                        />
+                      </FormControl>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={() => remove(index)}
+                      >
+                        Remove
+                      </Button>
+                    </Box>
+                  ))}
 
-                <Button
-                  variant="contained"
-                  onClick={() => append({ dish: "", portion: "" })}
-                >
-                  Add Meal
-                </Button>
-              </Box>
-            )}
+                  <Button
+                    variant="contained"
+                    onClick={() => append({ dish: "", portion: "" })}
+                  >
+                    Add Meal
+                  </Button>
+                </Box>
+              ))}
 
             <FormControl fullWidth>
               <Controller
