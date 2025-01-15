@@ -349,6 +349,7 @@ export const Table = ({
         title={"Are you sure you'd like to remove the measurement?"}
       />
       <MeasurementModal
+        title={"table"}
         open={openEditAfterMealMeasurementModal}
         handleClose={handleCloseEditAfterMealMeasurementModal}
         // afterMealMeasurementData={afterMealMeasurementData}

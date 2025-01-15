@@ -31,6 +31,7 @@ import {
 import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 
 interface MeasurementModal {
+  title: string;
   open: boolean;
   handleClose: () => void;
   // afterMealMeasurementData?: afterMealMeasurementData;
@@ -57,10 +58,12 @@ const testRules = {
 export const MeasurementModal = ({
   open,
   handleClose,
+  title,
 }: // afterMealMeasurementData,
 MeasurementModal) => {
   const dispatch = useAppDispatch();
   const [measurementType, setMeasurementType] = useState<string>("");
+  const [measurement, setMeasurement] = useState<string>("");
   const typeOfMeasurementsState = useAppSelector(
     (state) => state.typesOfMeasurements
   );
@@ -71,6 +74,8 @@ MeasurementModal) => {
   const afterMealMeasurement = useAppSelector(
     (state) => state.afterMealMeasurement.afterMealMeasurement
   );
+
+  console.log("component", measurement);
 
   const handleTypeOfMeasurementChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -113,6 +118,7 @@ MeasurementModal) => {
     const pettern = /[^0-9]/g;
     const numericValue = value.replace(pettern, "");
 
+    setMeasurement(value);
     setValue(fieldName, numericValue);
     trigger(fieldName);
   };
@@ -133,7 +139,10 @@ MeasurementModal) => {
   });
 
   const resetValues = () => {
+    console.log("resetValues");
     reset();
+    setValue("measurement", "");
+    setMeasurement("");
     clearErrors();
     remove();
   };
@@ -188,13 +197,17 @@ MeasurementModal) => {
     resetValues();
   };
 
+  // useLayoutEffect(() => {
+  //   resetValues();
+  // }, []);
+
   useEffect(() => {
     if (afterMealMeasurement.afterMealMeasurementMeals.length > 0) {
-      console.log("here");
-      setValue(
-        "measurement",
-        afterMealMeasurement?.afterMealMeasurementMeasurement?.toString() as FieldName
-      );
+      console.log("useEffect");
+      const measurement =
+        afterMealMeasurement?.afterMealMeasurementMeasurement?.toString() as FieldName;
+      setValue("measurement", measurement);
+      setMeasurement(measurement);
 
       afterMealMeasurement?.afterMealMeasurementMeals.forEach((item) => {
         append({
@@ -203,7 +216,7 @@ MeasurementModal) => {
         });
       });
     }
-    // else {
+    //  else {
     //   resetValues();
     // }
   }, [afterMealMeasurement]);
@@ -217,12 +230,13 @@ MeasurementModal) => {
       open={open}
       onClose={() => {
         // setMeasurementType("");
-        resetValues();
+        console.log("handleClose");
         dispatch(
           afterMealMeasurementSlice.actions.editAfterMealMeasurement(
             initialState.afterMealMeasurement
           )
         );
+        resetValues();
 
         handleClose();
       }}
@@ -362,10 +376,9 @@ MeasurementModal) => {
                 name="measurement"
                 control={control}
                 rules={testRules}
-                render={({ field }) => (
+                render={() => (
                   <TextField
-                    {...field}
-                    value={field.value || ""}
+                    value={measurement}
                     onChange={handleMeasurementChange}
                     label="Measurement"
                     variant="outlined"

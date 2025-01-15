@@ -67,7 +67,11 @@ export const DiaryTable = () => {
       <Button onClick={handleOpen} variant="contained">
         open modal
       </Button>
-      <MeasurementModal open={open} handleClose={handleClose} />
+      <MeasurementModal
+        title={"DiaryTable"}
+        open={open}
+        handleClose={handleClose}
+      />
     </>
   );
 };
