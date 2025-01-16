@@ -38,3 +38,11 @@ export interface EditMeasurement {
 }
 
 export type PartialMeasurementData = Partial<MeasurementData>;
+
+export interface FormTypes {
+  typeOfMeasurement: string;
+  afterMealMeasurement: AfterMealMeasurement;
+  measurement: string;
+  createdAt: string;
+  updatedAt: string;
+}

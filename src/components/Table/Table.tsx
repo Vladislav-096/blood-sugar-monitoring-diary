@@ -5,12 +5,10 @@ import {
 } from "../../app/measurements";
 import {
   DataGrid,
-  GridCallbackDetails,
   GridCellParams,
   GridColDef,
   GridRenderCellParams,
   GridRowModel,
-  MuiEvent,
 } from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
 import { Button, Paper } from "@mui/material";
@@ -20,8 +18,8 @@ import AnnouncementIcon from "@mui/icons-material/Announcement";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { EditMeasurement } from "../../types/types";
-import { MeasurementModal } from "../../features/measurementModal/MeasurementModal";
 import { afterMealMeasurementData } from "../../features/diaryTable/afterMealMeasurementSlice";
+import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/editAfterMealMeasurementModa";
 
 interface Table {
   rows: Measurement[];
@@ -348,11 +346,9 @@ export const Table = ({
         confirmFn={dispatchRemoveMeasurement}
         title={"Are you sure you'd like to remove the measurement?"}
       />
-      <MeasurementModal
-        title={"table"}
+      <EditAfterMeasurementModal
         open={openEditAfterMealMeasurementModal}
         handleClose={handleCloseEditAfterMealMeasurementModal}
-        // afterMealMeasurementData={afterMealMeasurementData}
       />
     </>
   );

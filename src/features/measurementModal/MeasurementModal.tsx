@@ -28,10 +28,8 @@ import {
   afterMealMeasurementSlice,
   initialState,
 } from "../diaryTable/afterMealMeasurementSlice";
-import { recieveTypesOfMeasurements } from "./typesOfMeasurementsSlice";
 
 interface MeasurementModal {
-  title: string;
   open: boolean;
   handleClose: () => void;
   // afterMealMeasurementData?: afterMealMeasurementData;
@@ -58,7 +56,6 @@ const testRules = {
 export const MeasurementModal = ({
   open,
   handleClose,
-  title,
 }: // afterMealMeasurementData,
 MeasurementModal) => {
   const dispatch = useAppDispatch();
