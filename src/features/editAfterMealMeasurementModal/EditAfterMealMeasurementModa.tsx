@@ -160,7 +160,7 @@ export const EditAfterMeasurementModal = ({
             component="h2"
             sx={{ fontFamily: '"Play"', color: "#f0f6fc" }}
           >
-            Add new measurement
+            Edit measurement
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl fullWidth>
