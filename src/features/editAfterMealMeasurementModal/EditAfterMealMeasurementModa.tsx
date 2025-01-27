@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { FieldName, FormTypes } from "../../types/types";
+import { useAppDispatch } from "../../app/hooks";
+import { FieldName, FormTypes, MeasurementData } from "../../types/types";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { fetchEditMeasurement } from "../shared/slices/measurementsSlice";
 import {
@@ -13,13 +13,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  afterMealMeasurementSlice,
-  initialState,
-} from "../diaryTable/afterMealMeasurementSlice";
 import { modalContentStyles } from "../../utils/modalContentStyles";
+import styles from "./editAfterMealMeasurementModal.module.scss";
 
 interface EditAfterMeasurementModal {
+  afterMealMeasurement: MeasurementData;
   open: boolean;
   handleClose: () => void;
 }
@@ -31,12 +29,10 @@ const testRules = {
 export const EditAfterMeasurementModal = ({
   open,
   handleClose,
+  afterMealMeasurement,
 }: EditAfterMeasurementModal) => {
   const dispatch = useAppDispatch();
-  const [measurement, setMeasurement] = useState<string>("");
-  const afterMealMeasurement = useAppSelector(
-    (state) => state.afterMealMeasurement.afterMealMeasurement
-  );
+  const [measurement, setMeasurement] = useState<string>(" "); // Чтобы визуально не съебывал лэйбл при открытии модалки. Оставлю?
 
   const handlePortionChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -61,7 +57,10 @@ export const EditAfterMeasurementModal = ({
     const pettern = /[^0-9]/g;
     const numericValue = value.replace(pettern, "");
 
-    setMeasurement(value);
+    if (fieldName === "measurement") {
+      setMeasurement(numericValue);
+    }
+
     setValue(fieldName, numericValue);
     trigger(fieldName);
   };
@@ -84,39 +83,46 @@ export const EditAfterMeasurementModal = ({
   const resetValues = () => {
     reset();
     setValue("measurement", "");
-    setMeasurement("");
+    setMeasurement(" ");
     clearErrors();
     remove();
   };
 
   const onSubmit = (formData: FormTypes) => {
+    console.log("formData1", formData);
     const data = {
-      id: afterMealMeasurement.afterMealMeasurementId,
-      data: {
-        measurement: Number(formData.measurement),
-        ...(formData.afterMealMeasurement && {
-          afterMealMeasurement: {
-            meal: formData.afterMealMeasurement.meal.map((item) => {
-              return { portion: Number(item.portion), dish: item.dish };
-            }),
-          },
-        }),
-      },
+      id: afterMealMeasurement.id,
+      createdAt: afterMealMeasurement.createdAt,
+      updatedAt: afterMealMeasurement.updatedAt,
+      typeOfMeasurement: afterMealMeasurement.typeOfMeasurement,
+      measurement: Number(formData.measurement),
+      ...(formData.afterMealMeasurement.meal.length > 0 && {
+        afterMealMeasurement: {
+          meal: formData.afterMealMeasurement.meal.map((item) => {
+            return { portion: Number(item.portion), dish: item.dish };
+          }),
+        },
+      }),
     };
+
+    console.log("data1", data);
 
     dispatch(fetchEditMeasurement(data));
     resetValues();
+    handleClose();
   };
 
   useEffect(() => {
-    if (afterMealMeasurement.afterMealMeasurementMeals.length > 0) {
+    console.log("here");
+    if (afterMealMeasurement.id) {
+      console.log("also here");
       const measurement =
-        afterMealMeasurement?.afterMealMeasurementMeasurement?.toString() as FieldName;
+        afterMealMeasurement.measurement.toString() as FieldName;
       setValue("measurement", measurement);
       setValue("typeOfMeasurement", "After meal");
       setMeasurement(measurement);
 
-      afterMealMeasurement?.afterMealMeasurementMeals.forEach((item) => {
+      afterMealMeasurement.afterMealMeasurement?.meal.forEach((item) => {
         append({
           portion: item.portion.toString(),
           dish: item.dish,
@@ -132,14 +138,7 @@ export const EditAfterMeasurementModal = ({
     <Modal
       open={open}
       onClose={() => {
-        // setMeasurementType("");
-        dispatch(
-          afterMealMeasurementSlice.actions.editAfterMealMeasurement(
-            initialState.afterMealMeasurement
-          )
-        );
         resetValues();
-
         handleClose();
       }}
       aria-labelledby="modal-modal-title"
@@ -162,7 +161,7 @@ export const EditAfterMeasurementModal = ({
           >
             Edit measurement
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <FormControl fullWidth>
               <Controller
                 name="typeOfMeasurement"

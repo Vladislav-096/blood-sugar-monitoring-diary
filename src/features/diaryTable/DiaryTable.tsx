@@ -10,11 +10,7 @@ import {
 import { recieveFilteredMeasurements } from "./oneDayMeasurementsSlice";
 import { useNavigate } from "react-router";
 import { Table } from "../../components/Table/Table";
-import { EditMeasurement } from "../../types/types";
-import {
-  afterMealMeasurementData,
-  afterMealMeasurementSlice,
-} from "./afterMealMeasurementSlice";
+import {  MeasurementData } from "../../types/types";
 import { recieveTypesOfMeasurements } from "../measurementModal/typesOfMeasurementsSlice";
 
 export const DiaryTable = () => {
@@ -33,7 +29,7 @@ export const DiaryTable = () => {
     dispatch(fetchRemoveMeasurement(id));
   };
 
-  const dispatchEditMeasurement = (data: EditMeasurement) => {
+  const dispatchEditMeasurement = (data: MeasurementData) => {
     dispatch(fetchEditMeasurement(data));
   };
 
@@ -45,9 +41,9 @@ export const DiaryTable = () => {
     (state) => state.typesOfMeasurements.typesOfMeasurements
   );
 
-  const dispatchAfterMealMeasurement = (data: afterMealMeasurementData) => {
-    dispatch(afterMealMeasurementSlice.actions.editAfterMealMeasurement(data));
-  };
+  // const dispatchAfterMealMeasurement = (data: afterMealMeasurementData) => {
+  //   dispatch(afterMealMeasurementSlice.actions.editAfterMealMeasurement(data));
+  // };
 
   useEffect(() => {
     dispatch(recieveTypesOfMeasurements());
@@ -62,7 +58,7 @@ export const DiaryTable = () => {
         dispatchFilteredMeasurements={dispatchFilteredMeasurements}
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}
         dispatchEditMeasurement={dispatchEditMeasurement}
-        dispatchAfterMealMeasurement={dispatchAfterMealMeasurement}
+        // dispatchAfterMealMeasurement={dispatchAfterMealMeasurement}
       />
       <Button onClick={handleOpen} variant="contained">
         open modal

@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { measurementsSlice } from "../features/shared/slices/measurementsSlice";
 import { typesOfMeasurementsSlice } from "../features/measurementModal/typesOfMeasurementsSlice";
 import { oneDayMeasurementsSlice } from "../features/diaryTable/oneDayMeasurementsSlice";
-import { afterMealMeasurementSlice } from "../features/diaryTable/afterMealMeasurementSlice";
+// import { afterMealMeasurementSlice } from "../features/diaryTable/afterMealMeasurementSlice";
 
 // Глобальный стейт приложения
 export const store = configureStore({
@@ -10,7 +10,7 @@ export const store = configureStore({
     measurements: measurementsSlice.reducer,
     typesOfMeasurements: typesOfMeasurementsSlice.reducer,
     oneDayMeasurements: oneDayMeasurementsSlice.reducer,
-    afterMealMeasurement: afterMealMeasurementSlice.reducer,
+    // afterMealMeasurement: afterMealMeasurementSlice.reducer,
   },
 });
 

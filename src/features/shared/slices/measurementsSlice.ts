@@ -6,11 +6,7 @@ import {
   Measurement,
   removeMeasurement,
 } from "../../../app/measurements";
-import {
-  CheckoutState,
-  EditMeasurement,
-  MeasurementData,
-} from "../../../types/types";
+import { CheckoutState, MeasurementData } from "../../../types/types";
 
 interface MeasurementsState {
   measurements: Measurement[];
@@ -64,7 +60,7 @@ export const fetchRemoveMeasurement = createAsyncThunk(
 
 export const fetchEditMeasurement = createAsyncThunk(
   "measurement/fetchEditMeasurement",
-  async (arg: EditMeasurement) => {
+  async (arg: MeasurementData) => {
     const response = await editMeasurement(arg);
     const data = await response.json();
     return data;
@@ -137,6 +133,8 @@ export const measurementsSlice = createSlice({
           (item) => item.id === action.payload.id
         );
 
+        console.log("action.payload", action.payload);
+
         if (index !== -1) {
           state.measurements[index] = action.payload;
         }
@@ -148,8 +146,3 @@ export const measurementsSlice = createSlice({
     });
   },
 });
-
-// export const getMemoizedFilteredMeasurements = createSelector(
-//   (state: RootState) => state.oneDayMeasurements.oneDayMeasurements,
-//   (filteredMeasurements) => filteredMeasurements
-// );

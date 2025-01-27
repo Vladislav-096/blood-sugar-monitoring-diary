@@ -8,25 +8,18 @@
       "measurement": 111
     },
     {
-      "id": "2",
-      "createdAt": 1727303255,
-      "updatedAt": 1727303255,
-      "typeOfMeasurement": "5",
-      "measurement": 666
-    },
-    {
       "id": "3",
       "createdAt": 1727353655,
       "updatedAt": 1727353655,
       "typeOfMeasurement": "4",
-      "measurement": 87
+      "measurement": 123
     },
     {
       "id": "5",
       "createdAt": 1727364455,
       "updatedAt": 1727364455,
       "typeOfMeasurement": "2",
-      "measurement": 222,
+      "measurement": 333,
       "afterMealMeasurement": {
         "meal": [
           {
@@ -37,26 +30,11 @@
       }
     },
     {
-      "id": "51",
-      "createdAt": 1727364455,
-      "updatedAt": 1727364455,
-      "typeOfMeasurement": "2",
-      "measurement": 111,
-      "afterMealMeasurement": {
-        "meal": [
-          {
-            "portion": 222,
-            "dish": "Сельдерей"
-          }
-        ]
-      }
-    },
-    {
       "id": "6",
       "createdAt": 1727368055,
       "updatedAt": 1727368055,
       "typeOfMeasurement": "3",
-      "measurement": 111
+      "measurement": 234
     },
     {
       "id": "7",
@@ -73,11 +51,11 @@
       "measurement": 33
     },
     {
-      "id": "0194179e-a151-75e9-8d62-358c9dfa3825",
-      "createdAt": 1735563059,
-      "updatedAt": 1735563059,
-      "typeOfMeasurement": "1",
-      "measurement": 11241
+      "id": "0194a81a-5460-73ca-a969-0c3af845e16c",
+      "createdAt": 1737987085,
+      "updatedAt": 1737987085,
+      "typeOfMeasurement": "2",
+      "measurement": 444
     }
   ],
   "typesOfMeasuremens": [

@@ -1,10 +1,7 @@
 import { z } from "zod";
 import { API_URL } from "../constants/constants";
 import { validateResponse } from "./validationResponse";
-import {
-  EditMeasurement,
-  MeasurementData,
-} from "../types/types";
+import { MeasurementData } from "../types/types";
 
 const MealSchema = z.object({
   portion: z.number(),
@@ -97,9 +94,9 @@ export const addMeasurement = async (data: MeasurementData) => {
     });
 };
 
-export const editMeasurement = async ({ id, data }: EditMeasurement) => {
-  return fetch(`${API_URL}/measurements/${id}`, {
-    method: "PATCH",
+export const editMeasurement = async (data: MeasurementData) => {
+  return fetch(`${API_URL}/measurements/${data.id}`, {
+    method: "PUT",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(data),
   })

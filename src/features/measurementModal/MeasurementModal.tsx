@@ -43,7 +43,7 @@ interface FormTypes {
 // }
 
 const testRules = {
-  required: "Надо заполнить",
+  required: "Надо заполнить. ",
 };
 
 export const MeasurementModal = ({
@@ -58,15 +58,12 @@ MeasurementModal) => {
     (state) => state.typesOfMeasurements
   );
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
-  // const [afterMealFields, setAfterMealFields] = useState<afterMealFields[]>([]);
-  // console.log("afterMealMeasurementData", afterMealMeasurementData);
-
-  console.log("component", measurement);
 
   const handleTypeOfMeasurementChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = event.target;
+    console.log(value)
     if (!value) return;
 
     setMeasurementType(value);
@@ -77,6 +74,7 @@ MeasurementModal) => {
 
     const typeId = typesOptions.filter((item) => item.name === value);
     if (typeId.length > 0) {
+      console.log(typeId[0].name)
       setValue("typeOfMeasurement", typeId[0].name);
     }
   };
@@ -93,7 +91,7 @@ MeasurementModal) => {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const fieldName = "measurement";
-    formatInputValueToNumbers(event, fieldName);
+    formatInputValueToNumbers(event, fieldName as FieldName);
   };
 
   const formatInputValueToNumbers = (
@@ -104,7 +102,10 @@ MeasurementModal) => {
     const pettern = /[^0-9]/g;
     const numericValue = value.replace(pettern, "");
 
-    setMeasurement(value);
+    if (fieldName === "measurement") {
+      setMeasurement(numericValue);
+    }
+
     setValue(fieldName, numericValue);
     trigger(fieldName);
   };

@@ -32,6 +32,7 @@ export interface MeasurementData {
   };
 }
 
+// Не используется
 export interface EditMeasurement {
   id: string;
   data: PartialMeasurementData;

@@ -17,17 +17,15 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { EditMeasurement } from "../../types/types";
-import { afterMealMeasurementData } from "../../features/diaryTable/afterMealMeasurementSlice";
-import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/editAfterMealMeasurementModa";
+import { MeasurementData } from "../../types/types";
+import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 
 interface Table {
   rows: Measurement[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchFilteredMeasurements: (data: number) => void;
   dispatchRemoveMeasurement: (id: string) => void;
-  dispatchEditMeasurement: (data: EditMeasurement) => void;
-  dispatchAfterMealMeasurement: (data: afterMealMeasurementData) => void;
+  dispatchEditMeasurement: (data: MeasurementData) => void;
 }
 
 export const Table = ({
@@ -36,7 +34,6 @@ export const Table = ({
   dispatchFilteredMeasurements,
   dispatchRemoveMeasurement,
   dispatchEditMeasurement,
-  dispatchAfterMealMeasurement,
 }: Table) => {
   const [openRemoveConfirmModal, setOpenRemoveConfirmModal] =
     useState<boolean>(false);
@@ -52,20 +49,20 @@ export const Table = ({
   const handleCloseEditAfterMealMeasurementModal = () =>
     setOpenEditAfterMealMeasurementModal(false);
   const [idToRemove, setIdToRemove] = useState<string>("");
-  // const [afterMealMeasurementId, setAfterMealMeasurementId] =
-  //   useState<string>("");
-  // const [afterMealMeasurementMeasurement, setAfterMealMeasurementMeasurement] =
-  //   useState<number | null>(null);
-  // const [afterMealMeasurementMeals, setAfterMealMeasurementMeals] = useState<
-  //   ModifiedMeal[]
-  // >([]);
-
-  // const [afterMealMeasurementData, setAfterMealMeasurementData] =
-  //   useState<afterMealMeasurementData>({
-  //     afterMealMeasurementId: "",
-  //     afterMealMeasurementMeasurement: null,
-  //     afterMealMeasurementMeals: [],
-  //   });
+  // const initialAfterMealMeasurement = {
+  //   afterMealMeasurementId: "",
+  //   afterMealMeasurementMeasurement: null,
+  //   afterMealMeasurementMeals: [],
+  // };
+  const initialAfterMealMeasurement = {
+    id: "",
+    createdAt: 0,
+    updatedAt: 0,
+    typeOfMeasurement: "",
+    measurement: 0,
+  };
+  const [afterMealMeasurement, setAfterMealMeasurement] =
+    useState<MeasurementData>(initialAfterMealMeasurement);
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -264,7 +261,7 @@ export const Table = ({
   // };
 
   const useEditMutation = () => {
-    return React.useCallback((data: EditMeasurement) => {
+    return React.useCallback((data: MeasurementData) => {
       dispatchEditMeasurement(data);
     }, []);
   };
@@ -275,12 +272,7 @@ export const Table = ({
     async (newRow: GridRowModel) => {
       const row = { ...newRow, measurement: Number(newRow.measurement) };
 
-      const data = {
-        id: newRow.id as string,
-        data: row,
-      };
-
-      mutateRow(data);
+      mutateRow(row as MeasurementData);
 
       return newRow;
     },
@@ -297,19 +289,25 @@ export const Table = ({
     // event: MuiEvent,
     // details: GridCallbackDetails
   ) => {
-    if (params.field === "measurement" && params.row.afterMealMeasurement) {
-      const data = {
-        afterMealMeasurementId: params.row.id,
-        afterMealMeasurementMeasurement: params.row.measurement,
-        afterMealMeasurementMeals: params.row.afterMealMeasurement.meal,
-      };
+    console.log("params", params);
+    if (
+      params.field === "measurement" &&
+      params.row.typeOfMeasurement === "2"
+    ) {
+      // const data: afterMealMeasurementData = {
+      //   afterMealMeasurementId: params.row.id,
+      //   afterMealMeasurementMeasurement: params.row.measurement,
+      //   afterMealMeasurementMeals: params.row.afterMealMeasurement
+      //     ? params.row.afterMealMeasurement.meal
+      //     : [],
+      // };
 
-      dispatchAfterMealMeasurement(data);
+      const data: MeasurementData = params.row;
 
-      // setAfterMealMeasurementData(data);
-      // setAfterMealMeasurementId(params.row.id);
-      // setAfterMealMeasurementMeasurement(params.row.measurement);
-      // setAfterMealMeasurementMeals(params.row.afterMealMeasurement.meal);
+      console.log("data", data);
+
+      setAfterMealMeasurement(data);
+
       handleOpenEditAfterMealMeasurementModal();
       params.isEditable = false;
     }
@@ -347,14 +345,10 @@ export const Table = ({
         title={"Are you sure you'd like to remove the measurement?"}
       />
       <EditAfterMeasurementModal
+        afterMealMeasurement={afterMealMeasurement}
         open={openEditAfterMealMeasurementModal}
         handleClose={handleCloseEditAfterMealMeasurementModal}
       />
     </>
   );
 };
-
-// onCellEditStop
-// onCellEditStart
-// onCellDoubleClick
-// processRowUpdate
