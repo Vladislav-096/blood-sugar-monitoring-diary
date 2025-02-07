@@ -15,9 +15,13 @@ import {
 } from "@mui/material";
 import { modalContentStyles } from "../../utils/modalContentStyles";
 import styles from "./editAfterMealMeasurementModal.module.scss";
+import { initialAfterMealMeasurement } from "../../constants/constants";
 
 interface EditAfterMeasurementModal {
   afterMealMeasurement: MeasurementData;
+  setAfterMealMeasurement: React.Dispatch<
+    React.SetStateAction<MeasurementData>
+  >;
   open: boolean;
   handleClose: () => void;
 }
@@ -30,6 +34,7 @@ export const EditAfterMeasurementModal = ({
   open,
   handleClose,
   afterMealMeasurement,
+  setAfterMealMeasurement,
 }: EditAfterMeasurementModal) => {
   const dispatch = useAppDispatch();
   const [measurement, setMeasurement] = useState<string>(" "); // Чтобы визуально не съебывал лэйбл при открытии модалки. Оставлю?
@@ -89,7 +94,6 @@ export const EditAfterMeasurementModal = ({
   };
 
   const onSubmit = (formData: FormTypes) => {
-    console.log("formData1", formData);
     const data = {
       id: afterMealMeasurement.id,
       createdAt: afterMealMeasurement.createdAt,
@@ -113,9 +117,7 @@ export const EditAfterMeasurementModal = ({
   };
 
   useEffect(() => {
-    console.log("here");
     if (afterMealMeasurement.id) {
-      console.log("also here");
       const measurement =
         afterMealMeasurement.measurement.toString() as FieldName;
       setValue("measurement", measurement);
@@ -139,6 +141,7 @@ export const EditAfterMeasurementModal = ({
       open={open}
       onClose={() => {
         resetValues();
+        setAfterMealMeasurement(initialAfterMealMeasurement);
         handleClose();
       }}
       aria-labelledby="modal-modal-title"
@@ -179,78 +182,72 @@ export const EditAfterMeasurementModal = ({
                 )}
               />
             </FormControl>
-
-            {
-              <Box>
-                {fields.map((item, index) => (
-                  <Box key={item.id}>
-                    <FormControl fullWidth>
-                      <Controller
-                        name={`afterMealMeasurement.meal.${index}.dish`}
-                        control={control}
-                        rules={testRules}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            label="Dish"
-                            variant="outlined"
-                            error={
-                              errors.afterMealMeasurement?.meal?.[index]?.dish
-                                ? true
-                                : false
-                            }
-                            helperText={
-                              errors.afterMealMeasurement?.meal?.[index]?.dish
-                                ?.message
-                            }
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    <FormControl fullWidth>
-                      <Controller
-                        name={`afterMealMeasurement.meal.${index}.portion`}
-                        control={control}
-                        rules={testRules}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            onChange={(e) => handlePortionChange(e, index)}
-                            label="Portion (grams)"
-                            variant="outlined"
-                            error={
-                              errors.afterMealMeasurement?.meal?.[index]
-                                ?.portion
-                                ? true
-                                : false
-                            }
-                            helperText={
-                              errors.afterMealMeasurement?.meal?.[index]
-                                ?.portion?.message
-                            }
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => remove(index)}
-                    >
-                      Remove
-                    </Button>
-                  </Box>
-                ))}
-
-                <Button
-                  variant="contained"
-                  onClick={() => append({ dish: "", portion: "" })}
-                >
-                  Add Meal
-                </Button>
-              </Box>
-            }
-
+            <Box>
+              {fields.map((item, index) => (
+                <Box key={item.id}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name={`afterMealMeasurement.meal.${index}.dish`}
+                      control={control}
+                      rules={testRules}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Dish"
+                          variant="outlined"
+                          error={
+                            errors.afterMealMeasurement?.meal?.[index]?.dish
+                              ? true
+                              : false
+                          }
+                          helperText={
+                            errors.afterMealMeasurement?.meal?.[index]?.dish
+                              ?.message
+                          }
+                        />
+                      )}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <Controller
+                      name={`afterMealMeasurement.meal.${index}.portion`}
+                      control={control}
+                      rules={testRules}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          onChange={(e) => handlePortionChange(e, index)}
+                          label="Portion (grams)"
+                          variant="outlined"
+                          error={
+                            errors.afterMealMeasurement?.meal?.[index]?.portion
+                              ? true
+                              : false
+                          }
+                          helperText={
+                            errors.afterMealMeasurement?.meal?.[index]?.portion
+                              ?.message
+                          }
+                        />
+                      )}
+                    />
+                  </FormControl>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => remove(index)}
+                  >
+                    Remove
+                  </Button>
+                </Box>
+              ))}
+              <Button
+                variant="contained"
+                onClick={() => append({ dish: "", portion: "" })}
+              >
+                Add Meal
+              </Button>
+            </Box>
             <FormControl fullWidth>
               <Controller
                 name="measurement"
@@ -268,7 +265,6 @@ export const EditAfterMeasurementModal = ({
                 )}
               />
             </FormControl>
-
             <Button type="submit" variant="contained">
               submit
             </Button>

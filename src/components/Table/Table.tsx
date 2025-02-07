@@ -19,6 +19,8 @@ import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
+import { initialAfterMealMeasurement } from "../../constants/constants";
+import { CustomSelectTypeOfMeasurement } from "../CustomSelectTypeOfMeasurement/CustomSelectTypeOfMeasurement";
 
 interface Table {
   rows: Measurement[];
@@ -49,20 +51,10 @@ export const Table = ({
   const handleCloseEditAfterMealMeasurementModal = () =>
     setOpenEditAfterMealMeasurementModal(false);
   const [idToRemove, setIdToRemove] = useState<string>("");
-  // const initialAfterMealMeasurement = {
-  //   afterMealMeasurementId: "",
-  //   afterMealMeasurementMeasurement: null,
-  //   afterMealMeasurementMeals: [],
-  // };
-  const initialAfterMealMeasurement = {
-    id: "",
-    createdAt: 0,
-    updatedAt: 0,
-    typeOfMeasurement: "",
-    measurement: 0,
-  };
   const [afterMealMeasurement, setAfterMealMeasurement] =
     useState<MeasurementData>(initialAfterMealMeasurement);
+
+  console.log("typesOfMeasurement: ", typesOfMeasurement);
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -89,7 +81,7 @@ export const Table = ({
   // const editValue: GridValueSetter<Row> = (value, row) => {
   //   Promise.resolve().then(() => {
   //     const data = {
-  //       id: row.id as string,valueSetter
+  //       id: row.id as string,
   //       data: { measurement: Number(value) },
   //     };
   //     dispatchEditMeasurement(data);
@@ -125,9 +117,33 @@ export const Table = ({
       field: "typeOfMeasurement",
       headerName: "Measurement Type",
       width: 195,
-      valueGetter: (value) =>
-        typesOfMeasurement.filter((elem) => elem.id === value)[0].name,
-      // editable: true,
+      // valueFormatter: (value) => {
+      //   console.log(value);
+      //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name
+      // },
+      valueGetter: (value) => {
+        console.log("value111", value);
+        return typesOfMeasurement.filter((elem) => elem.id === value)[0].name;
+      },
+      // valueSetter: (value) => {
+      //   console.log("value", value);
+      //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name;
+      // },
+      // valueParser: (value) => {
+      //   console.log("value", value);
+      //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name;
+      // },
+      editable: true,
+      // type: "singleSelect",
+      // valueOptions: typesOfMeasurement.map((item) => item.name),
+      renderEditCell: (params) => (
+        <CustomSelectTypeOfMeasurement
+          typesOfMeasurements={typesOfMeasurement}
+          dispatchEditMeasurement={dispatchEditMeasurement}
+          row={params.row}
+          initialValue={params.value}
+        />
+      ),
     },
     {
       field: "measurement",
@@ -346,6 +362,7 @@ export const Table = ({
       />
       <EditAfterMeasurementModal
         afterMealMeasurement={afterMealMeasurement}
+        setAfterMealMeasurement={setAfterMealMeasurement}
         open={openEditAfterMealMeasurementModal}
         handleClose={handleCloseEditAfterMealMeasurementModal}
       />

@@ -4,8 +4,8 @@
       "id": "1",
       "createdAt": 1727260055,
       "updatedAt": 1727260055,
-      "typeOfMeasurement": "4",
-      "measurement": 111
+      "typeOfMeasurement": "1",
+      "measurement": 344
     },
     {
       "id": "3",
@@ -19,12 +19,12 @@
       "createdAt": 1727364455,
       "updatedAt": 1727364455,
       "typeOfMeasurement": "2",
-      "measurement": 333,
+      "measurement": 666,
       "afterMealMeasurement": {
         "meal": [
           {
             "portion": 111,
-            "dish": "Гречка"
+            "dish": "qqq"
           }
         ]
       }
@@ -33,15 +33,15 @@
       "id": "6",
       "createdAt": 1727368055,
       "updatedAt": 1727368055,
-      "typeOfMeasurement": "3",
+      "typeOfMeasurement": "1",
       "measurement": 234
     },
     {
       "id": "7",
       "createdAt": 1727371655,
       "updatedAt": 1727371655,
-      "typeOfMeasurement": "3",
-      "measurement": 112
+      "typeOfMeasurement": "5",
+      "measurement": 333
     },
     {
       "id": "8",
@@ -55,7 +55,7 @@
       "createdAt": 1737987085,
       "updatedAt": 1737987085,
       "typeOfMeasurement": "2",
-      "measurement": 444
+      "measurement": 888
     }
   ],
   "typesOfMeasuremens": [

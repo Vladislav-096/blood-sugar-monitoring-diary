@@ -43,14 +43,10 @@ interface FormTypes {
 // }
 
 const testRules = {
-  required: "Надо заполнить. ",
+  required: "Надо заполнить",
 };
 
-export const MeasurementModal = ({
-  open,
-  handleClose,
-}: // afterMealMeasurementData,
-MeasurementModal) => {
+export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const dispatch = useAppDispatch();
   const [measurementType, setMeasurementType] = useState<string>("");
   const [measurement, setMeasurement] = useState<string>("");
@@ -63,7 +59,7 @@ MeasurementModal) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = event.target;
-    console.log(value)
+    console.log(value);
     if (!value) return;
 
     setMeasurementType(value);
@@ -74,7 +70,7 @@ MeasurementModal) => {
 
     const typeId = typesOptions.filter((item) => item.name === value);
     if (typeId.length > 0) {
-      console.log(typeId[0].name)
+      console.log(typeId[0].name);
       setValue("typeOfMeasurement", typeId[0].name);
     }
   };
@@ -126,11 +122,10 @@ MeasurementModal) => {
   });
 
   const resetValues = () => {
-    console.log("resetValues");
     reset();
     setValue("measurement", "");
-    setValue("typeOfMeasurement", "");
-    setMeasurementType("");
+    setValue("typeOfMeasurement", ""); //
+    setMeasurementType(""); //
     setMeasurement("");
     clearErrors();
     remove();
@@ -223,7 +218,6 @@ MeasurementModal) => {
                 )}
               />
             </FormControl>
-
             {measurementType === "After meal" && (
               <Box>
                 {fields.map((item, index) => (
@@ -294,7 +288,6 @@ MeasurementModal) => {
                 </Button>
               </Box>
             )}
-
             <FormControl fullWidth>
               <Controller
                 name="measurement"
@@ -312,7 +305,6 @@ MeasurementModal) => {
                 )}
               />
             </FormControl>
-
             <Button type="submit" variant="contained">
               submit
             </Button>
