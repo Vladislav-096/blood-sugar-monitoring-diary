@@ -8,7 +8,9 @@ import {
   GridCellParams,
   GridColDef,
   GridRenderCellParams,
+  GridRowId,
   GridRowModel,
+  GridValidRowModel,
 } from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
 import { Button, Paper } from "@mui/material";
@@ -53,8 +55,6 @@ export const Table = ({
   const [idToRemove, setIdToRemove] = useState<string>("");
   const [afterMealMeasurement, setAfterMealMeasurement] =
     useState<MeasurementData>(initialAfterMealMeasurement);
-
-  console.log("typesOfMeasurement: ", typesOfMeasurement);
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -122,7 +122,6 @@ export const Table = ({
       //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name
       // },
       valueGetter: (value) => {
-        console.log("value111", value);
         return typesOfMeasurement.filter((elem) => elem.id === value)[0].name;
       },
       // valueSetter: (value) => {
@@ -139,8 +138,8 @@ export const Table = ({
       renderEditCell: (params) => (
         <CustomSelectTypeOfMeasurement
           typesOfMeasurements={typesOfMeasurement}
-          dispatchEditMeasurement={dispatchEditMeasurement}
-          row={params.row}
+          // dispatchEditMeasurement={dispatchEditMeasurement}
+          // row={params.row}
           initialValue={params.value}
         />
       ),
@@ -285,8 +284,24 @@ export const Table = ({
   const mutateRow = useEditMutation();
 
   const processRowUpdate = React.useCallback(
-    async (newRow: GridRowModel) => {
-      const row = { ...newRow, measurement: Number(newRow.measurement) };
+    async (
+      newRow: GridRowModel,
+      oldRow: GridValidRowModel,
+      params: {
+        rowId: GridRowId;
+      }
+    ) => {
+
+      // Нет typesOfMeasurement
+      const newTypeOfMeasurementValueId = typesOfMeasurement.filter(
+        (item) => item.name === newRow.typeOfMeasurement
+      )[0].id;
+
+      const row = {
+        ...newRow,
+        typeOfMeasurement: newTypeOfMeasurementValueId,
+        measurement: Number(newRow.measurement),
+      };
 
       mutateRow(row as MeasurementData);
 
@@ -369,3 +384,4 @@ export const Table = ({
     </>
   );
 };
+

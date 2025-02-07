@@ -1,33 +1,32 @@
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { TypesOfMeasurements } from "../../app/measurements";
-import { MeasurementData } from "../../types/types";
 import { useState } from "react";
 
 interface CustomSelectTypeOfMeasurement {
   typesOfMeasurements: TypesOfMeasurements;
-  dispatchEditMeasurement: (data: MeasurementData) => void;
-  row: MeasurementData;
+  // dispatchEditMeasurement: (data: MeasurementData) => void;
+  // row: MeasurementData;
   initialValue: string;
 }
 
 export const CustomSelectTypeOfMeasurement = ({
   typesOfMeasurements,
-  dispatchEditMeasurement,
-  row,
+  // dispatchEditMeasurement,
+  // row,
   initialValue,
 }: CustomSelectTypeOfMeasurement) => {
   const [chosenOption, setChosenOption] = useState<string>(initialValue);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     const { value: newValue } = event.target;
-    const newValueId = typesOfMeasurements.filter(
-      (item) => item.name === newValue
-    )[0].id;
+    // const newValueId = typesOfMeasurements.filter(
+    //   (item) => item.name === newValue
+    // )[0].id;
 
     // setChosenOption(newValueId);
     setChosenOption(newValue);
-    const newRow: MeasurementData = { ...row, typeOfMeasurement: newValueId };
-    dispatchEditMeasurement(newRow);
+    // const newRow: MeasurementData = { ...row, typeOfMeasurement: newValueId };
+    // dispatchEditMeasurement(newRow);
   };
 
   return (
