@@ -19,7 +19,7 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { MeasurementData } from "../../types/types";
+import { CheckoutState, MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomSelectTypeOfMeasurement } from "../CustomSelectTypeOfMeasurement/CustomSelectTypeOfMeasurement";
@@ -30,15 +30,20 @@ interface Table {
   dispatchFilteredMeasurements: (data: number) => void;
   dispatchRemoveMeasurement: (id: string) => void;
   dispatchEditMeasurement: (data: MeasurementData) => void;
+  // getMeasurementsStatus: CheckoutState;
+  // typesOfMeasurementStatus: CheckoutState;
 }
 
 export const Table = ({
   rows,
   typesOfMeasurement,
+  // getMeasurementsStatus,
+  // typesOfMeasurementStatus,
   dispatchFilteredMeasurements,
   dispatchRemoveMeasurement,
   dispatchEditMeasurement,
 }: Table) => {
+  const defaultMeasurementValue = "Just Measurement";
   const [openRemoveConfirmModal, setOpenRemoveConfirmModal] =
     useState<boolean>(false);
   const handleOpenRemoveConfirmModal = () => setOpenRemoveConfirmModal(true);
@@ -122,7 +127,12 @@ export const Table = ({
       //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name
       // },
       valueGetter: (value) => {
-        return typesOfMeasurement.filter((elem) => elem.id === value)[0].name;
+        const test = typesOfMeasurement.find((elem) => elem.id === value);
+        if (test) {
+          return test.name;
+        }
+
+        return defaultMeasurementValue;
       },
       // valueSetter: (value) => {
       //   console.log("value", value);
@@ -291,11 +301,15 @@ export const Table = ({
         rowId: GridRowId;
       }
     ) => {
-
       // Нет typesOfMeasurement
+
+      console.log("processRowUpdate", newRow);
+
       const newTypeOfMeasurementValueId = typesOfMeasurement.filter(
         (item) => item.name === newRow.typeOfMeasurement
       )[0].id;
+
+      // console.log("processRowUpdate", newTypeOfMeasurementValueId);
 
       const row = {
         ...newRow,
@@ -344,6 +358,20 @@ export const Table = ({
     }
   };
 
+  // if (
+  //   getMeasurementsStatus === "LOADING" &&
+  //   typesOfMeasurementStatus === "LOADING"
+  // ) {
+  //   return <div style={{ color: "white" }}>Загрузочка</div>;
+  // }
+
+  // if (
+  //   getMeasurementsStatus === "ERROR" ||
+  //   typesOfMeasurementStatus === "ERROR"
+  // ) {
+  //   return <div style={{ color: "white" }}>Ошибочка</div>;
+  // }
+
   return (
     <>
       <Paper sx={{ height: "83.5vh", width: "100%" }}>
@@ -384,4 +412,3 @@ export const Table = ({
     </>
   );
 };
-

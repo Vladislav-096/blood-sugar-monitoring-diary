@@ -10,7 +10,7 @@ import {
 import { recieveFilteredMeasurements } from "./oneDayMeasurementsSlice";
 import { useNavigate } from "react-router";
 import { Table } from "../../components/Table/Table";
-import {  MeasurementData } from "../../types/types";
+import { MeasurementData } from "../../types/types";
 import { recieveTypesOfMeasurements } from "../measurementModal/typesOfMeasurementsSlice";
 
 export const DiaryTable = () => {
@@ -37,8 +37,16 @@ export const DiaryTable = () => {
     (state) => state.measurements.measurements
   );
 
+  const getMeasurementsStatus = useAppSelector(
+    (state) => state.measurements.checkoutGetMeasurementsState
+  );
+
   const typesOfMeasurement = useAppSelector(
     (state) => state.typesOfMeasurements.typesOfMeasurements
+  );
+
+  const typesOfMeasurementStatus = useAppSelector(
+    (state) => state.typesOfMeasurements.checkoutState
   );
 
   // const dispatchAfterMealMeasurement = (data: afterMealMeasurementData) => {
@@ -50,10 +58,26 @@ export const DiaryTable = () => {
     dispatch(fetchGetMeasurements());
   }, []);
 
+  if (
+    getMeasurementsStatus === "LOADING" ||
+    typesOfMeasurementStatus === "LOADING"
+  ) {
+    return <div style={{ color: "white" }}>Загрузочка</div>;
+  }
+
+  if (
+    getMeasurementsStatus === "ERROR" ||
+    typesOfMeasurementStatus === "ERROR"
+  ) {
+    return <div style={{ color: "white" }}>Ошибочка</div>;
+  }
+
   return (
     <>
       <Table
         rows={measurements}
+        // typesOfMeasurementStatus={typesOfMeasurementStatus}
+        // getMeasurementsStatus={getMeasurementsStatus}
         typesOfMeasurement={typesOfMeasurement}
         dispatchFilteredMeasurements={dispatchFilteredMeasurements}
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}

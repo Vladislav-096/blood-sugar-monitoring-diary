@@ -51,11 +51,6 @@ export const getMeasurements = async (
     url = `${url}?${queryParams}`;
   }
 
-  // if (filters) {
-  //   url =
-  //     "http://localhost:8653/measurements?createdAt_gte=2024-09-25T00:00:00.000Z&createdAt_lte=2024-09-25T23:59:59.999Z";
-  // }
-
   return fetch(url, {
     method: "GET",
   })
