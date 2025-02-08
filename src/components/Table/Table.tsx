@@ -8,6 +8,7 @@ import {
   GridCellParams,
   GridColDef,
   GridRenderCellParams,
+  GridRenderEditCellParams,
   GridRowId,
   GridRowModel,
   GridValidRowModel,
@@ -19,10 +20,12 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { CheckoutState, MeasurementData } from "../../types/types";
+import { MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomSelectTypeOfMeasurement } from "../CustomSelectTypeOfMeasurement/CustomSelectTypeOfMeasurement";
+import { CustomDatePicker } from "../CustomDatePicker/CustomDatePicker";
+import { convertTimestampToDate } from "../../utils/dateConvert";
 
 interface Table {
   rows: Measurement[];
@@ -108,14 +111,23 @@ export const Table = ({
       field: "createdAt",
       headerName: "Created At",
       width: 145,
-      valueGetter: (value) => getDateStringFromUnix(value),
-      // editable: true,
+      valueFormatter: (value) => getDateStringFromUnix(value),
+      // type: "date",
+      editable: true,
+      renderEditCell: (params: GridRenderEditCellParams) => {
+        return (
+          <CustomDatePicker
+            initialValue={convertTimestampToDate(params.value)} // YYYY-MM-DD
+            params={params}
+          />
+        );
+      },
     },
     {
       field: "updatedAt",
       headerName: "Updated At",
       width: 145,
-      valueGetter: (value) => getDateStringFromUnix(value),
+      valueFormatter: (value) => getDateStringFromUnix(value),
       // editable: true,
     },
     {
@@ -147,19 +159,15 @@ export const Table = ({
       editable: true,
       // type: "singleSelect",
       // valueOptions: typesOfMeasurement.map((item) => item.name),
-      renderEditCell: (params) => {
-        console.log("renderEditCell", params);
-
-        return (
-          <CustomSelectTypeOfMeasurement
-            typesOfMeasurements={typesOfMeasurement}
-            params={params}
-            // dispatchEditMeasurement={dispatchEditMeasurement}
-            // row={params.row}
-            initialValue={params.value}
-          />
-        );
-      },
+      renderEditCell: (params: GridRenderEditCellParams) => (
+        <CustomSelectTypeOfMeasurement
+          typesOfMeasurements={typesOfMeasurement}
+          params={params}
+          // dispatchEditMeasurement={dispatchEditMeasurement}
+          // row={params.row}
+          initialValue={params.value}
+        />
+      ),
     },
     {
       field: "measurement",
@@ -312,15 +320,15 @@ export const Table = ({
 
       console.log("processRowUpdate", newRow);
 
-      const newTypeOfMeasurementValueId = typesOfMeasurement.filter(
-        (item) => item.id === newRow.typeOfMeasurement
-      )[0].id;
+      // const newTypeOfMeasurementValueId = typesOfMeasurement.filter(
+      //   (item) => item.id === newRow.typeOfMeasurement
+      // )[0].id;
 
       // console.log("processRowUpdate", newTypeOfMeasurementValueId);
 
       const row = {
         ...newRow,
-        typeOfMeasurement: newTypeOfMeasurementValueId,
+        // typeOfMeasurement: newTypeOfMeasurementValueId,
         measurement: Number(newRow.measurement),
       };
 

@@ -40,22 +40,22 @@
       "id": "7",
       "createdAt": 1727371655,
       "updatedAt": 1727371655,
-      "typeOfMeasurement": "5",
+      "typeOfMeasurement": "2",
       "measurement": 333
     },
     {
       "id": "8",
-      "createdAt": 1727393255,
+      "createdAt": 1727371655,
       "updatedAt": 1727393255,
       "typeOfMeasurement": "5",
       "measurement": 33
     },
     {
       "id": "0194a81a-5460-73ca-a969-0c3af845e16c",
-      "createdAt": 1737987085,
+      "createdAt": 1725742800,
       "updatedAt": 1737987085,
-      "typeOfMeasurement": "2",
-      "measurement": 888
+      "typeOfMeasurement": "5",
+      "measurement": 333
     }
   ],
   "typesOfMeasuremens": [
