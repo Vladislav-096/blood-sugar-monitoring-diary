@@ -122,18 +122,20 @@ export const Table = ({
       field: "typeOfMeasurement",
       headerName: "Measurement Type",
       width: 195,
-      // valueFormatter: (value) => {
-      //   console.log(value);
-      //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name
-      // },
-      valueGetter: (value) => {
+      valueFormatter: (value) => {
         const test = typesOfMeasurement.find((elem) => elem.id === value);
         if (test) {
           return test.name;
         }
-
         return defaultMeasurementValue;
       },
+      // valueGetter: (value) => {
+      //   const test = typesOfMeasurement.find((elem) => elem.id === value);
+      //   if (test) {
+      //     return test.name;
+      //   }
+      //   return defaultMeasurementValue;
+      // },
       // valueSetter: (value) => {
       //   console.log("value", value);
       //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name;
@@ -145,14 +147,19 @@ export const Table = ({
       editable: true,
       // type: "singleSelect",
       // valueOptions: typesOfMeasurement.map((item) => item.name),
-      renderEditCell: (params) => (
-        <CustomSelectTypeOfMeasurement
-          typesOfMeasurements={typesOfMeasurement}
-          // dispatchEditMeasurement={dispatchEditMeasurement}
-          // row={params.row}
-          initialValue={params.value}
-        />
-      ),
+      renderEditCell: (params) => {
+        console.log("renderEditCell", params);
+
+        return (
+          <CustomSelectTypeOfMeasurement
+            typesOfMeasurements={typesOfMeasurement}
+            params={params}
+            // dispatchEditMeasurement={dispatchEditMeasurement}
+            // row={params.row}
+            initialValue={params.value}
+          />
+        );
+      },
     },
     {
       field: "measurement",
@@ -306,7 +313,7 @@ export const Table = ({
       console.log("processRowUpdate", newRow);
 
       const newTypeOfMeasurementValueId = typesOfMeasurement.filter(
-        (item) => item.name === newRow.typeOfMeasurement
+        (item) => item.id === newRow.typeOfMeasurement
       )[0].id;
 
       // console.log("processRowUpdate", newTypeOfMeasurementValueId);
