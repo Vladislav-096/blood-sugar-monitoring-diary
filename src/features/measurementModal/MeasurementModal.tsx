@@ -4,6 +4,7 @@ import {
   Button,
   Fade,
   FormControl,
+  FormHelperText,
   MenuItem,
   Modal,
   TextField,
@@ -12,7 +13,7 @@ import {
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styles from "./measurementModal.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v7 as uuidv4 } from "uuid";
 import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
 import {
@@ -21,6 +22,10 @@ import {
   MeasurementData,
 } from "../../types/types";
 import { modalContentStyles } from "../../utils/modalContentStyles";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { convertTimestampToDate } from "../../utils/dateConvert";
 
 interface MeasurementModal {
   open: boolean;
@@ -29,10 +34,10 @@ interface MeasurementModal {
 }
 
 interface FormTypes {
+  createdAt: number;
   typeOfMeasurement: string;
   afterMealMeasurement: AfterMealMeasurement;
   measurement: string;
-  createdAt: string;
   updatedAt: string;
 }
 
@@ -46,6 +51,14 @@ const testRules = {
   required: "Надо заполнить",
 };
 
+const dateRules = {
+  required: "This field is required",
+  pattern: {
+    value: /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/,
+    message: "Please enter date in format dd.mm.yyyy",
+  },
+};
+
 export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const dispatch = useAppDispatch();
   const [measurementType, setMeasurementType] = useState<string>("");
@@ -53,7 +66,18 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const typeOfMeasurementsState = useAppSelector(
     (state) => state.typesOfMeasurements
   );
+  const [createdAt, setCreatedAt] = useState<string>(
+    convertTimestampToDate(dayjs().unix())
+  ); // YYYY-MM-DD
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
+
+  const handleDateChange = (newValue: dayjs.Dayjs | null) => {
+    if (newValue) {
+      const newDate = newValue.unix();
+      setCreatedAt(newValue.format("YYYY-MM-DD"));
+      setValue("createdAt", newDate);
+    }
+  };
 
   const handleTypeOfMeasurementChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -123,8 +147,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
 
   const resetValues = () => {
     reset();
+    setValue("createdAt", dayjs().unix());
     setValue("measurement", "");
     setValue("typeOfMeasurement", ""); //
+    setCreatedAt(dayjs().format("YYYY-MM-DD"));
     setMeasurementType(""); //
     setMeasurement("");
     clearErrors();
@@ -132,8 +158,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   };
 
   const onSubmit = (formData: FormTypes) => {
+    console.log("formData", formData);
     const measurementId = uuidv4();
-    const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
+    // const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
+    const unixTimestampDate = formData.createdAt;
     const measurement = Number(formData.measurement);
     const typeOfMeasurement = typesOptions.filter(
       (item) => item.name === formData.typeOfMeasurement
@@ -161,6 +189,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     dispatch(fetchAddMeasurement(data));
     resetValues();
   };
+
+  useEffect(() => {
+    setValue("createdAt", dayjs().unix());
+  }, [setValue]);
 
   return (
     <Modal
@@ -190,6 +222,27 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
             Add new measurement
           </Typography>
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+            <FormControl error={errors.createdAt ? true : false} fullWidth>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Controller
+                  name="createdAt"
+                  control={control}
+                  rules={dateRules}
+                  render={() => (
+                    <DatePicker
+                      label="Date"
+                      value={dayjs(createdAt)}
+                      onChange={handleDateChange}
+                      format="DD.MM.YYYY"
+                      slots={{ textField: TextField }}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+              {errors.createdAt && (
+                <FormHelperText>{errors.createdAt.message}</FormHelperText>
+              )}
+            </FormControl>
             <FormControl fullWidth>
               <Controller
                 name="typeOfMeasurement"
