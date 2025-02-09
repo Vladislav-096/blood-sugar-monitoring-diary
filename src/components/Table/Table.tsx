@@ -26,6 +26,7 @@ import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomSelectTypeOfMeasurement } from "../CustomSelectTypeOfMeasurement/CustomSelectTypeOfMeasurement";
 import { CustomDatePicker } from "../CustomDatePicker/CustomDatePicker";
 import { convertTimestampToDate } from "../../utils/dateConvert";
+import dayjs from "dayjs";
 
 interface Table {
   rows: Measurement[];
@@ -328,6 +329,7 @@ export const Table = ({
 
       const row = {
         ...newRow,
+        updatedAt: dayjs().unix(),
         // typeOfMeasurement: newTypeOfMeasurementValueId,
         measurement: Number(newRow.measurement),
       };

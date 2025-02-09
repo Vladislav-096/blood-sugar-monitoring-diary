@@ -16,8 +16,8 @@
     },
     {
       "id": "5",
-      "createdAt": 1727364455,
-      "updatedAt": 1727364455,
+      "createdAt": 1725742800,
+      "updatedAt": 1739100111,
       "typeOfMeasurement": "2",
       "measurement": 666,
       "afterMealMeasurement": {
@@ -32,15 +32,15 @@
     {
       "id": "6",
       "createdAt": 1727368055,
-      "updatedAt": 1727368055,
+      "updatedAt": 1739100103,
       "typeOfMeasurement": "1",
-      "measurement": 234
+      "measurement": 111
     },
     {
       "id": "7",
       "createdAt": 1727371655,
-      "updatedAt": 1727371655,
-      "typeOfMeasurement": "2",
+      "updatedAt": 1739100094,
+      "typeOfMeasurement": "1",
       "measurement": 333
     },
     {

@@ -19,15 +19,15 @@ export const CustomDatePicker = ({
 
   const handleOnDateChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
-      const test = newValue.unix();
-      console.log("test", test);
+      const newDate = newValue.unix();
+      console.log("newDate", newDate);
       setDate(newValue.format("YYYY-MM-DD"));
       params.api.setEditCellValue(
         {
           id: params.id,
           field: params.field,
           // В ячейку сабмичу таймстемп
-          value: test,
+          value: newDate,
         },
         true
       ); // true означает немедленное применение изменений
