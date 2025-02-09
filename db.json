@@ -3,14 +3,14 @@
     {
       "id": "1",
       "createdAt": 1727260055,
-      "updatedAt": 1727260055,
+      "updatedAt": 1739113640,
       "typeOfMeasurement": "1",
       "measurement": 344
     },
     {
       "id": "3",
       "createdAt": 1727353655,
-      "updatedAt": 1727353655,
+      "updatedAt": 1739110699,
       "typeOfMeasurement": "4",
       "measurement": 123
     },
@@ -39,21 +39,21 @@
     {
       "id": "7",
       "createdAt": 1727371655,
-      "updatedAt": 1739105901,
+      "updatedAt": 1739110847,
       "typeOfMeasurement": "1",
       "measurement": 333
     },
     {
       "id": "8",
       "createdAt": 1727371655,
-      "updatedAt": 1727393255,
+      "updatedAt": 1739110685,
       "typeOfMeasurement": "5",
       "measurement": 33
     },
     {
       "id": "0194a81a-5460-73ca-a969-0c3af845e16c",
-      "createdAt": 1725742800,
-      "updatedAt": 1737987085,
+      "createdAt": 1725829200,
+      "updatedAt": 1739113676,
       "typeOfMeasurement": "5",
       "measurement": 333
     },

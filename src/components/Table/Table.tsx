@@ -27,6 +27,7 @@ import { CustomSelectTypeOfMeasurement } from "../CustomSelectTypeOfMeasurement/
 import { CustomDatePicker } from "../CustomDatePicker/CustomDatePicker";
 import { convertTimestampToDate } from "../../utils/dateConvert";
 import dayjs from "dayjs";
+import { areObjectsEqual } from "../../utils/areObjectsEqual";
 
 interface Table {
   rows: Measurement[];
@@ -317,26 +318,21 @@ export const Table = ({
         rowId: GridRowId;
       }
     ) => {
-      // Нет typesOfMeasurement
+      const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
 
-      console.log("processRowUpdate", newRow);
+      if (!areObjectsTheSame) {
+        const row = {
+          ...newRow,
+          updatedAt: dayjs().unix(),
+          measurement: Number(newRow.measurement),
+        };
 
-      // const newTypeOfMeasurementValueId = typesOfMeasurement.filter(
-      //   (item) => item.id === newRow.typeOfMeasurement
-      // )[0].id;
+        mutateRow(row as MeasurementData);
 
-      // console.log("processRowUpdate", newTypeOfMeasurementValueId);
-
-      const row = {
-        ...newRow,
-        updatedAt: dayjs().unix(),
-        // typeOfMeasurement: newTypeOfMeasurementValueId,
-        measurement: Number(newRow.measurement),
-      };
-
-      mutateRow(row as MeasurementData);
-
-      return newRow;
+        return newRow;
+      } else {
+        return oldRow;
+      }
     },
 
     [mutateRow]

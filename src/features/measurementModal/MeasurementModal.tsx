@@ -149,9 +149,9 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     reset();
     setValue("createdAt", dayjs().unix());
     setValue("measurement", "");
-    setValue("typeOfMeasurement", ""); //
+    setValue("typeOfMeasurement", "");
     setCreatedAt(dayjs().format("YYYY-MM-DD"));
-    setMeasurementType(""); //
+    setMeasurementType("");
     setMeasurement("");
     clearErrors();
     remove();
