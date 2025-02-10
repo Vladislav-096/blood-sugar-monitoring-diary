@@ -9,7 +9,6 @@ import {
   GridColDef,
   GridRenderEditCellParams,
   GridRowModel,
-  GridToolbar,
   GridValidRowModel,
 } from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
@@ -31,6 +30,7 @@ import {
 import dayjs from "dayjs";
 import { areObjectsEqual } from "../../utils/areObjectsEqual";
 import { CustomTimePicker } from "../CustomTimePicker/CustomTimePicker";
+import { CustomToolbar } from "../CustomToolBar/CustomToolBar";
 
 interface Table {
   rows: Measurement[];
@@ -330,7 +330,7 @@ export const Table = ({
   const processRowUpdate = React.useCallback(
     async (
       newRow: GridRowModel,
-      oldRow: GridValidRowModel,
+      oldRow: GridValidRowModel
       // params: {
       //   rowId: GridRowId;
       // }
@@ -410,15 +410,23 @@ export const Table = ({
           columns={columns}
           paginationModel={paginationModel}
           pageSizeOptions={[5]}
-          disableColumnSelector
           sx={{ border: 0 }}
           disableRowSelectionOnClick
           onPaginationModelChange={handlePaginationModelChange}
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
           onCellDoubleClick={handleCellDoubleClick}
+          disableColumnMenu
           slots={{
-            toolbar: GridToolbar,
+            toolbar: CustomToolbar,
+          }}
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                updatedAt: false, // Скрыть колонку по умолчанию
+                // Добавьте другие колонки, которые хотите скрыть
+              },
+            },
           }}
         />
       </Paper>
@@ -438,3 +446,6 @@ export const Table = ({
     </>
   );
 };
+
+// Отключил меню колонки, добавил отображние колонок, фильтрацию по кнопке (не работает корректно с
+// преобразованными значениями)
