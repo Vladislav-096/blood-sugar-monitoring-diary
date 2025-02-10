@@ -7,10 +7,9 @@ import {
   DataGrid,
   GridCellParams,
   GridColDef,
-  GridRenderCellParams,
   GridRenderEditCellParams,
-  GridRowId,
   GridRowModel,
+  GridToolbar,
   GridValidRowModel,
 } from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
@@ -25,9 +24,13 @@ import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasureme
 import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomSelectTypeOfMeasurement } from "../CustomSelectTypeOfMeasurement/CustomSelectTypeOfMeasurement";
 import { CustomDatePicker } from "../CustomDatePicker/CustomDatePicker";
-import { convertTimestampToDate } from "../../utils/dateConvert";
+import {
+  convertTime,
+  convertTimestampToDate,
+} from "../../utils/dateTimeConvert";
 import dayjs from "dayjs";
 import { areObjectsEqual } from "../../utils/areObjectsEqual";
+import { CustomTimePicker } from "../CustomTimePicker/CustomTimePicker";
 
 interface Table {
   rows: Measurement[];
@@ -78,13 +81,13 @@ export const Table = ({
     },
   }));
 
-  const commonRenderCell = (param: GridRenderCellParams) => {
-    return (
-      <HtmlTooltip title={param.value}>
-        <span>{param.value}</span>
-      </HtmlTooltip>
-    );
-  };
+  // const commonRenderCell = (param: GridRenderCellParams) => {
+  //   return (
+  //     <HtmlTooltip title={param.value}>
+  //       <span>{param.value}</span>
+  //     </HtmlTooltip>
+  //   );
+  // };
 
   // type Row = (typeof rows)[number];
 
@@ -101,14 +104,14 @@ export const Table = ({
   // };
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "ID",
-      width: 90,
-      renderCell: commonRenderCell,
+    // {
+    //   field: "id",
+    //   headerName: "ID",
+    //   width: 90,
+    //   renderCell: commonRenderCell,
 
-      // editable: true,
-    },
+    //   // editable: true,
+    // },
     {
       field: "createdAt",
       headerName: "Created At",
@@ -131,6 +134,20 @@ export const Table = ({
       width: 145,
       valueFormatter: (value) => getDateStringFromUnix(value),
       // editable: true,
+    },
+    {
+      field: "time",
+      headerName: "Time",
+      width: 145,
+      editable: true,
+      renderEditCell: (params: GridRenderEditCellParams) => {
+        return (
+          <CustomTimePicker
+            initialValue={convertTime(params.value)}
+            params={params}
+          />
+        );
+      },
     },
     {
       field: "typeOfMeasurement",
@@ -314,9 +331,9 @@ export const Table = ({
     async (
       newRow: GridRowModel,
       oldRow: GridValidRowModel,
-      params: {
-        rowId: GridRowId;
-      }
+      // params: {
+      //   rowId: GridRowId;
+      // }
     ) => {
       const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
 
@@ -391,22 +408,18 @@ export const Table = ({
         <DataGrid
           rows={rows}
           columns={columns}
-          // initialState={{ pagination: { paginationModel } }}
           paginationModel={paginationModel}
           pageSizeOptions={[5]}
-          // onRowClick={handleRowClick}
-          // checkboxSelection={false}
-          // disableColumnMenu
-          // disableColumnResize
           disableColumnSelector
           sx={{ border: 0 }}
-          // disableMultipleRowSelection
           disableRowSelectionOnClick
           onPaginationModelChange={handlePaginationModelChange}
-          // onCellEditStop={handleCellEditStop}
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
           onCellDoubleClick={handleCellDoubleClick}
+          slots={{
+            toolbar: GridToolbar,
+          }}
         />
       </Paper>
       <ConfirmModal

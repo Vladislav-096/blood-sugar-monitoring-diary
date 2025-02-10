@@ -19,6 +19,7 @@ const MeasurementSchema = z.object({
   id: z.string(),
   createdAt: z.number(),
   updatedAt: z.number(),
+  time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format"),
   typeOfMeasurement: z.string(),
   measurement: z.number(),
   afterMealMeasurement: AfterMealMeasurementSchema.optional(),

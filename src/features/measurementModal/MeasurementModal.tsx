@@ -22,10 +22,17 @@ import {
   MeasurementData,
 } from "../../types/types";
 import { modalContentStyles } from "../../utils/modalContentStyles";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  DatePicker,
+  LocalizationProvider,
+  TimePicker,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { convertTimestampToDate } from "../../utils/dateConvert";
+import {
+  convertTime,
+  convertTimestampToDate,
+} from "../../utils/dateTimeConvert";
 
 interface MeasurementModal {
   open: boolean;
@@ -35,10 +42,10 @@ interface MeasurementModal {
 
 interface FormTypes {
   createdAt: number;
+  time: string;
   typeOfMeasurement: string;
   afterMealMeasurement: AfterMealMeasurement;
   measurement: string;
-  updatedAt: string;
 }
 
 // interface afterMealFields {
@@ -69,6 +76,9 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const [createdAt, setCreatedAt] = useState<string>(
     convertTimestampToDate(dayjs().unix())
   ); // YYYY-MM-DD
+  const [convertedTime, setConvertedTime] = useState<string>(
+    convertTime(dayjs().format("HH:mm"))
+  ); // YYYY-MM-DDTHH:mm
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
 
   const handleDateChange = (newValue: dayjs.Dayjs | null) => {
@@ -76,6 +86,14 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       const newDate = newValue.unix();
       setCreatedAt(newValue.format("YYYY-MM-DD"));
       setValue("createdAt", newDate);
+    }
+  };
+
+  const handleOnTimeChange = (newValue: dayjs.Dayjs | null) => {
+    if (newValue) {
+      setConvertedTime(newValue.format("YYYY-MM-DDTHH:mm"));
+      setValue("time", newValue.format("HH:mm"));
+      trigger("time");
     }
   };
 
@@ -148,9 +166,11 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const resetValues = () => {
     reset();
     setValue("createdAt", dayjs().unix());
+    setValue("time", dayjs().format("HH:mm"));
     setValue("measurement", "");
     setValue("typeOfMeasurement", "");
     setCreatedAt(dayjs().format("YYYY-MM-DD"));
+    setConvertedTime(dayjs().format("YYYY-MM-DDTHH:mm"));
     setMeasurementType("");
     setMeasurement("");
     clearErrors();
@@ -170,7 +190,8 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     let data: MeasurementData = {
       id: measurementId,
       createdAt: unixTimestampDate,
-      updatedAt: unixTimestampDate,
+      time: formData.time,
+      updatedAt: dayjs().unix(),
       typeOfMeasurement: typeOfMeasurement[0].id,
       measurement: measurement,
     };
@@ -192,6 +213,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
 
   useEffect(() => {
     setValue("createdAt", dayjs().unix());
+    setValue("time", dayjs().format("HH:mm"));
   }, [setValue]);
 
   return (
@@ -241,6 +263,27 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
               </LocalizationProvider>
               {errors.createdAt && (
                 <FormHelperText>{errors.createdAt.message}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl error={errors.time ? true : false} fullWidth>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Controller
+                  name="time"
+                  control={control}
+                  rules={testRules}
+                  render={() => (
+                    <TimePicker
+                      label="Time"
+                      value={dayjs(convertedTime)}
+                      onChange={handleOnTimeChange}
+                      format="HH:mm"
+                      slots={{ textField: TextField }}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+              {errors.time && (
+                <FormHelperText>{errors.time.message}</FormHelperText>
               )}
             </FormControl>
             <FormControl fullWidth>

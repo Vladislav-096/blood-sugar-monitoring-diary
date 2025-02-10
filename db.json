@@ -3,21 +3,24 @@
     {
       "id": "1",
       "createdAt": 1727260055,
-      "updatedAt": 1739113640,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "1",
       "measurement": 344
     },
     {
       "id": "3",
       "createdAt": 1727353655,
-      "updatedAt": 1739110699,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "4",
       "measurement": 123
     },
     {
       "id": "5",
       "createdAt": 1725742800,
-      "updatedAt": 1739103692,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "2",
       "measurement": 666,
       "afterMealMeasurement": {
@@ -32,58 +35,90 @@
     {
       "id": "6",
       "createdAt": 1727368055,
-      "updatedAt": 1739100103,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "1",
       "measurement": 111
     },
     {
       "id": "7",
       "createdAt": 1727371655,
-      "updatedAt": 1739110847,
+      "updatedAt": 1739215849,
+      "time": "15:00",
       "typeOfMeasurement": "1",
-      "measurement": 333
+      "measurement": 456
     },
     {
       "id": "8",
       "createdAt": 1727371655,
-      "updatedAt": 1739110685,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "5",
       "measurement": 33
     },
     {
       "id": "0194a81a-5460-73ca-a969-0c3af845e16c",
       "createdAt": 1725829200,
-      "updatedAt": 1739113676,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "5",
       "measurement": 333
     },
     {
       "id": "0194eac0-d847-7369-805a-0e61273984a0",
       "createdAt": 1739105294,
-      "updatedAt": 1739105294,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "1",
       "measurement": 123
     },
     {
       "id": "0194eac4-600d-716b-a57f-2c7b04be0f8d",
       "createdAt": 1739105525,
-      "updatedAt": 1739105525,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "1",
       "measurement": 123
     },
     {
       "id": "0194eaca-5ac3-75d5-92f2-b28a2d04980b",
       "createdAt": 1739105895,
-      "updatedAt": 1739105895,
+      "updatedAt": 1739206001,
+      "time": "23:33",
       "typeOfMeasurement": "2",
       "measurement": 666
     },
     {
       "id": "0194ead5-0f83-771e-a4f5-3821af7d5fd9",
       "createdAt": 1739221200,
-      "updatedAt": 1739221200,
+      "updatedAt": 1727260055,
+      "time": "14:00",
       "typeOfMeasurement": "5",
       "measurement": 55
+    },
+    {
+      "id": "0194f12b-1e98-7703-be0e-634ec3f0e3cd",
+      "time": "14:00",
+      "createdAt": 1739048400,
+      "updatedAt": 1739212922,
+      "typeOfMeasurement": "1",
+      "measurement": 890
+    },
+    {
+      "id": "0194f12f-c197-7400-adc3-f14c237bc944",
+      "createdAt": 1738443600,
+      "time": "11:11",
+      "updatedAt": 1739213226,
+      "typeOfMeasurement": "1",
+      "measurement": 677
+    },
+    {
+      "id": "0194f15b-6fed-7588-8fac-9f00335e5bcf",
+      "createdAt": 1740171600,
+      "time": "23:23",
+      "updatedAt": 1739216117,
+      "typeOfMeasurement": "5",
+      "measurement": 543
     }
   ],
   "typesOfMeasuremens": [

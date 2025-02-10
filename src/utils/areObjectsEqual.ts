@@ -9,6 +9,7 @@ export const areObjectsEqual = (
   if (newRow.id !== oldRow.id) return false;
   if (newRow.createdAt !== oldRow.createdAt) return false;
   if (newRow.updatedAt !== oldRow.updatedAt) return false;
+  if (newRow.time !== oldRow.time) return false;
   if (newRow.measurement !== oldRow.measurement) return false;
 
   // Сравнение afterMealMeasurement

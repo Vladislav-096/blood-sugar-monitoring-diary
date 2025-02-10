@@ -12,8 +12,8 @@ export interface AfterMealMeasurement {
 export type FieldName =
   | "typeOfMeasurement"
   | "measurement"
+  | "time"
   | "createdAt"
-  | "updatedAt"
   | "afterMealMeasurement"
   | `afterMealMeasurement.meal.${number}`
   | `afterMealMeasurement.meal.${number}.portion`
@@ -24,6 +24,7 @@ export type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
 export interface MeasurementData {
   id: string;
   createdAt: number;
+  time: string;
   updatedAt: number;
   typeOfMeasurement: string;
   measurement: number;
