@@ -31,7 +31,7 @@ import dayjs from "dayjs";
 import { areObjectsEqual } from "../../utils/areObjectsEqual";
 import { CustomTimePicker } from "../CustomTimePicker/CustomTimePicker";
 import { CustomToolbar } from "../CustomToolBar/CustomToolbar";
-import { CustomFilterField } from "../CustomFilterField/CustomFilterField";
+import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
 
 interface Table {
   rows: Measurement[];
@@ -122,15 +122,19 @@ export const Table = ({
           label: "Contains",
           getApplyFilterFn: (filterItem) => {
             return (value) => {
-              console.log("filterItem", filterItem);
-              console.log("value", value);
-              const formattedValues = dayjs(value * 1000).format("DD.MM.YYYY");
-              return formattedValues.includes(
-                filterItem.value.toString().toLowerCase()
-              );
+              if (filterItem.value) {
+                const formattedValues = dayjs(value * 1000).format(
+                  "DD.MM.YYYY"
+                );
+                return formattedValues.includes(
+                  filterItem.value.toString().toLowerCase()
+                );
+              } else {
+                return true;
+              }
             };
           },
-          InputComponent: CustomFilterField,
+          InputComponent: CustomDateFilterField,
         },
       ],
       width: 145,
@@ -149,6 +153,27 @@ export const Table = ({
     {
       field: "updatedAt",
       headerName: "Updated At",
+      filterOperators: [
+        {
+          value: "contains",
+          label: "Contains",
+          getApplyFilterFn: (filterItem) => {
+            return (value) => {
+              if (filterItem.value) {
+                const formattedValues = dayjs(value * 1000).format(
+                  "DD.MM.YYYY"
+                );
+                return formattedValues.includes(
+                  filterItem.value.toString().toLowerCase()
+                );
+              } else {
+                return true;
+              }
+            };
+          },
+          InputComponent: CustomDateFilterField,
+        },
+      ],
       width: 145,
       valueFormatter: (value) => getDateStringFromUnix(value),
       // editable: true,

@@ -3,7 +3,7 @@ import { GridFilterInputValueProps, useGridRootProps } from "@mui/x-data-grid";
 import { useEffect, useRef, useState } from "react";
 import SyncIcon from "@mui/icons-material/Sync";
 
-export const CustomFilterField = (props: GridFilterInputValueProps) => {
+export const CustomDateFilterField = (props: GridFilterInputValueProps) => {
   const rootProps = useGridRootProps();
   const { item, applyValue, focusElementRef } = props;
   const [value, setValue] = useState<string>("");
@@ -25,7 +25,6 @@ export const CustomFilterField = (props: GridFilterInputValueProps) => {
 
   const updateValue = (newValue: string) => {
     clearTimeout(filterTimeout.current);
-    // setFilterValueState([lowerBound, upperBound]);
     setValue(newValue);
 
     setIsApplying(true);
@@ -63,7 +62,13 @@ export const CustomFilterField = (props: GridFilterInputValueProps) => {
         placeholder="Value"
         label="Value"
         inputRef={focusElementRef}
-        InputProps={applying ? { endAdornment: <SyncIcon /> } : {}}
+        type="number"
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+          input: applying ? { endAdornment: <SyncIcon /> } : {},
+        }}
       />
     </Box>
   );
