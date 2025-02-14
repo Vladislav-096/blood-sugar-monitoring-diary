@@ -30,8 +30,9 @@ import {
 import dayjs from "dayjs";
 import { areObjectsEqual } from "../../utils/areObjectsEqual";
 import { CustomTimePicker } from "../CustomTimePicker/CustomTimePicker";
-import { CustomToolbar } from "../CustomToolBar/CustomToolbar";
+import { CustomTableToolbar } from "../CustomTableToolbar/CustomTableToolbar";
 import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
+import { CustomMeasurementTypeFilterField } from "../CustomMeasurementTypeFilterField/CustomMeasurementTypeFilterField";
 
 interface Table {
   rows: Measurement[];
@@ -119,7 +120,7 @@ export const Table = ({
       filterOperators: [
         {
           value: "contains",
-          label: "Contains",
+          label: "contains",
           getApplyFilterFn: (filterItem) => {
             return (value) => {
               if (filterItem.value) {
@@ -156,7 +157,7 @@ export const Table = ({
       filterOperators: [
         {
           value: "contains",
-          label: "Contains",
+          label: "contains",
           getApplyFilterFn: (filterItem) => {
             return (value) => {
               if (filterItem.value) {
@@ -196,6 +197,32 @@ export const Table = ({
       field: "typeOfMeasurement",
       headerName: "Measurement Type",
       width: 195,
+      filterOperators: [
+        {
+          value: "contains",
+          label: "contains",
+          getApplyFilterFn: (filterItem) => {
+            return (value) => {
+              if (filterItem.value) {
+                const type = typesOfMeasurement.find(
+                  (item) => item.id === value
+                )?.name;
+
+                if (type) {
+                  return type
+                    .toLowerCase()
+                    .includes(filterItem.value.toString().toLowerCase());
+                } else {
+                  return true;
+                }
+              } else {
+                return true;
+              }
+            };
+          },
+          InputComponent: CustomMeasurementTypeFilterField,
+        },
+      ],
       valueFormatter: (value) => {
         const test = typesOfMeasurement.find((elem) => elem.id === value);
         if (test) {
@@ -461,7 +488,7 @@ export const Table = ({
           onCellDoubleClick={handleCellDoubleClick}
           disableColumnMenu
           slots={{
-            toolbar: CustomToolbar,
+            toolbar: CustomTableToolbar,
           }}
           initialState={{
             columns: {

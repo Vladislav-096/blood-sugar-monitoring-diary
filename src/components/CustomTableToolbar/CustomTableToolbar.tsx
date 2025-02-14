@@ -4,7 +4,7 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 
-export const CustomToolbar = () => {
+export const CustomTableToolbar = () => {
   return (
     <GridToolbarContainer>
       <GridToolbarColumnsButton />
