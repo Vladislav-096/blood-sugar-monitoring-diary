@@ -8,3 +8,9 @@ export const initialAfterMealMeasurement = {
   typeOfMeasurement: "",
   measurement: 0,
 };
+
+export const buttonDisabledStyles = {
+  "&.Mui-disabled": {
+    backgroundColor: "#323232f7",
+  },
+};

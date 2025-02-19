@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { API_URL } from "../constants/constants";
-import { validateResponse } from "./validationResponse";
+import { validateGetResponse, validateResponse } from "./validationResponse";
 import { MeasurementData } from "../types/types";
 
 const MealSchema = z.object({
@@ -55,7 +55,7 @@ export const getMeasurements = async (
   return fetch(url, {
     method: "GET",
   })
-    .then(validateResponse)
+    .then(validateGetResponse)
     .then((res) => res.json())
     .then((data) => MeasurementsSchema.parse(data))
     .catch((err) => {
@@ -68,7 +68,7 @@ export const getTypesOfMeasuremens = async () => {
   return fetch(`${API_URL}/typesOfMeasuremens`, {
     method: "GET",
   })
-    .then(validateResponse)
+    .then(validateGetResponse)
     .then((res) => res.json())
     .then((data) => TypesOfMeasurementsSchema.parse(data))
     .catch((err) => {

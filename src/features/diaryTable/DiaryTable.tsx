@@ -12,6 +12,8 @@ import { useNavigate } from "react-router";
 import { Table } from "../../components/Table/Table";
 import { MeasurementData } from "../../types/types";
 import { recieveTypesOfMeasurements } from "../measurementModal/typesOfMeasurementsSlice";
+import { Loader } from "../../components/Loader/Loader";
+import { GetMeasurementsErrorNotification } from "../../components/GetMeasurementsErrorNotification/GetMeasurementsErrorNotification";
 
 export const DiaryTable = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -19,6 +21,11 @@ export const DiaryTable = () => {
   const handleClose = () => setOpen(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const dispatchMeasurementsAndTypesOfMeasurements = () => {
+    dispatch(fetchGetMeasurements());
+    dispatch(recieveTypesOfMeasurements());
+  };
 
   const dispatchFilteredMeasurements = (data: number) => {
     dispatch(recieveFilteredMeasurements(data));
@@ -49,27 +56,55 @@ export const DiaryTable = () => {
     (state) => state.typesOfMeasurements.checkoutState
   );
 
+  const measurementsError = useAppSelector(
+    (state) => state.measurements.errorGetMeasurementsMessage
+  );
+
+  const typesOfMeasurementsError = useAppSelector(
+    (state) => state.typesOfMeasurements.errorMessage
+  );
+
   // const dispatchAfterMealMeasurement = (data: afterMealMeasurementData) => {
   //   dispatch(afterMealMeasurementSlice.actions.editAfterMealMeasurement(data));
   // };
 
   useEffect(() => {
-    dispatch(recieveTypesOfMeasurements());
-    dispatch(fetchGetMeasurements());
+    dispatchMeasurementsAndTypesOfMeasurements();
   }, []);
 
   if (
     getMeasurementsStatus === "LOADING" ||
     typesOfMeasurementStatus === "LOADING"
   ) {
-    return <div style={{ color: "white" }}>Загрузочка</div>;
+    return <Loader />;
   }
 
   if (
     getMeasurementsStatus === "ERROR" ||
     typesOfMeasurementStatus === "ERROR"
   ) {
-    return <div style={{ color: "white" }}>Ошибочка</div>;
+    let error = "";
+    if (measurementsError === "" || typesOfMeasurementsError === "") {
+      error = measurementsError ? measurementsError : typesOfMeasurementsError;
+    } else if (
+      measurementsError === "Server error" &&
+      typesOfMeasurementsError === "Server error"
+    ) {
+      error = measurementsError;
+    } else {
+      error =
+        measurementsError !== "Server error"
+          ? measurementsError
+          : typesOfMeasurementsError;
+    }
+    return (
+      <GetMeasurementsErrorNotification
+        // measurementsError={measurementsError}
+        // typesOfMeasurementsError={typesOfMeasurementsError}
+        errorMessage={error}
+        refetch={dispatchMeasurementsAndTypesOfMeasurements}
+      />
+    );
   }
 
   return (

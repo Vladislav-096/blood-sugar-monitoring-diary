@@ -115,6 +115,41 @@ export const Table = ({
     //   // editable: true,
     // },
     {
+      field: "actions",
+      headerName: "Actions",
+      width: 180,
+      headerAlign: "center",
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (param) => {
+        const currentRow: Measurement = param.row;
+        return (
+          <>
+            <Button
+              variant="text"
+              color="primary"
+              sx={{ textTransform: "none" }}
+              onClick={() => handleRowClick(currentRow.createdAt)}
+            >
+              Go to daily
+            </Button>
+            <Button
+              variant="text"
+              color="primary"
+              sx={{ textTransform: "none", color: "red" }}
+              onClick={() => {
+                setIdToRemove(currentRow.id);
+                handleOpenRemoveConfirmModal();
+              }}
+            >
+              Remove
+            </Button>
+          </>
+        );
+      },
+      filterable: false,
+    },
+    {
       field: "createdAt",
       headerName: "Created At",
       filterOperators: [
@@ -138,7 +173,7 @@ export const Table = ({
           InputComponent: CustomDateFilterField,
         },
       ],
-      width: 145,
+      width: 120,
       valueFormatter: (value) => getDateStringFromUnix(value),
       // type: "date",
       editable: true,
@@ -175,14 +210,14 @@ export const Table = ({
           InputComponent: CustomDateFilterField,
         },
       ],
-      width: 145,
+      width: 120,
       valueFormatter: (value) => getDateStringFromUnix(value),
       // editable: true,
     },
     {
       field: "time",
       headerName: "Time",
-      width: 145,
+      width: 90,
       editable: true,
       renderEditCell: (params: GridRenderEditCellParams) => {
         return (
@@ -196,7 +231,7 @@ export const Table = ({
     {
       field: "typeOfMeasurement",
       headerName: "Measurement Type",
-      width: 195,
+      width: 175,
       filterOperators: [
         {
           value: "contains",
@@ -261,7 +296,7 @@ export const Table = ({
     {
       field: "measurement",
       headerName: "Measurement",
-      width: 165,
+      width: 140,
       // renderEditCell: (params) => {
       //   // Функция для отслеживания ввода и вывода в консоль
       //   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -324,40 +359,6 @@ export const Table = ({
       },
       // valueSetter: editValue,
       editable: true,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 180,
-      headerAlign: "center",
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (param) => {
-        const currentRow: Measurement = param.row;
-        return (
-          <>
-            <Button
-              variant="text"
-              color="primary"
-              sx={{ textTransform: "none" }}
-              onClick={() => handleRowClick(currentRow.createdAt)}
-            >
-              Go to daily
-            </Button>
-            <Button
-              variant="text"
-              color="primary"
-              sx={{ textTransform: "none", color: "red" }}
-              onClick={() => {
-                setIdToRemove(currentRow.id);
-                handleOpenRemoveConfirmModal();
-              }}
-            >
-              Remove
-            </Button>
-          </>
-        );
-      },
     },
   ];
 
@@ -474,7 +475,7 @@ export const Table = ({
 
   return (
     <>
-      <Paper sx={{ height: "83.5vh", width: "100%" }}>
+      <Paper sx={{ margin: "0 auto", height: "83.5vh", width: "711px" }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -516,6 +517,3 @@ export const Table = ({
     </>
   );
 };
-
-// Отключил меню колонки, добавил отображние колонок, фильтрацию по кнопке (не работает корректно с
-// преобразованными значениями)
