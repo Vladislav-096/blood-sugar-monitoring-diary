@@ -33,6 +33,7 @@ import {
   convertTime,
   convertTimestampToDate,
 } from "../../utils/dateTimeConvert";
+import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
 
 interface MeasurementModal {
   open: boolean;
@@ -66,13 +67,21 @@ const dateRules = {
   },
 };
 
+const alertAddMeasurementError = "Failed to add measurement";
+
 export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const dispatch = useAppDispatch();
-  const [measurementType, setMeasurementType] = useState<string>("");
-  const [measurement, setMeasurement] = useState<string>("");
   const typeOfMeasurementsState = useAppSelector(
     (state) => state.typesOfMeasurements
   );
+  const addMeasurementsErrorStatus = useAppSelector(
+    (state) => state.measurements.checkoutAddMeasurementState
+  );
+
+  const [isAlert, setIsAlert] = useState<boolean>(false);
+  const [measurementType, setMeasurementType] = useState<string>("");
+  const [measurement, setMeasurement] = useState<string>("");
+
   const [createdAt, setCreatedAt] = useState<string>(
     convertTimestampToDate(dayjs().unix())
   ); // YYYY-MM-DD
@@ -177,7 +186,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     remove();
   };
 
-  const onSubmit = (formData: FormTypes) => {
+  const onSubmit = async (formData: FormTypes) => {
     console.log("formData", formData);
     const measurementId = uuidv4();
     // const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
@@ -207,206 +216,224 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       };
     }
 
-    dispatch(fetchAddMeasurement(data));
+    const res = await dispatch(fetchAddMeasurement(data));
+
+    if (!res.payload) {
+      // В алерт улетит строка "ERROR", потому что произойдет ререндер. Но что вызывает ререндер,
+      // если тут прерывается выполнение кода?
+      return;
+    }
+
     resetValues();
   };
 
   useEffect(() => {
     setValue("createdAt", dayjs().unix());
     setValue("time", dayjs().format("HH:mm"));
+    // if (addMeasurementsErrorStatus === "ERROR") {
+    //   setIsAlert(true);
+    // }
   }, [setValue]);
 
   return (
-    <Modal
-      open={open}
-      onClose={() => {
-        resetValues();
-        handleClose();
-      }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 200,
-        },
-      }}
-    >
-      <Fade in={open}>
-        <Box sx={modalContentStyles}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            sx={{ fontFamily: '"Play"', color: "#f0f6fc" }}
-          >
-            Add new measurement
-          </Typography>
-          <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <FormControl error={errors.createdAt ? true : false} fullWidth>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <>
+      <Modal
+        open={open}
+        onClose={() => {
+          resetValues();
+          handleClose();
+        }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 200,
+          },
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={modalContentStyles}>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              sx={{ fontFamily: '"Play"', color: "#f0f6fc" }}
+            >
+              Add new measurement
+            </Typography>
+            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+              <FormControl error={errors.createdAt ? true : false} fullWidth>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                    name="createdAt"
+                    control={control}
+                    rules={dateRules}
+                    render={() => (
+                      <DatePicker
+                        label="Date"
+                        value={dayjs(createdAt)}
+                        onChange={handleDateChange}
+                        format="DD.MM.YYYY"
+                        slots={{ textField: TextField }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+                {errors.createdAt && (
+                  <FormHelperText>{errors.createdAt.message}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl error={errors.time ? true : false} fullWidth>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                    name="time"
+                    control={control}
+                    rules={testRules}
+                    render={() => (
+                      <TimePicker
+                        label="Time"
+                        value={dayjs(convertedTime)}
+                        onChange={handleOnTimeChange}
+                        format="HH:mm"
+                        slots={{ textField: TextField }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+                {errors.time && (
+                  <FormHelperText>{errors.time.message}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl fullWidth>
                 <Controller
-                  name="createdAt"
-                  control={control}
-                  rules={dateRules}
-                  render={() => (
-                    <DatePicker
-                      label="Date"
-                      value={dayjs(createdAt)}
-                      onChange={handleDateChange}
-                      format="DD.MM.YYYY"
-                      slots={{ textField: TextField }}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-              {errors.createdAt && (
-                <FormHelperText>{errors.createdAt.message}</FormHelperText>
-              )}
-            </FormControl>
-            <FormControl error={errors.time ? true : false} fullWidth>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Controller
-                  name="time"
+                  name="typeOfMeasurement"
                   control={control}
                   rules={testRules}
                   render={() => (
-                    <TimePicker
-                      label="Time"
-                      value={dayjs(convertedTime)}
-                      onChange={handleOnTimeChange}
-                      format="HH:mm"
-                      slots={{ textField: TextField }}
+                    <TextField
+                      select
+                      error={errors.typeOfMeasurement ? true : false}
+                      onChange={handleTypeOfMeasurementChange}
+                      value={measurementType}
+                      helperText={errors.typeOfMeasurement?.message}
+                      label="Type of measurement"
+                      variant="outlined"
+                    >
+                      {typesOptions.map((option) => (
+                        <MenuItem
+                          key={option.id}
+                          value={option.name}
+                          onClick={() => clearErrors("typeOfMeasurement")}
+                        >
+                          {option.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
+              </FormControl>
+              {measurementType === "After meal" && (
+                <Box>
+                  {fields.map((item, index) => (
+                    <Box key={item.id}>
+                      <FormControl fullWidth>
+                        <Controller
+                          name={`afterMealMeasurement.meal.${index}.dish`}
+                          control={control}
+                          rules={testRules}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Dish"
+                              variant="outlined"
+                              error={
+                                errors.afterMealMeasurement?.meal?.[index]?.dish
+                                  ? true
+                                  : false
+                              }
+                              helperText={
+                                errors.afterMealMeasurement?.meal?.[index]?.dish
+                                  ?.message
+                              }
+                            />
+                          )}
+                        />
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <Controller
+                          name={`afterMealMeasurement.meal.${index}.portion`}
+                          control={control}
+                          rules={testRules}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              onChange={(e) => handlePortionChange(e, index)}
+                              label="Portion (grams)"
+                              variant="outlined"
+                              error={
+                                errors.afterMealMeasurement?.meal?.[index]
+                                  ?.portion
+                                  ? true
+                                  : false
+                              }
+                              helperText={
+                                errors.afterMealMeasurement?.meal?.[index]
+                                  ?.portion?.message
+                              }
+                            />
+                          )}
+                        />
+                      </FormControl>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={() => remove(index)}
+                      >
+                        Remove
+                      </Button>
+                    </Box>
+                  ))}
+
+                  <Button
+                    variant="contained"
+                    onClick={() => append({ dish: "", portion: "" })}
+                  >
+                    Add Meal
+                  </Button>
+                </Box>
+              )}
+              <FormControl fullWidth>
+                <Controller
+                  name="measurement"
+                  control={control}
+                  rules={testRules}
+                  render={() => (
+                    <TextField
+                      value={measurement}
+                      onChange={handleMeasurementChange}
+                      label="Measurement"
+                      variant="outlined"
+                      error={errors.measurement ? true : false}
+                      helperText={errors.measurement?.message}
                     />
                   )}
                 />
-              </LocalizationProvider>
-              {errors.time && (
-                <FormHelperText>{errors.time.message}</FormHelperText>
-              )}
-            </FormControl>
-            <FormControl fullWidth>
-              <Controller
-                name="typeOfMeasurement"
-                control={control}
-                rules={testRules}
-                render={() => (
-                  <TextField
-                    select
-                    error={errors.typeOfMeasurement ? true : false}
-                    onChange={handleTypeOfMeasurementChange}
-                    value={measurementType}
-                    helperText={errors.typeOfMeasurement?.message}
-                    label="Type of measurement"
-                    variant="outlined"
-                  >
-                    {typesOptions.map((option) => (
-                      <MenuItem
-                        key={option.id}
-                        value={option.name}
-                        onClick={() => clearErrors("typeOfMeasurement")}
-                      >
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-            </FormControl>
-            {measurementType === "After meal" && (
-              <Box>
-                {fields.map((item, index) => (
-                  <Box key={item.id}>
-                    <FormControl fullWidth>
-                      <Controller
-                        name={`afterMealMeasurement.meal.${index}.dish`}
-                        control={control}
-                        rules={testRules}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            label="Dish"
-                            variant="outlined"
-                            error={
-                              errors.afterMealMeasurement?.meal?.[index]?.dish
-                                ? true
-                                : false
-                            }
-                            helperText={
-                              errors.afterMealMeasurement?.meal?.[index]?.dish
-                                ?.message
-                            }
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    <FormControl fullWidth>
-                      <Controller
-                        name={`afterMealMeasurement.meal.${index}.portion`}
-                        control={control}
-                        rules={testRules}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            onChange={(e) => handlePortionChange(e, index)}
-                            label="Portion (grams)"
-                            variant="outlined"
-                            error={
-                              errors.afterMealMeasurement?.meal?.[index]
-                                ?.portion
-                                ? true
-                                : false
-                            }
-                            helperText={
-                              errors.afterMealMeasurement?.meal?.[index]
-                                ?.portion?.message
-                            }
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => remove(index)}
-                    >
-                      Remove
-                    </Button>
-                  </Box>
-                ))}
-
-                <Button
-                  variant="contained"
-                  onClick={() => append({ dish: "", portion: "" })}
-                >
-                  Add Meal
-                </Button>
-              </Box>
-            )}
-            <FormControl fullWidth>
-              <Controller
-                name="measurement"
-                control={control}
-                rules={testRules}
-                render={() => (
-                  <TextField
-                    value={measurement}
-                    onChange={handleMeasurementChange}
-                    label="Measurement"
-                    variant="outlined"
-                    error={errors.measurement ? true : false}
-                    helperText={errors.measurement?.message}
-                  />
-                )}
-              />
-            </FormControl>
-            <Button type="submit" variant="contained">
-              submit
-            </Button>
-          </form>
-        </Box>
-      </Fade>
-    </Modal>
+              </FormControl>
+              <Button type="submit" variant="contained">
+                submit
+              </Button>
+            </form>
+          </Box>
+        </Fade>
+      </Modal>
+      <CustomErrorAlert
+        title={alertAddMeasurementError}
+        isAlert={isAlert}
+        setIsAlert={setIsAlert}
+        status={addMeasurementsErrorStatus}
+      />
+    </>
   );
 };

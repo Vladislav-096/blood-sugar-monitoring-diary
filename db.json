@@ -17,22 +17,6 @@
       "measurement": 123
     },
     {
-      "id": "5",
-      "createdAt": 1725742800,
-      "updatedAt": 1727260055,
-      "time": "14:00",
-      "typeOfMeasurement": "2",
-      "measurement": 666,
-      "afterMealMeasurement": {
-        "meal": [
-          {
-            "portion": 111,
-            "dish": "qqq"
-          }
-        ]
-      }
-    },
-    {
       "id": "6",
       "createdAt": 1727368055,
       "updatedAt": 1727260055,
@@ -57,68 +41,12 @@
       "measurement": 33
     },
     {
-      "id": "0194a81a-5460-73ca-a969-0c3af845e16c",
-      "createdAt": 1725829200,
-      "updatedAt": 1727260055,
-      "time": "14:00",
-      "typeOfMeasurement": "5",
-      "measurement": 333
-    },
-    {
-      "id": "0194eac0-d847-7369-805a-0e61273984a0",
-      "createdAt": 1739105294,
-      "updatedAt": 1727260055,
-      "time": "14:00",
-      "typeOfMeasurement": "1",
-      "measurement": 123
-    },
-    {
-      "id": "0194eac4-600d-716b-a57f-2c7b04be0f8d",
-      "createdAt": 1739105525,
-      "updatedAt": 1727260055,
-      "time": "14:00",
-      "typeOfMeasurement": "1",
-      "measurement": 123
-    },
-    {
-      "id": "0194eaca-5ac3-75d5-92f2-b28a2d04980b",
-      "createdAt": 1739105895,
-      "updatedAt": 1739206001,
-      "time": "23:33",
+      "id": "019528bf-0b4e-706a-ac90-5eb7b8a5d65d",
+      "createdAt": 1740145328,
+      "updatedAt": 1740145363,
+      "time": "16:42",
       "typeOfMeasurement": "2",
-      "measurement": 666
-    },
-    {
-      "id": "0194ead5-0f83-771e-a4f5-3821af7d5fd9",
-      "createdAt": 1739221200,
-      "updatedAt": 1727260055,
-      "time": "14:00",
-      "typeOfMeasurement": "5",
-      "measurement": 55
-    },
-    {
-      "id": "0194f12b-1e98-7703-be0e-634ec3f0e3cd",
-      "time": "14:00",
-      "createdAt": 1739048400,
-      "updatedAt": 1739212922,
-      "typeOfMeasurement": "1",
-      "measurement": 890
-    },
-    {
-      "id": "0194f12f-c197-7400-adc3-f14c237bc944",
-      "createdAt": 1738443600,
-      "time": "11:11",
-      "updatedAt": 1739213226,
-      "typeOfMeasurement": "1",
-      "measurement": 677
-    },
-    {
-      "id": "0194f15b-6fed-7588-8fac-9f00335e5bcf",
-      "createdAt": 1740171600,
-      "time": "23:23",
-      "updatedAt": 1739216117,
-      "typeOfMeasurement": "5",
-      "measurement": 543
+      "measurement": 987
     }
   ],
   "typesOfMeasuremens": [

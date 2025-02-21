@@ -47,4 +47,5 @@ export interface FormTypes {
   measurement: string;
   createdAt: string;
   updatedAt: string;
+  time: string;
 }

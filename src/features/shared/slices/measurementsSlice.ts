@@ -100,6 +100,7 @@ export const measurementsSlice = createSlice({
       }
     );
     builder.addCase(fetchAddMeasurement.rejected, (state, action) => {
+      console.log("fn")
       state.checkoutAddMeasurementState = "ERROR";
       state.errorAddMeasurementsMessage = action.error.message || "";
     });
