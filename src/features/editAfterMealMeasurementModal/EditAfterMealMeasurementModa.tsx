@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { FieldName, FormTypes, MeasurementData } from "../../types/types";
+import { FieldName, FormTypes, MeasurementData, textFieldStyle } from "../../types/types";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { fetchEditMeasurement } from "../shared/slices/measurementsSlice";
 import {
@@ -192,6 +192,7 @@ export const EditAfterMeasurementModal = ({
                       label="Type of measurement"
                       variant="outlined"
                       disabled={true}
+                      sx={textFieldStyle}
                     ></TextField>
                   )}
                 />
@@ -218,6 +219,7 @@ export const EditAfterMeasurementModal = ({
                               errors.afterMealMeasurement?.meal?.[index]?.dish
                                 ?.message
                             }
+                            sx={textFieldStyle}
                           />
                         )}
                       />
@@ -243,6 +245,7 @@ export const EditAfterMeasurementModal = ({
                               errors.afterMealMeasurement?.meal?.[index]
                                 ?.portion?.message
                             }
+                            sx={textFieldStyle}
                           />
                         )}
                       />
@@ -276,6 +279,7 @@ export const EditAfterMeasurementModal = ({
                       variant="outlined"
                       error={errors.measurement ? true : false}
                       helperText={errors.measurement?.message}
+                      sx={textFieldStyle}
                     />
                   )}
                 />

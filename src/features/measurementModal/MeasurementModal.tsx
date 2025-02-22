@@ -20,6 +20,7 @@ import {
   AfterMealMeasurement,
   FieldName,
   MeasurementData,
+  textFieldStyle,
 } from "../../types/types";
 import { modalContentStyles } from "../../utils/modalContentStyles";
 import {
@@ -187,7 +188,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   };
 
   const onSubmit = async (formData: FormTypes) => {
-    console.log("formData", formData);
     const measurementId = uuidv4();
     // const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
     const unixTimestampDate = formData.createdAt;
@@ -215,6 +215,8 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
         },
       };
     }
+
+    console.log(data);
 
     const res = await dispatch(fetchAddMeasurement(data));
 
@@ -277,6 +279,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         onChange={handleDateChange}
                         format="DD.MM.YYYY"
                         slots={{ textField: TextField }}
+                        sx={textFieldStyle}
                       />
                     )}
                   />
@@ -298,6 +301,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         onChange={handleOnTimeChange}
                         format="HH:mm"
                         slots={{ textField: TextField }}
+                        sx={textFieldStyle}
                       />
                     )}
                   />
@@ -320,6 +324,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                       helperText={errors.typeOfMeasurement?.message}
                       label="Type of measurement"
                       variant="outlined"
+                      sx={textFieldStyle}
                     >
                       {typesOptions.map((option) => (
                         <MenuItem
@@ -357,6 +362,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                                 errors.afterMealMeasurement?.meal?.[index]?.dish
                                   ?.message
                               }
+                              sx={textFieldStyle}
                             />
                           )}
                         />
@@ -382,6 +388,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                                 errors.afterMealMeasurement?.meal?.[index]
                                   ?.portion?.message
                               }
+                              sx={textFieldStyle}
                             />
                           )}
                         />
@@ -417,6 +424,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                       variant="outlined"
                       error={errors.measurement ? true : false}
                       helperText={errors.measurement?.message}
+                      sx={textFieldStyle}
                     />
                   )}
                 />

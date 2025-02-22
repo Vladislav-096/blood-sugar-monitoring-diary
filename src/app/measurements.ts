@@ -91,7 +91,7 @@ export const addMeasurement = async (data: MeasurementData) => {
 };
 
 export const editMeasurement = async (data: MeasurementData) => {
-  return fetch(`${API_URL}/measurement/${data.id}`, {
+  return fetch(`${API_URL}/measurements/${data.id}`, {
     method: "PUT",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(data),

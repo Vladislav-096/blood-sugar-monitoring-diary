@@ -36,9 +36,12 @@ export const DiaryTable = () => {
     dispatch(fetchRemoveMeasurement(id));
   };
 
-  const dispatchEditMeasurement = (data: MeasurementData) => {
-    dispatch(fetchEditMeasurement(data));
+  const dispatchEditMeasurementSync = async (data: MeasurementData) => {
+    const response = await dispatch(fetchEditMeasurement(data));
+    return response;
   };
+
+  type DispatchResponse = ReturnType<typeof dispatchEditMeasurementSync>;
 
   const measurements = useAppSelector(
     (state) => state.measurements.measurements
@@ -116,7 +119,7 @@ export const DiaryTable = () => {
         typesOfMeasurement={typesOfMeasurement}
         dispatchFilteredMeasurements={dispatchFilteredMeasurements}
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}
-        dispatchEditMeasurement={dispatchEditMeasurement}
+        dispatchEditMeasurementSync={dispatchEditMeasurementSync}
         // dispatchAfterMealMeasurement={dispatchAfterMealMeasurement}
       />
       <Button onClick={handleOpen} variant="contained">

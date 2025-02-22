@@ -100,7 +100,6 @@ export const measurementsSlice = createSlice({
       }
     );
     builder.addCase(fetchAddMeasurement.rejected, (state, action) => {
-      console.log("fn")
       state.checkoutAddMeasurementState = "ERROR";
       state.errorAddMeasurementsMessage = action.error.message || "";
     });
@@ -133,8 +132,6 @@ export const measurementsSlice = createSlice({
         const index = state.measurements.findIndex(
           (item) => item.id === action.payload.id
         );
-
-        console.log("action.payload", action.payload);
 
         if (index !== -1) {
           state.measurements[index] = action.payload;
