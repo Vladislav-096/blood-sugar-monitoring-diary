@@ -33,14 +33,16 @@ import { CustomTimePicker } from "../CustomTimePicker/CustomTimePicker";
 import { CustomTableToolbar } from "../CustomTableToolbar/CustomTableToolbar";
 import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
 import { CustomMeasurementTypeFilterField } from "../CustomMeasurementTypeFilterField/CustomMeasurementTypeFilterField";
-import { PayloadAction } from "@reduxjs/toolkit";
+import { FetchMeasurementResponse } from "../../features/shared/slices/measurementsSlice";
 
 interface Table {
   rows: Measurement[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchFilteredMeasurements: (data: number) => void;
   dispatchRemoveMeasurement: (id: string) => void;
-  dispatchEditMeasurementSync: unknown;
+  dispatchEditMeasurementSync: (
+    data: MeasurementData
+  ) => Promise<FetchMeasurementResponse>;
   // getMeasurementsStatus: CheckoutState;
   // typesOfMeasurementStatus: CheckoutState;
 }
@@ -54,7 +56,6 @@ export const Table = ({
   dispatchRemoveMeasurement,
   dispatchEditMeasurementSync,
 }: Table) => {
-  type DispatchResponse = ReturnType<typeof dispatchEditMeasurementSync>;
   const defaultMeasurementValue = "Just Measurement";
   const [openRemoveConfirmModal, setOpenRemoveConfirmModal] =
     useState<boolean>(false);
@@ -418,8 +419,10 @@ export const Table = ({
           measurement: Number(newRow.measurement),
         };
 
+        console.log("row", row);
+
         const res = await mutateRow(row as MeasurementData);
-        
+
         console.log("res", res);
         if (res.payload) {
           return newRow;

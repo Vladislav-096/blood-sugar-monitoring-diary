@@ -67,6 +67,10 @@ export const fetchEditMeasurement = createAsyncThunk(
   }
 );
 
+export type FetchMeasurementResponse = ReturnType<
+  typeof fetchEditMeasurement
+>;
+
 export const measurementsSlice = createSlice({
   name: "measurements",
   initialState,
