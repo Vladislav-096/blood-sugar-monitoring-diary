@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { MeasurementModal } from "../measurementModal/MeasurementModal";
 import {
   fetchEditMeasurement,
@@ -41,8 +41,6 @@ export const DiaryTable = () => {
     return response;
   };
 
-  type DispatchResponse = ReturnType<typeof dispatchEditMeasurementSync>;
-
   const measurements = useAppSelector(
     (state) => state.measurements.measurements
   );
@@ -55,7 +53,7 @@ export const DiaryTable = () => {
     (state) => state.typesOfMeasurements.typesOfMeasurements
   );
 
-  const typesOfMeasurementStatus = useAppSelector(
+  const getTypesOfMeasurementStatus = useAppSelector(
     (state) => state.typesOfMeasurements.checkoutState
   );
 
@@ -77,14 +75,27 @@ export const DiaryTable = () => {
 
   if (
     getMeasurementsStatus === "LOADING" ||
-    typesOfMeasurementStatus === "LOADING"
+    getTypesOfMeasurementStatus === "LOADING"
   ) {
-    return <Loader />;
+    return (
+      <Box
+        sx={{
+          position: "absolute",
+          width: "10vw",
+          height: "10vh",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <Loader />
+      </Box>
+    );
   }
 
   if (
     getMeasurementsStatus === "ERROR" ||
-    typesOfMeasurementStatus === "ERROR"
+    getTypesOfMeasurementStatus === "ERROR"
   ) {
     let error = "";
     if (measurementsError === "" || typesOfMeasurementsError === "") {
@@ -114,7 +125,7 @@ export const DiaryTable = () => {
     <>
       <Table
         rows={measurements}
-        // typesOfMeasurementStatus={typesOfMeasurementStatus}
+        // getTypesOfMeasurementStatus={getTypesOfMeasurementStatus}
         // getMeasurementsStatus={getMeasurementsStatus}
         typesOfMeasurement={typesOfMeasurement}
         dispatchFilteredMeasurements={dispatchFilteredMeasurements}
@@ -123,7 +134,7 @@ export const DiaryTable = () => {
         // dispatchAfterMealMeasurement={dispatchAfterMealMeasurement}
       />
       <Button onClick={handleOpen} variant="contained">
-        open modal
+        add measurement
       </Button>
       <MeasurementModal open={open} handleClose={handleClose} />
     </>

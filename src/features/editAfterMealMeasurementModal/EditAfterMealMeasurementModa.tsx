@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { FieldName, FormTypes, MeasurementData, textFieldStyle } from "../../types/types";
+import {
+  FieldName,
+  FormTypes,
+  MeasurementData,
+  textFieldStyle,
+} from "../../types/types";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { fetchEditMeasurement } from "../shared/slices/measurementsSlice";
 import {
@@ -17,6 +22,7 @@ import { modalContentStyles } from "../../utils/modalContentStyles";
 import styles from "./editAfterMealMeasurementModal.module.scss";
 import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
+import { Loader } from "../../components/Loader/Loader";
 
 interface EditAfterMeasurementModal {
   afterMealMeasurement: MeasurementData;
@@ -284,8 +290,28 @@ export const EditAfterMeasurementModal = ({
                   )}
                 />
               </FormControl>
-              <Button type="submit" variant="contained">
-                submit
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  position: "relative",
+                  paddingRight:
+                    editMeasurementsErrorStatus === "LOADING" ? "33px" : "16px",
+                }}
+              >
+                <Typography>submit</Typography>
+                {editMeasurementsErrorStatus === "LOADING" && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "18%",
+                      height: "65%",
+                      right: "7px",
+                    }}
+                  >
+                    <Loader />
+                  </Box>
+                )}
               </Button>
             </form>
           </Box>

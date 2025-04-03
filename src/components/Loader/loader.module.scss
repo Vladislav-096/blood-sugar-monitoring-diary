@@ -1,18 +1,18 @@
 @use "../../styles/_variables" as *;
 
 .wrapper {
-  --uib-size: 55px;
+  // --uib-size: 55px;
   --uib-speed: 1s;
   --uib-stroke: 3px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: var(--uib-size);
-  width: var(--uib-size);
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
+  // display: flex;
+  // align-items: center;
+  // justify-content: flex-start;
+  // height: var(--uib-size);
+  // width: var(--uib-size);
 
   .line {
     position: absolute;
