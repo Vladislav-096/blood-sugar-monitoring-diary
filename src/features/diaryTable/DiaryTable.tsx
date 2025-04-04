@@ -22,6 +22,8 @@ export const DiaryTable = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  console.log("Diary");
+
   const dispatchMeasurementsAndTypesOfMeasurements = () => {
     dispatch(fetchGetMeasurements());
     dispatch(recieveTypesOfMeasurements());
@@ -55,6 +57,10 @@ export const DiaryTable = () => {
 
   const getTypesOfMeasurementStatus = useAppSelector(
     (state) => state.typesOfMeasurements.checkoutState
+  );
+
+  const editMeasurementsErrorStatus = useAppSelector(
+    (state) => state.measurements.checkoutEditMeasurementState
   );
 
   const measurementsError = useAppSelector(
@@ -125,6 +131,7 @@ export const DiaryTable = () => {
     <>
       <Table
         rows={measurements}
+        editStatus={editMeasurementsErrorStatus}
         // getTypesOfMeasurementStatus={getTypesOfMeasurementStatus}
         // getMeasurementsStatus={getMeasurementsStatus}
         typesOfMeasurement={typesOfMeasurement}

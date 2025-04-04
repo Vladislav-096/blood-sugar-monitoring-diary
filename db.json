@@ -35,10 +35,10 @@
     {
       "id": "8",
       "createdAt": 1727371655,
-      "updatedAt": 1743689395,
+      "updatedAt": 1743780270,
       "time": "14:00",
-      "typeOfMeasurement": "3",
-      "measurement": 127,
+      "typeOfMeasurement": "4",
+      "measurement": 121,
       "afterMealMeasurement": {
         "meal": [
           {

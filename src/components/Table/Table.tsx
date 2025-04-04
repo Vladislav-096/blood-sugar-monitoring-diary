@@ -12,13 +12,13 @@ import {
   GridValidRowModel,
 } from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
-import { Button, Paper } from "@mui/material";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { MeasurementData } from "../../types/types";
+import { CheckoutState, MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomSelectTypeOfMeasurement } from "../CustomSelectTypeOfMeasurement/CustomSelectTypeOfMeasurement";
@@ -34,6 +34,8 @@ import { CustomTableToolbar } from "../CustomTableToolbar/CustomTableToolbar";
 import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
 import { CustomMeasurementTypeFilterField } from "../CustomMeasurementTypeFilterField/CustomMeasurementTypeFilterField";
 import { FetchMeasurementResponse } from "../../features/shared/slices/measurementsSlice";
+import { Loader } from "../Loader/Loader";
+import { CustomMeasurementEditField } from "../CustomMeasurementEditField";
 
 interface Table {
   rows: Measurement[];
@@ -43,6 +45,7 @@ interface Table {
   dispatchEditMeasurementSync: (
     data: MeasurementData
   ) => Promise<FetchMeasurementResponse>;
+  editStatus: CheckoutState;
   // getMeasurementsStatus: CheckoutState;
   // typesOfMeasurementStatus: CheckoutState;
 }
@@ -55,6 +58,7 @@ export const Table = ({
   dispatchFilteredMeasurements,
   dispatchRemoveMeasurement,
   dispatchEditMeasurementSync,
+  editStatus,
 }: Table) => {
   const defaultMeasurementValue = "Just Measurement";
   const [openRemoveConfirmModal, setOpenRemoveConfirmModal] =
@@ -73,6 +77,8 @@ export const Table = ({
   const [idToRemove, setIdToRemove] = useState<string>("");
   const [afterMealMeasurement, setAfterMealMeasurement] =
     useState<MeasurementData>(initialAfterMealMeasurement);
+
+  console.log("Table");
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -358,9 +364,36 @@ export const Table = ({
           );
         }
 
-        return <span>{param.row.measurement}</span>;
+        return (
+          <Box sx={{ paddingLeft: "25px" }}>
+            <Typography component="span">{param.row.measurement}</Typography>
+          </Box>
+        );
       },
+      // renderEditCell: (params: GridRenderEditCellParams) => (
+      //   <Box sx={{ position: "relative", display: "flex" }}>
+      //     <TextField defaultValue={params.row.measurement} hiddenLabel/>
+
+      //     {/* <Typography component="span" sx={{ display: "inline-block" }}>
+      //       {params.row.measurement}
+      //     </Typography> */}
+      //     {editStatus === "LOADING" && (
+      //       <Box
+      //         sx={{
+      //           marginLeft: "15px",
+      //           width: "22px",
+      //           height: "22px",
+      //         }}
+      //       >
+      //         <Loader lineColor={"#000"} />
+      //       </Box>
+      //     )}
+      //   </Box>
+      // ),
       // valueSetter: editValue,
+      renderEditCell: (params: GridRenderEditCellParams) => (
+        <CustomMeasurementEditField params={params} editStatus={editStatus} />
+      ),
       editable: true,
     },
   ];

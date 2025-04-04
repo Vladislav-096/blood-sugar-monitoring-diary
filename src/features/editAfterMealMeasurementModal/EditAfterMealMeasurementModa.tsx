@@ -304,8 +304,8 @@ export const EditAfterMeasurementModal = ({
                   <Box
                     sx={{
                       position: "absolute",
-                      width: "18%",
-                      height: "65%",
+                      width: "19%",
+                      height: "60%",
                       right: "7px",
                     }}
                   >
