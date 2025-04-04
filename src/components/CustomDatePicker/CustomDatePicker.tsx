@@ -1,21 +1,23 @@
-import { TextField } from "@mui/material";
 import { GridRenderEditCellParams } from "@mui/x-data-grid";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { CheckoutState } from "../../types/types";
+import { EditCellLoader } from "../EditCellLoader/EditCellLoader";
 
 interface CustomDatePicker {
   initialValue: string;
   params: GridRenderEditCellParams;
+  editStatus: CheckoutState;
 }
 
 export const CustomDatePicker = ({
   initialValue,
   params,
+  editStatus,
 }: CustomDatePicker) => {
   const [date, setDate] = useState<string>(initialValue); // YYYY-MM-DD
-  console.log("date", date);
 
   const handleOnDateChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
@@ -35,14 +37,35 @@ export const CustomDatePicker = ({
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker
-        label="Date"
-        value={dayjs(date)}
-        onChange={handleOnDateChange}
-        format="DD.MM.YYYY"
-        slots={{ textField: TextField }}
-      />
-    </LocalizationProvider>
+    <EditCellLoader editStatus={editStatus}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          value={dayjs(date)}
+          onChange={handleOnDateChange}
+          format="DD.MM.YYYY"
+          // slots={{ textField: TextField }}
+          slotProps={{
+            textField: {
+              sx: {
+                height: "100%",
+                ".MuiInputBase-root": { height: "100%" },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none", // Убирает бордер
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  border: "none", // Убирает бордер при наведении
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  border: "none", // Убирает бордер при фокусе
+                },
+              },
+            },
+            openPickerButton: {
+              sx: { display: editStatus === "LOADING" ? "none" : "block" },
+            },
+          }}
+        />
+      </LocalizationProvider>
+    </EditCellLoader>
   );
 };

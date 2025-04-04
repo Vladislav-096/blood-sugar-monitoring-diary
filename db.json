@@ -3,8 +3,8 @@
     {
       "id": "1",
       "createdAt": 1727260055,
-      "updatedAt": 1727260055,
-      "time": "14:00",
+      "updatedAt": 1743789706,
+      "time": "05:05",
       "typeOfMeasurement": "1",
       "measurement": 344
     },
@@ -19,7 +19,7 @@
     {
       "id": "6",
       "createdAt": 1727368055,
-      "updatedAt": 1743602966,
+      "updatedAt": 1743790553,
       "time": "14:00",
       "typeOfMeasurement": "1",
       "measurement": 112
@@ -34,11 +34,11 @@
     },
     {
       "id": "8",
-      "createdAt": 1727371655,
-      "updatedAt": 1743780270,
+      "createdAt": 1725138000,
+      "updatedAt": 1743795454,
       "time": "14:00",
       "typeOfMeasurement": "4",
-      "measurement": 121,
+      "measurement": 123,
       "afterMealMeasurement": {
         "meal": [
           {

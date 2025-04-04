@@ -12,7 +12,7 @@ import {
   GridValidRowModel,
 } from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
@@ -34,7 +34,6 @@ import { CustomTableToolbar } from "../CustomTableToolbar/CustomTableToolbar";
 import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
 import { CustomMeasurementTypeFilterField } from "../CustomMeasurementTypeFilterField/CustomMeasurementTypeFilterField";
 import { FetchMeasurementResponse } from "../../features/shared/slices/measurementsSlice";
-import { Loader } from "../Loader/Loader";
 import { CustomMeasurementEditField } from "../CustomMeasurementEditField";
 
 interface Table {
@@ -182,13 +181,14 @@ export const Table = ({
           InputComponent: CustomDateFilterField,
         },
       ],
-      width: 120,
+      width: 153,
       valueFormatter: (value) => getDateStringFromUnix(value),
       // type: "date",
       editable: true,
       renderEditCell: (params: GridRenderEditCellParams) => {
         return (
           <CustomDatePicker
+            editStatus={editStatus}
             initialValue={convertTimestampToDate(params.value)} // YYYY-MM-DD
             params={params}
           />
@@ -226,11 +226,12 @@ export const Table = ({
     {
       field: "time",
       headerName: "Time",
-      width: 90,
+      width: 110,
       editable: true,
       renderEditCell: (params: GridRenderEditCellParams) => {
         return (
           <CustomTimePicker
+            editStatus={editStatus}
             initialValue={convertTime(params.value)}
             params={params}
           />
@@ -241,6 +242,7 @@ export const Table = ({
       field: "typeOfMeasurement",
       headerName: "Measurement Type",
       width: 175,
+      // cellClassName: styles['padding-left'],
       filterOperators: [
         {
           value: "contains",
@@ -274,26 +276,10 @@ export const Table = ({
         }
         return defaultMeasurementValue;
       },
-      // valueGetter: (value) => {
-      //   const test = typesOfMeasurement.find((elem) => elem.id === value);
-      //   if (test) {
-      //     return test.name;
-      //   }
-      //   return defaultMeasurementValue;
-      // },
-      // valueSetter: (value) => {
-      //   console.log("value", value);
-      //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name;
-      // },
-      // valueParser: (value) => {
-      //   console.log("value", value);
-      //   return typesOfMeasurement.filter((elem) => elem.id === value)[0].name;
-      // },
       editable: true,
-      // type: "singleSelect",
-      // valueOptions: typesOfMeasurement.map((item) => item.name),
       renderEditCell: (params: GridRenderEditCellParams) => (
         <CustomSelectTypeOfMeasurement
+          editStatus={editStatus}
           typesOfMeasurements={typesOfMeasurement}
           params={params}
           // dispatchEditMeasurement={dispatchEditMeasurement}
@@ -306,36 +292,6 @@ export const Table = ({
       field: "measurement",
       headerName: "Measurement",
       width: 140,
-      // renderEditCell: (params) => {
-      //   // Функция для отслеживания ввода и вывода в консоль
-      //   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      //     // console.log("params.id", params.id);
-      //     // console.log("params.field", params.field);
-
-      //     params.api.setEditCellValue({
-      //       id: params.id,
-      //       field: params.field,
-      //       value: e.target.value,
-      //     });
-
-      //     const value = e.target.value;
-      //     const fieldName = params.field;
-      //     const data = {
-      //       id: params.id as string,
-      //       data: { [fieldName]: value },
-      //     };
-      //     dispatchEditMeasurement(data);
-      //   };
-
-      //   // Возвращаем стандартный TextField для редактирования
-      //   return (
-      //     <input
-      //       autoFocus
-      //       defaultValue={params.value}
-      //       onBlur={handleChange}
-      //     />
-      //   );
-      // },
       renderCell: (param) => {
         const currentRow: Measurement = param.row;
         if (
@@ -345,8 +301,10 @@ export const Table = ({
           const meals: Meals = currentRow.afterMealMeasurement?.meal;
 
           return (
-            <>
-              <span>{param.row.measurement}</span>
+            <Box>
+              <Typography sx={{ paddingRight: "25px" }} component="span">
+                {param.row.measurement}
+              </Typography>
               <HtmlTooltip
                 title={
                   <>
@@ -360,37 +318,18 @@ export const Table = ({
               >
                 <AnnouncementIcon />
               </HtmlTooltip>
-            </>
+            </Box>
           );
         }
 
         return (
-          <Box sx={{ paddingLeft: "25px" }}>
-            <Typography component="span">{param.row.measurement}</Typography>
+          <Box>
+            <Typography sx={{ paddingRight: "25px" }} component="span">
+              {param.row.measurement}
+            </Typography>
           </Box>
         );
       },
-      // renderEditCell: (params: GridRenderEditCellParams) => (
-      //   <Box sx={{ position: "relative", display: "flex" }}>
-      //     <TextField defaultValue={params.row.measurement} hiddenLabel/>
-
-      //     {/* <Typography component="span" sx={{ display: "inline-block" }}>
-      //       {params.row.measurement}
-      //     </Typography> */}
-      //     {editStatus === "LOADING" && (
-      //       <Box
-      //         sx={{
-      //           marginLeft: "15px",
-      //           width: "22px",
-      //           height: "22px",
-      //         }}
-      //       >
-      //         <Loader lineColor={"#000"} />
-      //       </Box>
-      //     )}
-      //   </Box>
-      // ),
-      // valueSetter: editValue,
       renderEditCell: (params: GridRenderEditCellParams) => (
         <CustomMeasurementEditField params={params} editStatus={editStatus} />
       ),

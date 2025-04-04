@@ -1,8 +1,8 @@
-import { Box, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { GridRenderEditCellParams } from "@mui/x-data-grid";
 import { useState } from "react";
 import { CheckoutState } from "../types/types";
-import { Loader } from "./Loader/Loader";
+import { EditCellLoader } from "./EditCellLoader/EditCellLoader";
 
 interface CustomMeasurementEditField {
   params: GridRenderEditCellParams;
@@ -36,18 +36,14 @@ export const CustomMeasurementEditField = ({
   };
 
   return (
-    <Box
-      sx={{
-        paddingLeft: "25px",
-        position: "relative",
-      }}
-    >
+    <EditCellLoader editStatus={editStatus}>
       <TextField
         value={measurementValue}
         onChange={handleChange}
         autoFocus={true}
         hiddenLabel
         sx={{
+          ".MuiInputBase-input": { height: "100%", paddingRight: "50px" },
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
               border: "none",
@@ -55,20 +51,6 @@ export const CustomMeasurementEditField = ({
           },
         }}
       />
-      {editStatus === "LOADING" && (
-        <Box
-          sx={{
-            position: "absolute",
-            width: "25px",
-            height: "25px",
-            left: "5px",
-            top: "50%",
-            transform: "translateY(-50%)",
-          }}
-        >
-          <Loader lineColor="#000" />
-        </Box>
-      )}
-    </Box>
+    </EditCellLoader>
   );
 };
