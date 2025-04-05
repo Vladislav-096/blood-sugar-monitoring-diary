@@ -1,43 +1,27 @@
 {
   "measurements": [
     {
-      "id": "1",
-      "createdAt": 1727260055,
-      "updatedAt": 1743789706,
-      "time": "05:05",
-      "typeOfMeasurement": "1",
-      "measurement": 344
-    },
-    {
-      "id": "3",
-      "createdAt": 1727353655,
-      "updatedAt": 1727260055,
-      "time": "14:00",
-      "typeOfMeasurement": "4",
-      "measurement": 123
-    },
-    {
       "id": "6",
-      "createdAt": 1727368055,
-      "updatedAt": 1743790553,
-      "time": "14:00",
+      "createdAt": 1736542800,
+      "updatedAt": 1743816377,
+      "time": "05:15",
       "typeOfMeasurement": "1",
       "measurement": 112
     },
     {
       "id": "7",
       "createdAt": 1727371655,
-      "updatedAt": 1743683105,
+      "updatedAt": 1743815933,
       "time": "15:00",
       "typeOfMeasurement": "1",
-      "measurement": 555
+      "measurement": 345
     },
     {
       "id": "8",
       "createdAt": 1725138000,
-      "updatedAt": 1743795454,
+      "updatedAt": 1743816435,
       "time": "14:00",
-      "typeOfMeasurement": "4",
+      "typeOfMeasurement": "1",
       "measurement": 123,
       "afterMealMeasurement": {
         "meal": [
@@ -58,7 +42,7 @@
       "updatedAt": 1740145363,
       "time": "16:42",
       "typeOfMeasurement": "2",
-      "measurement": 888,
+      "measurement": 123,
       "afterMealMeasurement": {
         "meal": [
           {
@@ -67,6 +51,22 @@
           }
         ]
       }
+    },
+    {
+      "id": "019602f6-9d6a-7268-a124-f0a9314cf4e3",
+      "createdAt": 1743806426,
+      "time": "01:40",
+      "updatedAt": 1743806438,
+      "typeOfMeasurement": "1",
+      "measurement": 456
+    },
+    {
+      "id": "0196038b-de1d-74cb-a582-706edd93dec3",
+      "createdAt": 1743816214,
+      "time": "04:23",
+      "updatedAt": 1743816220,
+      "typeOfMeasurement": "1",
+      "measurement": 675
     }
   ],
   "typesOfMeasuremens": [

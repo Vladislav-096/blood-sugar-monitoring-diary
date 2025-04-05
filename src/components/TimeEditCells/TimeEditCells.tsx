@@ -6,17 +6,17 @@ import { useState } from "react";
 import { CheckoutState } from "../../types/types";
 import { EditCellLoader } from "../EditCellLoader/EditCellLoader";
 
-interface CustomTimePicker {
+interface TimeEditCells {
   initialValue: string;
   params: GridRenderEditCellParams;
   editStatus: CheckoutState;
 }
 
-export const CustomTimePicker = ({
+export const TimeEditCells = ({
   initialValue,
   params,
   editStatus,
-}: CustomTimePicker) => {
+}: TimeEditCells) => {
   const [convertedTime, setConvertedTime] = useState<string>(initialValue); // YYYY-MM-DDTHH:mm
 
   const handleOnTimeChange = (newValue: dayjs.Dayjs | null) => {

@@ -1,18 +1,18 @@
 import { TextField } from "@mui/material";
 import { GridRenderEditCellParams } from "@mui/x-data-grid";
 import { useState } from "react";
-import { CheckoutState } from "../types/types";
-import { EditCellLoader } from "./EditCellLoader/EditCellLoader";
+import { CheckoutState } from "../../types/types";
+import { EditCellLoader } from "../EditCellLoader/EditCellLoader";
 
-interface CustomMeasurementEditField {
+interface MeasurementRenderEditCells {
   params: GridRenderEditCellParams;
   editStatus: CheckoutState;
 }
 
-export const CustomMeasurementEditField = ({
+export const MeasurementRenderEditCells = ({
   params,
   editStatus,
-}: CustomMeasurementEditField) => {
+}: MeasurementRenderEditCells) => {
   const [measurementValue, setMeasurementValue] = useState<number>(
     Number(params.row.measurement)
   );

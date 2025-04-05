@@ -17,7 +17,7 @@ export const EditCellLoader = ({ children, editStatus }: EditCellLoader) => {
       }}
     >
       {children}
-      {editStatus === "READY" && (
+      {editStatus === "LOADING" && (
         <Box
           sx={{
             position: "absolute",

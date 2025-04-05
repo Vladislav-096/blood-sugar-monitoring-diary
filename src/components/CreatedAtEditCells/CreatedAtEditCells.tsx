@@ -6,17 +6,17 @@ import { useState } from "react";
 import { CheckoutState } from "../../types/types";
 import { EditCellLoader } from "../EditCellLoader/EditCellLoader";
 
-interface CustomDatePicker {
+interface CreatedAtEditCells {
   initialValue: string;
   params: GridRenderEditCellParams;
   editStatus: CheckoutState;
 }
 
-export const CustomDatePicker = ({
+export const CreatedAtEditCells = ({
   initialValue,
   params,
   editStatus,
-}: CustomDatePicker) => {
+}: CreatedAtEditCells) => {
   const [date, setDate] = useState<string>(initialValue); // YYYY-MM-DD
 
   const handleOnDateChange = (newValue: dayjs.Dayjs | null) => {

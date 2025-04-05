@@ -5,23 +5,21 @@ import { GridRenderEditCellParams } from "@mui/x-data-grid";
 import { CheckoutState } from "../../types/types";
 import { EditCellLoader } from "../EditCellLoader/EditCellLoader";
 
-interface CustomSelectTypeOfMeasurement {
+interface TypeOfMeasurementEditCells {
   typesOfMeasurements: TypesOfMeasurements;
-  // dispatchEditMeasurement: (data: MeasurementData) => void;
-  // row: MeasurementData;
   initialValue: string;
   params: GridRenderEditCellParams;
   editStatus: CheckoutState;
 }
 
-export const CustomSelectTypeOfMeasurement = ({
+export const TypeOfMeasurementEditCells = ({
   typesOfMeasurements,
   // dispatchEditMeasurement,
   // row,
   initialValue,
   params,
   editStatus,
-}: CustomSelectTypeOfMeasurement) => {
+}: TypeOfMeasurementEditCells) => {
   const [chosenOption, setChosenOption] = useState<string>(initialValue);
 
   const handleChange = (event: SelectChangeEvent<string>) => {

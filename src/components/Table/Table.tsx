@@ -1,8 +1,4 @@
-import {
-  Meals,
-  Measurement,
-  TypesOfMeasurements,
-} from "../../app/measurements";
+import { Measurement, TypesOfMeasurements } from "../../app/measurements";
 import {
   DataGrid,
   GridCellParams,
@@ -12,49 +8,42 @@ import {
   GridValidRowModel,
 } from "@mui/x-data-grid";
 import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
-import { Box, Button, Paper, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
-import AnnouncementIcon from "@mui/icons-material/Announcement";
+import { Paper } from "@mui/material";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { CheckoutState, MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import { initialAfterMealMeasurement } from "../../constants/constants";
-import { CustomSelectTypeOfMeasurement } from "../CustomSelectTypeOfMeasurement/CustomSelectTypeOfMeasurement";
-import { CustomDatePicker } from "../CustomDatePicker/CustomDatePicker";
+import { CreatedAtEditCells } from "../CreatedAtEditCells/CreatedAtEditCells";
 import {
   convertTime,
   convertTimestampToDate,
 } from "../../utils/dateTimeConvert";
 import dayjs from "dayjs";
 import { areObjectsEqual } from "../../utils/areObjectsEqual";
-import { CustomTimePicker } from "../CustomTimePicker/CustomTimePicker";
+import { TimeEditCells } from "../TimeEditCells/TimeEditCells";
 import { CustomTableToolbar } from "../CustomTableToolbar/CustomTableToolbar";
 import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
 import { CustomMeasurementTypeFilterField } from "../CustomMeasurementTypeFilterField/CustomMeasurementTypeFilterField";
 import { FetchMeasurementResponse } from "../../features/shared/slices/measurementsSlice";
-import { CustomMeasurementEditField } from "../CustomMeasurementEditField";
+import { MeasurementRenderEditCells } from "../MeasrementRenderEditCells/MeasurementRenderEditCells";
+import { ActionsCells } from "../ActionsCells/ActionsCells";
+import { MeasurementRenderCells } from "../MeasurementRenderCells/MeasurementRenderCells";
+import { TypeOfMeasurementEditCells } from "../TypeOfMeasurementEditCells/TypeOfMeasurementEditCells";
 
 interface Table {
   rows: Measurement[];
   typesOfMeasurement: TypesOfMeasurements;
-  dispatchFilteredMeasurements: (data: number) => void;
   dispatchRemoveMeasurement: (id: string) => void;
   dispatchEditMeasurementSync: (
     data: MeasurementData
   ) => Promise<FetchMeasurementResponse>;
   editStatus: CheckoutState;
-  // getMeasurementsStatus: CheckoutState;
-  // typesOfMeasurementStatus: CheckoutState;
 }
 
 export const Table = ({
   rows,
   typesOfMeasurement,
-  // getMeasurementsStatus,
-  // typesOfMeasurementStatus,
-  dispatchFilteredMeasurements,
   dispatchRemoveMeasurement,
   dispatchEditMeasurementSync,
   editStatus,
@@ -79,40 +68,6 @@ export const Table = ({
 
   console.log("Table");
 
-  const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: "#f5f5f9",
-      color: "rgba(0, 0, 0, 0.87)",
-      maxWidth: 220,
-      fontSize: theme.typography.pxToRem(12),
-      border: "1px solid #dadde9",
-    },
-  }));
-
-  // const commonRenderCell = (param: GridRenderCellParams) => {
-  //   return (
-  //     <HtmlTooltip title={param.value}>
-  //       <span>{param.value}</span>
-  //     </HtmlTooltip>
-  //   );
-  // };
-
-  // type Row = (typeof rows)[number];
-
-  // const editValue: GridValueSetter<Row> = (value, row) => {
-  //   Promise.resolve().then(() => {
-  //     const data = {
-  //       id: row.id as string,
-  //       data: { measurement: Number(value) },
-  //     };
-  //     dispatchEditMeasurement(data);
-  //   });
-
-  //   return { ...row, measurement: Number(value) };
-  // };
-
   const columns: GridColDef[] = [
     // {
     //   field: "id",
@@ -125,36 +80,17 @@ export const Table = ({
     {
       field: "actions",
       headerName: "Actions",
-      width: 180,
+      width: 100,
       headerAlign: "center",
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (param) => {
-        const currentRow: Measurement = param.row;
-        return (
-          <>
-            <Button
-              variant="text"
-              color="primary"
-              sx={{ textTransform: "none" }}
-              onClick={() => handleRowClick(currentRow.createdAt)}
-            >
-              Go to daily
-            </Button>
-            <Button
-              variant="text"
-              color="primary"
-              sx={{ textTransform: "none", color: "red" }}
-              onClick={() => {
-                setIdToRemove(currentRow.id);
-                handleOpenRemoveConfirmModal();
-              }}
-            >
-              Remove
-            </Button>
-          </>
-        );
-      },
+      renderCell: (param) => (
+        <ActionsCells
+          row={param.row}
+          setIdToRemove={setIdToRemove}
+          handleOpenRemoveConfirmModal={handleOpenRemoveConfirmModal}
+        />
+      ),
       filterable: false,
     },
     {
@@ -187,7 +123,7 @@ export const Table = ({
       editable: true,
       renderEditCell: (params: GridRenderEditCellParams) => {
         return (
-          <CustomDatePicker
+          <CreatedAtEditCells
             editStatus={editStatus}
             initialValue={convertTimestampToDate(params.value)} // YYYY-MM-DD
             params={params}
@@ -230,7 +166,7 @@ export const Table = ({
       editable: true,
       renderEditCell: (params: GridRenderEditCellParams) => {
         return (
-          <CustomTimePicker
+          <TimeEditCells
             editStatus={editStatus}
             initialValue={convertTime(params.value)}
             params={params}
@@ -278,12 +214,10 @@ export const Table = ({
       },
       editable: true,
       renderEditCell: (params: GridRenderEditCellParams) => (
-        <CustomSelectTypeOfMeasurement
+        <TypeOfMeasurementEditCells
           editStatus={editStatus}
           typesOfMeasurements={typesOfMeasurement}
           params={params}
-          // dispatchEditMeasurement={dispatchEditMeasurement}
-          // row={params.row}
           initialValue={params.value}
         />
       ),
@@ -292,46 +226,9 @@ export const Table = ({
       field: "measurement",
       headerName: "Measurement",
       width: 140,
-      renderCell: (param) => {
-        const currentRow: Measurement = param.row;
-        if (
-          currentRow.typeOfMeasurement === "2" &&
-          currentRow.afterMealMeasurement
-        ) {
-          const meals: Meals = currentRow.afterMealMeasurement?.meal;
-
-          return (
-            <Box>
-              <Typography sx={{ paddingRight: "25px" }} component="span">
-                {param.row.measurement}
-              </Typography>
-              <HtmlTooltip
-                title={
-                  <>
-                    {meals.map((item, index) => (
-                      <li key={index}>
-                        <span>{item.dish}</span> <span>{item.portion}</span>
-                      </li>
-                    ))}
-                  </>
-                }
-              >
-                <AnnouncementIcon />
-              </HtmlTooltip>
-            </Box>
-          );
-        }
-
-        return (
-          <Box>
-            <Typography sx={{ paddingRight: "25px" }} component="span">
-              {param.row.measurement}
-            </Typography>
-          </Box>
-        );
-      },
+      renderCell: (param) => <MeasurementRenderCells row={param.row} />,
       renderEditCell: (params: GridRenderEditCellParams) => (
-        <CustomMeasurementEditField params={params} editStatus={editStatus} />
+        <MeasurementRenderEditCells params={params} editStatus={editStatus} />
       ),
       editable: true,
     },
@@ -349,10 +246,6 @@ export const Table = ({
     pageSize: number;
   }) => {
     setPaginationModel(newPaginationModel);
-  };
-
-  const handleRowClick = (createdAt: number) => {
-    dispatchFilteredMeasurements(createdAt);
   };
 
   // const handleCellEditStop = (params: GridCellParams, event: MuiEvent) => {

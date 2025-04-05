@@ -135,7 +135,6 @@ export const DiaryTable = () => {
         // getTypesOfMeasurementStatus={getTypesOfMeasurementStatus}
         // getMeasurementsStatus={getMeasurementsStatus}
         typesOfMeasurement={typesOfMeasurement}
-        dispatchFilteredMeasurements={dispatchFilteredMeasurements}
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}
         dispatchEditMeasurementSync={dispatchEditMeasurementSync}
         // dispatchAfterMealMeasurement={dispatchAfterMealMeasurement}
