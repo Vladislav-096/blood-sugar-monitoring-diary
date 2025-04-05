@@ -1,19 +1,20 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { buttonDisabledStyles } from "../../constants/constants";
+import { RequestError } from "../../types/types";
 
 interface GetMeasurementsErrorNotification {
   refetch: () => void;
   //   measurementsError: string;
   //   typesOfMeasurementsError: string;
-  errorMessage: string;
+  error: RequestError;
 }
 
 export const GetMeasurementsErrorNotification = ({
   refetch,
   //   measurementsError,
   //   typesOfMeasurementsError,
-  errorMessage,
+  error,
 }: GetMeasurementsErrorNotification) => {
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -47,10 +48,10 @@ export const GetMeasurementsErrorNotification = ({
           }}
           variant="h5"
         >
-          {errorMessage}
+          {error.message}
         </Typography>
       </Box>
-      {errorMessage === "Server error" && (
+      {error.code === "500" && (
         <Button
           variant="contained"
           disabled={isDisabled}

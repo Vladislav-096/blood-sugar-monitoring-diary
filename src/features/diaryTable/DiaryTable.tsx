@@ -14,6 +14,7 @@ import { MeasurementData } from "../../types/types";
 import { recieveTypesOfMeasurements } from "../measurementModal/typesOfMeasurementsSlice";
 import { Loader } from "../../components/Loader/Loader";
 import { GetMeasurementsErrorNotification } from "../../components/GetMeasurementsErrorNotification/GetMeasurementsErrorNotification";
+import { requestErrorInitial } from "../../constants/constants";
 
 export const DiaryTable = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -63,12 +64,12 @@ export const DiaryTable = () => {
     (state) => state.measurements.checkoutEditMeasurementState
   );
 
-  const measurementsErrorMessage = useAppSelector(
-    (state) => state.measurements.errorGetMeasurementsMessage
+  const getMeasurementsError = useAppSelector(
+    (state) => state.measurements.errorGetMeasurements
   );
 
-  const typesOfMeasurementsErrorMessage = useAppSelector(
-    (state) => state.typesOfMeasurements.errorMessage
+  const typesOfMeasurementsError = useAppSelector(
+    (state) => state.typesOfMeasurements.error
   );
 
   useEffect(() => {
@@ -99,30 +100,30 @@ export const DiaryTable = () => {
     getMeasurementsStatus === "ERROR" ||
     getTypesOfMeasurementStatus === "ERROR"
   ) {
-    let error = "";
+    let error = requestErrorInitial;
     if (
-      measurementsErrorMessage === "" ||
-      typesOfMeasurementsErrorMessage === ""
+      getMeasurementsError.message === "" ||
+      typesOfMeasurementsError.message === ""
     ) {
-      error = measurementsErrorMessage
-        ? measurementsErrorMessage
-        : typesOfMeasurementsErrorMessage;
+      error = getMeasurementsError.message
+        ? getMeasurementsError
+        : typesOfMeasurementsError;
     } else if (
-      measurementsErrorMessage === "Server error" &&
-      typesOfMeasurementsErrorMessage === "Server error"
+      getMeasurementsError.code === "500" &&
+      typesOfMeasurementsError.code === "500"
     ) {
-      error = measurementsErrorMessage;
+      error = getMeasurementsError;
     } else {
       error =
-        measurementsErrorMessage !== "Server error"
-          ? measurementsErrorMessage
-          : typesOfMeasurementsErrorMessage;
+        getMeasurementsError.code !== "500"
+          ? getMeasurementsError
+          : typesOfMeasurementsError;
     }
     return (
       <GetMeasurementsErrorNotification
         // measurementsErrorMessage={measurementsErrorMessage}
-        // typesOfMeasurementsErrorMessage={typesOfMeasurementsErrorMessage}
-        errorMessage={error}
+        // typesOfMeasurementsError={typesOfMeasurementsError}
+        error={error}
         refetch={dispatchMeasurementsAndTypesOfMeasurements}
       />
     );

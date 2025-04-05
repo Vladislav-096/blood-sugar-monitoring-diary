@@ -6,7 +6,12 @@ import {
   Measurement,
   removeMeasurement,
 } from "../../../app/measurements";
-import { CheckoutState, MeasurementData } from "../../../types/types";
+import {
+  CheckoutState,
+  MeasurementData,
+  RequestError,
+} from "../../../types/types";
+import { requestErrorInitial } from "../../../constants/constants";
 
 interface MeasurementsState {
   measurements: Measurement[];
@@ -14,7 +19,7 @@ interface MeasurementsState {
   checkoutAddMeasurementState: CheckoutState;
   checkoutRemoveMeasurementState: CheckoutState;
   checkoutEditMeasurementState: CheckoutState;
-  errorGetMeasurementsMessage: string;
+  errorGetMeasurements: RequestError;
   errorAddMeasurementsMessage: string;
   errorRemoveMeasurementsMessage: string;
   errorEditMeasurementsMessage: string;
@@ -26,7 +31,7 @@ const initialState: MeasurementsState = {
   checkoutAddMeasurementState: "READY",
   checkoutRemoveMeasurementState: "READY",
   checkoutEditMeasurementState: "READY",
-  errorGetMeasurementsMessage: "",
+  errorGetMeasurements: requestErrorInitial,
   errorAddMeasurementsMessage: "",
   errorRemoveMeasurementsMessage: "",
   errorEditMeasurementsMessage: "",
@@ -67,9 +72,7 @@ export const fetchEditMeasurement = createAsyncThunk(
   }
 );
 
-export type FetchMeasurementResponse = ReturnType<
-  typeof fetchEditMeasurement
->;
+export type FetchMeasurementResponse = ReturnType<typeof fetchEditMeasurement>;
 
 // export type FetchMeasurementResponse = Promise<MeasurementData>;
 
@@ -92,7 +95,12 @@ export const measurementsSlice = createSlice({
     );
     builder.addCase(fetchGetMeasurements.rejected, (state, action) => {
       state.checkoutGetMeasurementsState = "ERROR";
-      state.errorGetMeasurementsMessage = action.error.message || "";
+      console.log("action", action);
+      const errorObject = {
+        code: action.error.code || "",
+        message: action.error.message || "",
+      };
+      state.errorGetMeasurements = errorObject || requestErrorInitial;
     });
     // add
     builder.addCase(fetchAddMeasurement.pending, (state) => {

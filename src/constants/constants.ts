@@ -14,3 +14,8 @@ export const buttonDisabledStyles = {
     backgroundColor: "#323232f7",
   },
 };
+
+export const requestErrorInitial = {
+  code: "",
+  message: "",
+};

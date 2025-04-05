@@ -3,18 +3,19 @@ import {
   getTypesOfMeasurements,
   TypesOfMeasurements,
 } from "../../app/measurements";
-import { CheckoutState } from "../../types/types";
+import { CheckoutState, RequestError } from "../../types/types";
+import { requestErrorInitial } from "../../constants/constants";
 
 interface TypesOfMeasurementsState {
   typesOfMeasurements: TypesOfMeasurements;
   checkoutState: CheckoutState;
-  errorMessage: string;
+  error: RequestError;
 }
 
 const initialState: TypesOfMeasurementsState = {
   typesOfMeasurements: [],
   checkoutState: "READY",
-  errorMessage: "",
+  error: requestErrorInitial,
 };
 
 export const recieveTypesOfMeasurements = createAsyncThunk(
@@ -43,7 +44,11 @@ export const typesOfMeasurementsSlice = createSlice({
     );
     builder.addCase(recieveTypesOfMeasurements.rejected, (state, action) => {
       state.checkoutState = "ERROR";
-      state.errorMessage = action.error.message || "";
+      const errorObject = {
+        code: action.error.code || "",
+        message: action.error.message || "",
+      };
+      state.error = errorObject || requestErrorInitial;
     });
   },
 });

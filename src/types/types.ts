@@ -50,6 +50,11 @@ export interface FormTypes {
   time: string;
 }
 
+export interface RequestError {
+  code: string;
+  message: string;
+}
+
 export const textFieldStyle = {
   ".MuiInputLabel-root": {
     color: "#9198a1",

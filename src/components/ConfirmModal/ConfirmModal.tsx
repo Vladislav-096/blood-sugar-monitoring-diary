@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { modalContentStyles } from "../../utils/modalContentStyles";
 import { CheckoutState } from "../../types/types";
+import { Loader } from "../Loader/Loader";
+import { useEffect } from "react";
 
 interface ConfirmModal {
   open: boolean;
@@ -25,7 +27,14 @@ export const ConfirmModal = ({
   handleClose,
   confirmFn,
   title,
+  status,
 }: ConfirmModal) => {
+  useEffect(() => {
+    if (status === "READY") {
+      handleClose();
+    }
+  }, [status]);
+
   return (
     <Modal
       open={open}
@@ -54,11 +63,26 @@ export const ConfirmModal = ({
             <Button
               onClick={() => {
                 confirmFn(idToRemove);
-                handleClose();
               }}
               variant="contained"
+              sx={{
+                position: "relative",
+                paddingRight: status === "LOADING" ? "33px" : "16px",
+              }}
             >
-              Yes
+              <Typography>yes</Typography>
+              {status === "LOADING" && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    width: "19%",
+                    height: "60%",
+                    right: "7px",
+                  }}
+                >
+                  <Loader />
+                </Box>
+              )}
             </Button>
             <Button onClick={handleClose} variant="contained">
               No
