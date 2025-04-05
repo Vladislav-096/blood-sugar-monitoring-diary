@@ -64,7 +64,7 @@ export const getMeasurements = async (
     });
 };
 
-export const getTypesOfMeasuremens = async () => {
+export const getTypesOfMeasurements = async () => {
   return fetch(`${API_URL}/typesOfMeasuremens`, {
     method: "GET",
   })
@@ -72,7 +72,7 @@ export const getTypesOfMeasuremens = async () => {
     .then((res) => res.json())
     .then((data) => TypesOfMeasurementsSchema.parse(data))
     .catch((err) => {
-      console.log("getTypesOfMeasuremens functions error", err);
+      console.log("getTypesOfMeasurements functions error", err);
       throw err;
     });
 };

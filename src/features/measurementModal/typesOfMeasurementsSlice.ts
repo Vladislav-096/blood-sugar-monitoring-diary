@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  getTypesOfMeasuremens,
+  getTypesOfMeasurements,
   TypesOfMeasurements,
 } from "../../app/measurements";
 import { CheckoutState } from "../../types/types";
@@ -20,7 +20,7 @@ const initialState: TypesOfMeasurementsState = {
 export const recieveTypesOfMeasurements = createAsyncThunk(
   "typesOfMeasurements/recieveTypesOfMeasurements",
   async () => {
-    const typesOfMeasurements = await getTypesOfMeasuremens();
+    const typesOfMeasurements = await getTypesOfMeasurements();
     return typesOfMeasurements;
   }
 );

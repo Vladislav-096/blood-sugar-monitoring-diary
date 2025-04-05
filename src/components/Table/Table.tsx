@@ -334,20 +334,6 @@ export const Table = ({
     }
   };
 
-  // if (
-  //   getMeasurementsStatus === "LOADING" &&
-  //   typesOfMeasurementStatus === "LOADING"
-  // ) {
-  //   return <div style={{ color: "white" }}>Загрузочка</div>;
-  // }
-
-  // if (
-  //   getMeasurementsStatus === "ERROR" ||
-  //   typesOfMeasurementStatus === "ERROR"
-  // ) {
-  //   return <div style={{ color: "white" }}>Ошибочка</div>;
-  // }
-
   return (
     <>
       <Paper sx={{ margin: "0 auto", height: "83.5vh", width: "711px" }}>
