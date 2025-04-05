@@ -42,7 +42,7 @@
       "updatedAt": 1740145363,
       "time": "16:42",
       "typeOfMeasurement": "2",
-      "measurement": 123,
+      "measurement": 121,
       "afterMealMeasurement": {
         "meal": [
           {
@@ -67,6 +67,14 @@
       "updatedAt": 1743816220,
       "typeOfMeasurement": "1",
       "measurement": 675
+    },
+    {
+      "id": "0196039d-8d42-7254-9701-14b5fd49a88b",
+      "createdAt": 1743817321,
+      "time": "04:42",
+      "updatedAt": 1743817379,
+      "typeOfMeasurement": "1",
+      "measurement": 666
     }
   ],
   "typesOfMeasuremens": [

@@ -35,6 +35,7 @@ import {
   convertTimestampToDate,
 } from "../../utils/dateTimeConvert";
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
+import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 
 interface MeasurementModal {
   open: boolean;
@@ -49,12 +50,6 @@ interface FormTypes {
   afterMealMeasurement: AfterMealMeasurement;
   measurement: string;
 }
-
-// interface afterMealFields {
-//   id: string;
-//   dish: string;
-//   portion: string;
-// }
 
 const testRules = {
   required: "Надо заполнить",
@@ -75,7 +70,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const typeOfMeasurementsState = useAppSelector(
     (state) => state.typesOfMeasurements
   );
-  const addMeasurementsErrorStatus = useAppSelector(
+  const addMeasurementsStatus = useAppSelector(
     (state) => state.measurements.checkoutAddMeasurementState
   );
 
@@ -429,9 +424,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   )}
                 />
               </FormControl>
-              <Button type="submit" variant="contained">
-                submit
-              </Button>
+              <SubmitModalButton
+                requestStatus={addMeasurementsStatus}
+                buttonName={"submit"}
+              />
             </form>
           </Box>
         </Fade>
@@ -440,7 +436,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
         title={alertAddMeasurementError}
         isAlert={isAlert}
         setIsAlert={setIsAlert}
-        status={addMeasurementsErrorStatus}
+        status={addMeasurementsStatus}
       />
     </>
   );

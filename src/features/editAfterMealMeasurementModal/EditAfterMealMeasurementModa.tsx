@@ -22,7 +22,7 @@ import { modalContentStyles } from "../../utils/modalContentStyles";
 import styles from "./editAfterMealMeasurementModal.module.scss";
 import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
-import { Loader } from "../../components/Loader/Loader";
+import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 
 interface EditAfterMeasurementModal {
   afterMealMeasurement: MeasurementData;
@@ -290,29 +290,10 @@ export const EditAfterMeasurementModal = ({
                   )}
                 />
               </FormControl>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  position: "relative",
-                  paddingRight:
-                    editMeasurementsErrorStatus === "LOADING" ? "33px" : "16px",
-                }}
-              >
-                <Typography>submit</Typography>
-                {editMeasurementsErrorStatus === "LOADING" && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      width: "19%",
-                      height: "60%",
-                      right: "7px",
-                    }}
-                  >
-                    <Loader />
-                  </Box>
-                )}
-              </Button>
+              <SubmitModalButton
+                requestStatus={editMeasurementsErrorStatus}
+                buttonName={"submit"}
+              />
             </form>
           </Box>
         </Fade>
