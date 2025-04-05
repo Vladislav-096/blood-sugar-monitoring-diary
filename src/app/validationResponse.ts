@@ -1,10 +1,3 @@
-// class CustomError extends Error {
-//   constructor(public code: number, message: string) {
-//     super(message);
-//     this.name = this.constructor.name;
-//   }
-// }
-
 class CustomError extends Error {
   public readonly code: string; // Явно объявляем как string
 

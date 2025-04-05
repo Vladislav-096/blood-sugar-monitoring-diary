@@ -20,9 +20,9 @@ interface MeasurementsState {
   checkoutRemoveMeasurementState: CheckoutState;
   checkoutEditMeasurementState: CheckoutState;
   errorGetMeasurements: RequestError;
-  errorAddMeasurementsMessage: string;
-  errorRemoveMeasurementsMessage: string;
-  errorEditMeasurementsMessage: string;
+  errorAddMeasurements: RequestError;
+  errorRemoveMeasurements: RequestError;
+  errorEditMeasurements: RequestError;
 }
 
 const initialState: MeasurementsState = {
@@ -32,9 +32,9 @@ const initialState: MeasurementsState = {
   checkoutRemoveMeasurementState: "READY",
   checkoutEditMeasurementState: "READY",
   errorGetMeasurements: requestErrorInitial,
-  errorAddMeasurementsMessage: "",
-  errorRemoveMeasurementsMessage: "",
-  errorEditMeasurementsMessage: "",
+  errorAddMeasurements: requestErrorInitial,
+  errorRemoveMeasurements: requestErrorInitial,
+  errorEditMeasurements: requestErrorInitial,
 };
 
 export const fetchGetMeasurements = createAsyncThunk(
@@ -114,8 +114,13 @@ export const measurementsSlice = createSlice({
       }
     );
     builder.addCase(fetchAddMeasurement.rejected, (state, action) => {
+      //
       state.checkoutAddMeasurementState = "ERROR";
-      state.errorAddMeasurementsMessage = action.error.message || "";
+      const errorObject = {
+        code: action.error.code || "",
+        message: action.error.message || "",
+      };
+      state.errorAddMeasurements = errorObject || requestErrorInitial;
     });
     // remove
     builder.addCase(fetchRemoveMeasurement.pending, (state) => {
@@ -133,7 +138,11 @@ export const measurementsSlice = createSlice({
     );
     builder.addCase(fetchRemoveMeasurement.rejected, (state, action) => {
       state.checkoutRemoveMeasurementState = "ERROR";
-      state.errorAddMeasurementsMessage = action.error.message || "";
+      const errorObject = {
+        code: action.error.code || "",
+        message: action.error.message || "",
+      };
+      state.errorAddMeasurements = errorObject || requestErrorInitial;
     });
     // edit
     builder.addCase(fetchEditMeasurement.pending, (state) => {
@@ -154,7 +163,11 @@ export const measurementsSlice = createSlice({
     );
     builder.addCase(fetchEditMeasurement.rejected, (state, action) => {
       state.checkoutEditMeasurementState = "ERROR";
-      state.errorEditMeasurementsMessage = action.error.message || "";
+      const errorObject = {
+        code: action.error.code || "",
+        message: action.error.message || "",
+      };
+      state.errorEditMeasurements = errorObject || requestErrorInitial;
     });
   },
 });
