@@ -45,7 +45,7 @@ export interface filters extends Record<string, string> {
 export const getMeasurements = async (
   filters?: filters
 ): Promise<Measurement[]> => {
-  let url = `${API_URL}/measurements`;
+  let url = `${API_URL}/measurement`;
 
   if (filters) {
     const queryParams = new URLSearchParams(filters).toString();

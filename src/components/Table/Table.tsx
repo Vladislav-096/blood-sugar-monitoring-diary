@@ -35,10 +35,12 @@ interface Table {
   rows: Measurement[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchRemoveMeasurement: (id: string) => void;
+  // Тут хуета написана, нету типа никакого, решить эту проблему
   dispatchEditMeasurementSync: (
     data: MeasurementData
   ) => Promise<FetchMeasurementResponse>;
   editStatus: CheckoutState;
+  removeStatus: CheckoutState;
 }
 
 export const Table = ({
@@ -47,6 +49,7 @@ export const Table = ({
   dispatchRemoveMeasurement,
   dispatchEditMeasurementSync,
   editStatus,
+  removeStatus,
 }: Table) => {
   const defaultMeasurementValue = "Just Measurement";
   const [openRemoveConfirmModal, setOpenRemoveConfirmModal] =
@@ -248,16 +251,6 @@ export const Table = ({
     setPaginationModel(newPaginationModel);
   };
 
-  // const handleCellEditStop = (params: GridCellParams, event: MuiEvent) => {
-  // console.log(params.id);
-  // const fieldName = params.field;
-  // const data = {
-  //   id: params.id as string,
-  //   data: { [fieldName]: params.value },
-  // };
-  // dispatchEditMeasurement(data);
-  // };
-
   const useEditMutation = () => {
     return React.useCallback(async (data: MeasurementData) => {
       const res = dispatchEditMeasurementSync(data);
@@ -363,6 +356,7 @@ export const Table = ({
         />
       </Paper>
       <ConfirmModal
+        status={removeStatus}
         open={openRemoveConfirmModal}
         idToRemove={idToRemove}
         handleClose={handleCloseRemoveConfirmCloseModal}

@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { modalContentStyles } from "../../utils/modalContentStyles";
+import { CheckoutState } from "../../types/types";
 
 interface ConfirmModal {
   open: boolean;
@@ -15,6 +16,7 @@ interface ConfirmModal {
   handleClose: () => void;
   confirmFn: (id: string) => void;
   title: string;
+  status: CheckoutState;
 }
 
 export const ConfirmModal = ({

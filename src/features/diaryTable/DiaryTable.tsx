@@ -20,7 +20,6 @@ export const DiaryTable = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   console.log("Diary");
 
@@ -29,15 +28,12 @@ export const DiaryTable = () => {
     dispatch(recieveTypesOfMeasurements());
   };
 
-  const dispatchFilteredMeasurements = (data: number) => {
-    dispatch(recieveFilteredMeasurements(data));
-    navigate("./daily");
-  };
-
   const dispatchRemoveMeasurement = (id: string) => {
     dispatch(fetchRemoveMeasurement(id));
   };
 
+  // Как то бы вевысти тип из этой функции. Но я его не экспортировать не могу отсюда,
+  // не передать пропсом (типы же пропросм нельзя передать?)
   const dispatchEditMeasurementSync = async (data: MeasurementData) => {
     const response = await dispatch(fetchEditMeasurement(data));
     return response;
@@ -55,25 +51,25 @@ export const DiaryTable = () => {
     (state) => state.typesOfMeasurements.typesOfMeasurements
   );
 
+  const removeMeasurementStatus = useAppSelector(
+    (state) => state.measurements.checkoutRemoveMeasurementState
+  );
+
   const getTypesOfMeasurementStatus = useAppSelector(
     (state) => state.typesOfMeasurements.checkoutState
   );
 
-  const editMeasurementsErrorStatus = useAppSelector(
+  const editMeasurementsStatus = useAppSelector(
     (state) => state.measurements.checkoutEditMeasurementState
   );
 
-  const measurementsError = useAppSelector(
+  const measurementsErrorMessage = useAppSelector(
     (state) => state.measurements.errorGetMeasurementsMessage
   );
 
-  const typesOfMeasurementsError = useAppSelector(
+  const typesOfMeasurementsErrorMessage = useAppSelector(
     (state) => state.typesOfMeasurements.errorMessage
   );
-
-  // const dispatchAfterMealMeasurement = (data: afterMealMeasurementData) => {
-  //   dispatch(afterMealMeasurementSlice.actions.editAfterMealMeasurement(data));
-  // };
 
   useEffect(() => {
     dispatchMeasurementsAndTypesOfMeasurements();
@@ -104,23 +100,28 @@ export const DiaryTable = () => {
     getTypesOfMeasurementStatus === "ERROR"
   ) {
     let error = "";
-    if (measurementsError === "" || typesOfMeasurementsError === "") {
-      error = measurementsError ? measurementsError : typesOfMeasurementsError;
-    } else if (
-      measurementsError === "Server error" &&
-      typesOfMeasurementsError === "Server error"
+    if (
+      measurementsErrorMessage === "" ||
+      typesOfMeasurementsErrorMessage === ""
     ) {
-      error = measurementsError;
+      error = measurementsErrorMessage
+        ? measurementsErrorMessage
+        : typesOfMeasurementsErrorMessage;
+    } else if (
+      measurementsErrorMessage === "Server error" &&
+      typesOfMeasurementsErrorMessage === "Server error"
+    ) {
+      error = measurementsErrorMessage;
     } else {
       error =
-        measurementsError !== "Server error"
-          ? measurementsError
-          : typesOfMeasurementsError;
+        measurementsErrorMessage !== "Server error"
+          ? measurementsErrorMessage
+          : typesOfMeasurementsErrorMessage;
     }
     return (
       <GetMeasurementsErrorNotification
-        // measurementsError={measurementsError}
-        // typesOfMeasurementsError={typesOfMeasurementsError}
+        // measurementsErrorMessage={measurementsErrorMessage}
+        // typesOfMeasurementsErrorMessage={typesOfMeasurementsErrorMessage}
         errorMessage={error}
         refetch={dispatchMeasurementsAndTypesOfMeasurements}
       />
@@ -131,13 +132,13 @@ export const DiaryTable = () => {
     <>
       <Table
         rows={measurements}
-        editStatus={editMeasurementsErrorStatus}
+        editStatus={editMeasurementsStatus}
+        removeStatus={removeMeasurementStatus}
         // getTypesOfMeasurementStatus={getTypesOfMeasurementStatus}
         // getMeasurementsStatus={getMeasurementsStatus}
         typesOfMeasurement={typesOfMeasurement}
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}
         dispatchEditMeasurementSync={dispatchEditMeasurementSync}
-        // dispatchAfterMealMeasurement={dispatchAfterMealMeasurement}
       />
       <Button onClick={handleOpen} variant="contained">
         add measurement
