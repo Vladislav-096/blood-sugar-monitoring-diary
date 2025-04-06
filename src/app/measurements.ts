@@ -104,7 +104,7 @@ export const editMeasurement = async (data: MeasurementData) => {
 };
 
 export const removeMeasurement = async (id: string) => {
-  return fetch(`${API_URL}/measurement/${id}`, {
+  return fetch(`${API_URL}/measurements/${id}`, {
     method: "DELETE",
     headers: { "Content-type": "application/json" },
   })

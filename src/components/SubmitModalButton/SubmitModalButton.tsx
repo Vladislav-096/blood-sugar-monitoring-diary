@@ -1,6 +1,7 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Loader } from "../Loader/Loader";
 import { CheckoutState } from "../../types/types";
+import { CustomTypography } from "../CustomTypography/CustomTypography";
 
 interface SubmitModalButton {
   requestStatus: CheckoutState;
@@ -20,7 +21,7 @@ export const SubmitModalButton = ({
         paddingRight: requestStatus === "LOADING" ? "33px" : "16px",
       }}
     >
-      <Typography>{buttonName}</Typography>
+      <CustomTypography text={buttonName} />
       {requestStatus === "LOADING" && (
         <Box
           sx={{

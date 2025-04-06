@@ -7,8 +7,6 @@ import {
   fetchGetMeasurements,
   fetchRemoveMeasurement,
 } from "../shared/slices/measurementsSlice";
-import { recieveFilteredMeasurements } from "./oneDayMeasurementsSlice";
-import { useNavigate } from "react-router";
 import { Table } from "../../components/Table/Table";
 import { MeasurementData } from "../../types/types";
 import { recieveTypesOfMeasurements } from "../measurementModal/typesOfMeasurementsSlice";

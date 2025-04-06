@@ -4,10 +4,10 @@ import {
   Tooltip,
   tooltipClasses,
   TooltipProps,
-  Typography,
 } from "@mui/material";
 import { Meals, Measurement } from "../../app/measurements";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
+import { CustomTypography } from "../CustomTypography/CustomTypography";
 
 interface MeasurementRenderCells {
   row: Measurement;
@@ -31,9 +31,14 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
 
     return (
       <Box>
-        <Typography sx={{ paddingRight: "25px" }} component="span">
-          {row.measurement}
-        </Typography>
+        <CustomTypography
+          text={row.measurement}
+          styles={{
+            paddingRight: "25px",
+            fontSize: "14px",
+          }}
+          componentProp="span"
+        />
         <HtmlTooltip
           title={
             <>
@@ -53,9 +58,14 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
 
   return (
     <Box>
-      <Typography sx={{ paddingRight: "25px" }} component="span">
-        {row.measurement}
-      </Typography>
+      <CustomTypography
+        text={row.measurement}
+        styles={{
+          paddingRight: "25px",
+          fontSize: "14px",
+        }}
+        componentProp="span"
+      />
     </Box>
   );
 };

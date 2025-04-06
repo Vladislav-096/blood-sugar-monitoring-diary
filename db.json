@@ -1,31 +1,11 @@
 {
   "measurements": [
     {
-      "id": "8",
-      "createdAt": 1725138000,
-      "updatedAt": 1743816435,
-      "time": "14:00",
-      "typeOfMeasurement": "1",
-      "measurement": 123,
-      "afterMealMeasurement": {
-        "meal": [
-          {
-            "portion": 123,
-            "dish": "qqq"
-          },
-          {
-            "portion": 321,
-            "dish": "www"
-          }
-        ]
-      }
-    },
-    {
       "id": "019528bf-0b4e-706a-ac90-5eb7b8a5d65d",
-      "createdAt": 1740145328,
-      "updatedAt": 1740145363,
-      "time": "16:42",
-      "typeOfMeasurement": "2",
+      "createdAt": 1740171600,
+      "updatedAt": 1743942271,
+      "time": "16:22",
+      "typeOfMeasurement": "1",
       "measurement": 121,
       "afterMealMeasurement": {
         "meal": [
@@ -38,19 +18,35 @@
     },
     {
       "id": "0196038b-de1d-74cb-a582-706edd93dec3",
-      "createdAt": 1743816214,
-      "time": "04:23",
-      "updatedAt": 1743816220,
+      "createdAt": 1743541200,
+      "updatedAt": 1743942356,
+      "time": "04:11",
       "typeOfMeasurement": "1",
       "measurement": 675
     },
     {
-      "id": "0196039d-8d42-7254-9701-14b5fd49a88b",
-      "createdAt": 1743817321,
-      "time": "04:42",
-      "updatedAt": 1743817379,
+      "id": "01960b09-f0c9-71da-afc3-a7388c6d1aeb",
+      "createdAt": 1739912400,
+      "updatedAt": 1743942302,
+      "time": "15:18",
       "typeOfMeasurement": "1",
-      "measurement": 666
+      "measurement": 55
+    },
+    {
+      "id": "01960b14-7c86-755f-82ee-b71065ddf7c1",
+      "createdAt": 1743942253,
+      "updatedAt": 1743942614,
+      "time": "15:24",
+      "typeOfMeasurement": "2",
+      "measurement": 222,
+      "afterMealMeasurement": {
+        "meal": [
+          {
+            "portion": 123,
+            "dish": "qwe"
+          }
+        ]
+      }
     }
   ],
   "typesOfMeasuremens": [

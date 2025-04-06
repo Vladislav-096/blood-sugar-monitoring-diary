@@ -1,17 +1,10 @@
-import {
-  Backdrop,
-  Box,
-  Button,
-  Fade,
-  Modal,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Backdrop, Box, Button, Fade, Modal, Stack } from "@mui/material";
 import { modalContentStyles } from "../../utils/modalContentStyles";
 import { CheckoutState } from "../../types/types";
 import { Loader } from "../Loader/Loader";
 import { useEffect, useState } from "react";
 import { CustomErrorAlert } from "../CustomErrorAlert/CustomErrorAlert";
+import { CustomTypography } from "../CustomTypography/CustomTypography";
 
 interface ConfirmModal {
   open: boolean;
@@ -57,14 +50,7 @@ export const ConfirmModal = ({
       >
         <Fade in={open}>
           <Box sx={modalContentStyles}>
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              sx={{ fontFamily: '"Play"', color: "#f0f6fc" }}
-            >
-              {title}
-            </Typography>
+            <CustomTypography componentProp="h2" text={title} />
             <Stack spacing={2} direction="row">
               <Button
                 onClick={() => {
@@ -76,7 +62,7 @@ export const ConfirmModal = ({
                   paddingRight: status === "LOADING" ? "33px" : "16px",
                 }}
               >
-                <Typography>yes</Typography>
+                <CustomTypography text="yes" />
                 {status === "LOADING" && (
                   <Box
                     sx={{
@@ -91,7 +77,7 @@ export const ConfirmModal = ({
                 )}
               </Button>
               <Button onClick={handleClose} variant="contained">
-                No
+                <CustomTypography text="no" />
               </Button>
             </Stack>
           </Box>

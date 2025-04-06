@@ -6,7 +6,6 @@ export const Header = () => {
       <Link to={"/"} style={{ marginRight: "22px" }}>
         Main
       </Link>
-      <Link to={"/daily"}>Daily</Link>
     </div>
   );
 };

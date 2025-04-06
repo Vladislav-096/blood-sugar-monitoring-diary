@@ -16,13 +16,13 @@ import {
   FormControl,
   Modal,
   TextField,
-  Typography,
 } from "@mui/material";
 import { modalContentStyles } from "../../utils/modalContentStyles";
 import styles from "./editAfterMealMeasurementModal.module.scss";
 import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
+import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
 
 interface EditAfterMeasurementModal {
   afterMealMeasurement: MeasurementData;
@@ -176,14 +176,11 @@ export const EditAfterMeasurementModal = ({
       >
         <Fade in={open}>
           <Box sx={modalContentStyles}>
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              sx={{ fontFamily: '"Play"', color: "#f0f6fc" }}
-            >
-              Edit measurement
-            </Typography>
+            <CustomTypography
+              text="Edit measurement"
+              componentProp="h2"
+              color="#f0f6fc"
+            />
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
               <FormControl fullWidth>
                 <Controller

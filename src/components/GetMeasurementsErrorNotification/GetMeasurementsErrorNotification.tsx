@@ -1,7 +1,8 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import { buttonDisabledStyles } from "../../constants/constants";
 import { RequestError } from "../../types/types";
+import { CustomTypography } from "../CustomTypography/CustomTypography";
 
 interface GetMeasurementsErrorNotification {
   refetch: () => void;
@@ -42,14 +43,11 @@ export const GetMeasurementsErrorNotification = ({
       }}
     >
       <Box>
-        <Typography
-          sx={{
-            marginBottom: "10px",
-          }}
-          variant="h5"
-        >
-          {error.message}
-        </Typography>
+        <CustomTypography
+          text={error.message}
+          componentProp="h1"
+          styles={{ marginBottom: "10px", fontSize: "27px" }}
+        />
       </Box>
       {error.code === "500" && (
         <Button

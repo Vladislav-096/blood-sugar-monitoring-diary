@@ -8,7 +8,6 @@ import {
   MenuItem,
   Modal,
   TextField,
-  Typography,
 } from "@mui/material";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styles from "./measurementModal.module.scss";
@@ -36,6 +35,7 @@ import {
 } from "../../utils/dateTimeConvert";
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
+import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
 
 interface MeasurementModal {
   open: boolean;
@@ -252,14 +252,11 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       >
         <Fade in={open}>
           <Box sx={modalContentStyles}>
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              sx={{ fontFamily: '"Play"', color: "#f0f6fc" }}
-            >
-              Add new measurement
-            </Typography>
+            <CustomTypography
+              componentProp="h2"
+              text="Add new measurement"
+              color="#f0f6fc"
+            />
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
               <FormControl error={errors.createdAt ? true : false} fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

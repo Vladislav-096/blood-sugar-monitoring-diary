@@ -335,7 +335,18 @@ export const Table = ({
           columns={columns}
           paginationModel={paginationModel}
           pageSizeOptions={[5]}
-          sx={{ border: 0 }}
+          sx={{
+            border: 0,
+            fontFamily: "'Play'",
+            // Заголовки колонок
+            "& .MuiDataGrid-columnHeaders": {
+              fontSize: "16px",
+            },
+            // Ячейки
+            "& .MuiDataGrid-cell": {
+              fontSize: "14px", // Устанавливаем размер шрифта для всех ячеек
+            },
+          }}
           disableRowSelectionOnClick
           onPaginationModelChange={handlePaginationModelChange}
           processRowUpdate={processRowUpdate}
