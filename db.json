@@ -47,14 +47,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "01960c12-86e1-765f-8b89-03b65edb33d9",
-      "createdAt": 1743959154,
-      "updatedAt": 1743970959,
-      "time": "20:05",
-      "typeOfMeasurement": "1",
-      "measurement": 123
     }
   ],
   "typesOfMeasuremens": [

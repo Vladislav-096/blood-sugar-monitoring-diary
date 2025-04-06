@@ -51,15 +51,19 @@ interface FormTypes {
   measurement: string;
 }
 
-const testRules = {
-  required: "Надо заполнить",
-};
-
-const dateRules = {
-  required: "This field is required",
-  pattern: {
-    value: /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/,
-    message: "Please enter date in format dd.mm.yyyy",
+const validationRules = {
+  testRules: {
+    required: "Надо заполнить",
+  },
+  createdAt: {
+    required: "This field is required",
+    validate: (value: number) => {
+      const date = dayjs.unix(value);
+      if (!date.isValid()) return "Invalid date format";
+      if (date.isBefore(dayjs("1900-01-01"))) return "Date too early";
+      if (date.isAfter(dayjs("2099-12-31"))) return "Date too late";
+      return true;
+    },
   },
 };
 
@@ -91,6 +95,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       const newDate = newValue.unix();
       setCreatedAt(newValue.format("YYYY-MM-DD"));
       setValue("createdAt", newDate);
+      trigger("createdAt");
     }
   };
 
@@ -263,7 +268,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   <Controller
                     name="createdAt"
                     control={control}
-                    rules={dateRules}
+                    rules={validationRules.createdAt}
                     render={() => (
                       <DatePicker
                         label="Date"
@@ -285,7 +290,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   <Controller
                     name="time"
                     control={control}
-                    rules={testRules}
+                    rules={validationRules.testRules}
                     render={() => (
                       <TimePicker
                         label="Time"
@@ -306,7 +311,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                 <Controller
                   name="typeOfMeasurement"
                   control={control}
-                  rules={testRules}
+                  rules={validationRules.testRules}
                   render={() => (
                     <TextField
                       select
@@ -339,7 +344,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         <Controller
                           name={`afterMealMeasurement.meal.${index}.dish`}
                           control={control}
-                          rules={testRules}
+                          rules={validationRules.testRules}
                           render={({ field }) => (
                             <TextField
                               {...field}
@@ -363,7 +368,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         <Controller
                           name={`afterMealMeasurement.meal.${index}.portion`}
                           control={control}
-                          rules={testRules}
+                          rules={validationRules.testRules}
                           render={({ field }) => (
                             <TextField
                               {...field}
@@ -407,7 +412,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                 <Controller
                   name="measurement"
                   control={control}
-                  rules={testRules}
+                  rules={validationRules.testRules}
                   render={() => (
                     <TextField
                       value={measurement}
