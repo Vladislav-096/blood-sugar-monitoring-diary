@@ -270,20 +270,28 @@ export const Table = ({
     ) => {
       const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
 
+      console.log(oldRow);
+      console.log(newRow);
+
       if (!areObjectsTheSame) {
-        const row = {
-          ...newRow,
+        const row: MeasurementData = {
+          ...(newRow as MeasurementData),
           updatedAt: dayjs().unix(),
           measurement: Number(newRow.measurement),
         };
 
-        console.log("row", row);
+        if (
+          oldRow.typeOfMeasurement === "2" &&
+          newRow.typeOfMeasurement !== "2"
+        ) {
+          delete row.afterMealMeasurement;
+        }
 
+        console.log(row);
         const res = await mutateRow(row as MeasurementData);
 
-        console.log("res", res);
         if (res.payload) {
-          return newRow;
+          return row;
         }
         return oldRow;
       } else {
@@ -303,7 +311,6 @@ export const Table = ({
     // event: MuiEvent,
     // details: GridCallbackDetails
   ) => {
-    console.log("params", params);
     if (
       params.field === "measurement" &&
       params.row.typeOfMeasurement === "2"
@@ -317,8 +324,6 @@ export const Table = ({
       // };
 
       const data: MeasurementData = params.row;
-
-      console.log("data", data);
 
       setAfterMealMeasurement(data);
 

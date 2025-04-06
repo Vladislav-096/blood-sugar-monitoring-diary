@@ -19,15 +19,15 @@
     {
       "id": "0196038b-de1d-74cb-a582-706edd93dec3",
       "createdAt": 1743541200,
-      "updatedAt": 1743942356,
+      "updatedAt": 1743959215,
       "time": "04:11",
-      "typeOfMeasurement": "1",
+      "typeOfMeasurement": "3",
       "measurement": 675
     },
     {
       "id": "01960b09-f0c9-71da-afc3-a7388c6d1aeb",
       "createdAt": 1739912400,
-      "updatedAt": 1743956006,
+      "updatedAt": 1743964754,
       "time": "15:18",
       "typeOfMeasurement": "2",
       "measurement": 55
@@ -47,6 +47,14 @@
           }
         ]
       }
+    },
+    {
+      "id": "01960c12-86e1-765f-8b89-03b65edb33d9",
+      "createdAt": 1743959154,
+      "updatedAt": 1743970959,
+      "time": "20:05",
+      "typeOfMeasurement": "1",
+      "measurement": 123
     }
   ],
   "typesOfMeasuremens": [

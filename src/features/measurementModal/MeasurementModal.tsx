@@ -19,7 +19,6 @@ import {
   AfterMealMeasurement,
   FieldName,
   MeasurementData,
-  textFieldStyle,
 } from "../../types/types";
 import { modalContentStyles } from "../../utils/modalContentStyles";
 import {
@@ -36,6 +35,7 @@ import {
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
+import { textFieldStyle } from "../../constants/constants";
 
 interface MeasurementModal {
   open: boolean;

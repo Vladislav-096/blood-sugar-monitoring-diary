@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  FieldName,
-  FormTypes,
-  MeasurementData,
-  textFieldStyle,
-} from "../../types/types";
+import { FieldName, FormTypes, MeasurementData } from "../../types/types";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { fetchEditMeasurement } from "../shared/slices/measurementsSlice";
 import {
@@ -19,7 +14,10 @@ import {
 } from "@mui/material";
 import { modalContentStyles } from "../../utils/modalContentStyles";
 import styles from "./editAfterMealMeasurementModal.module.scss";
-import { initialAfterMealMeasurement } from "../../constants/constants";
+import {
+  initialAfterMealMeasurement,
+  textFieldStyle,
+} from "../../constants/constants";
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
