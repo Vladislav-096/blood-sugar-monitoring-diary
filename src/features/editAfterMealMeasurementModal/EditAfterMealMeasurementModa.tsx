@@ -23,6 +23,8 @@ import { initialAfterMealMeasurement } from "../../constants/constants";
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
+import dayjs from "dayjs";
+import { areObjectsEqual } from "../../utils/areObjectsEqual";
 
 interface EditAfterMeasurementModal {
   afterMealMeasurement: MeasurementData;
@@ -107,7 +109,7 @@ export const EditAfterMeasurementModal = ({
   };
 
   const onSubmit = async (formData: FormTypes) => {
-    const data = {
+    const data: MeasurementData = {
       id: afterMealMeasurement.id,
       createdAt: afterMealMeasurement.createdAt,
       updatedAt: afterMealMeasurement.updatedAt,
@@ -122,8 +124,20 @@ export const EditAfterMeasurementModal = ({
         },
       }),
     };
+    // console.log({ ...data, updatedAt: dayjs().unix() });
 
-    const res = await dispatch(fetchEditMeasurement(data));
+    const areObjectsTheSame = areObjectsEqual(afterMealMeasurement, data);
+
+    if (areObjectsTheSame) {
+      resetValues();
+      setAfterMealMeasurement(initialAfterMealMeasurement);
+      handleClose();
+      return;
+    }
+
+    const res = await dispatch(
+      fetchEditMeasurement({ ...data, updatedAt: dayjs().unix() })
+    );
 
     if (!res.payload) {
       // В алерт улетит строка "ERROR", потому что произойдет ререндер. Но что вызывает ререндер,

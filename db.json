@@ -27,23 +27,23 @@
     {
       "id": "01960b09-f0c9-71da-afc3-a7388c6d1aeb",
       "createdAt": 1739912400,
-      "updatedAt": 1743942302,
+      "updatedAt": 1743956006,
       "time": "15:18",
-      "typeOfMeasurement": "1",
+      "typeOfMeasurement": "2",
       "measurement": 55
     },
     {
       "id": "01960b14-7c86-755f-82ee-b71065ddf7c1",
       "createdAt": 1743942253,
-      "updatedAt": 1743942614,
+      "updatedAt": 1743956154,
       "time": "15:24",
       "typeOfMeasurement": "2",
-      "measurement": 222,
+      "measurement": 765,
       "afterMealMeasurement": {
         "meal": [
           {
             "portion": 123,
-            "dish": "qwe"
+            "dish": "www"
           }
         ]
       }
