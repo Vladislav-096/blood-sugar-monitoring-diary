@@ -74,6 +74,36 @@ const validationRules = {
       message: "Please enter time in HH:mm format",
     },
   },
+  typeOfMeasurement: {
+    required: "Measurement type is required",
+  },
+  measurement: {
+    required: "Measurement value is required",
+    validate: (value: string) => {
+      if (!value.trim() || Number(value) <= 0)
+        return "Measurement cannot be empty";
+      if (isNaN(Number(value))) return "Must be a number";
+      return true;
+    },
+  },
+  mealItems: {
+    dish: {
+      required: "Dish name is required",
+      validate: (value: string) => {
+        if (value.trim() === "") return "Dish cannot be empty";
+        return true;
+      },
+    },
+    portion: {
+      required: "Portion value is required",
+      validate: (value: string) => {
+        if (!value.trim() || Number(value) <= 0)
+          return "Portion cannot be empty";
+        if (isNaN(Number(value))) return "Must be a number";
+        return true;
+      },
+    },
+  },
 };
 
 const alertAddMeasurementError = "Failed to add measurement";
@@ -323,7 +353,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                 <Controller
                   name="typeOfMeasurement"
                   control={control}
-                  rules={validationRules.testRules}
+                  rules={validationRules.typeOfMeasurement}
                   render={() => (
                     <TextField
                       select
@@ -356,7 +386,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         <Controller
                           name={`afterMealMeasurement.meal.${index}.dish`}
                           control={control}
-                          rules={validationRules.testRules}
+                          rules={validationRules.mealItems.dish}
                           render={({ field }) => (
                             <TextField
                               {...field}
@@ -380,7 +410,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         <Controller
                           name={`afterMealMeasurement.meal.${index}.portion`}
                           control={control}
-                          rules={validationRules.testRules}
+                          rules={validationRules.mealItems.portion}
                           render={({ field }) => (
                             <TextField
                               {...field}
@@ -424,7 +454,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                 <Controller
                   name="measurement"
                   control={control}
-                  rules={validationRules.testRules}
+                  rules={validationRules.measurement}
                   render={() => (
                     <TextField
                       value={measurement}
