@@ -35,7 +35,7 @@ import {
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
-import { textFieldStyle } from "../../constants/constants";
+import { textFieldStyle, validationRules } from "../../constants/constants";
 
 interface MeasurementModal {
   open: boolean;
@@ -50,61 +50,6 @@ interface FormTypes {
   afterMealMeasurement: AfterMealMeasurement;
   measurement: string;
 }
-
-const validationRules = {
-  testRules: {
-    required: "Надо заполнить",
-  },
-  createdAt: {
-    required: "This field is required",
-    validate: (value: number | null) => {
-      if (value === null || isNaN(value)) return "Invalid date format";
-
-      const date = dayjs.unix(value);
-      if (!date.isValid()) return "Invalid date format";
-      if (date.isBefore(dayjs("1900-01-01"))) return "Date too early";
-      if (date.isAfter(dayjs("2099-12-31"))) return "Date too late";
-      return true;
-    },
-  },
-  time: {
-    required: "Time is required",
-    pattern: {
-      value: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/,
-      message: "Please enter time in HH:mm format",
-    },
-  },
-  typeOfMeasurement: {
-    required: "Measurement type is required",
-  },
-  measurement: {
-    required: "Measurement value is required",
-    validate: (value: string) => {
-      if (!value.trim() || Number(value) <= 0)
-        return "Measurement cannot be empty";
-      if (isNaN(Number(value))) return "Must be a number";
-      return true;
-    },
-  },
-  mealItems: {
-    dish: {
-      required: "Dish name is required",
-      validate: (value: string) => {
-        if (value.trim() === "") return "Dish cannot be empty";
-        return true;
-      },
-    },
-    portion: {
-      required: "Portion value is required",
-      validate: (value: string) => {
-        if (!value.trim() || Number(value) <= 0)
-          return "Portion cannot be empty";
-        if (isNaN(Number(value))) return "Must be a number";
-        return true;
-      },
-    },
-  },
-};
 
 const alertAddMeasurementError = "Failed to add measurement";
 
@@ -175,6 +120,16 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   ) => {
     const fieldName = `afterMealMeasurement.meal.${index}.portion`;
     formatInputValueToNumbers(event, fieldName as FieldName);
+  };
+
+  const handleDishChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number
+  ) => {
+    const { value } = event.target;
+    const fieldName = `afterMealMeasurement.meal.${index}.dish`;
+    setValue(fieldName as FieldName, value);
+    trigger(fieldName as FieldName);
   };
 
   const handleMeasurementChange = (
@@ -390,6 +345,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                           render={({ field }) => (
                             <TextField
                               {...field}
+                              onChange={(e) => handleDishChange(e, index)}
                               label="Dish"
                               variant="outlined"
                               error={

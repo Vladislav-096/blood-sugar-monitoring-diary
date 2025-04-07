@@ -17,6 +17,7 @@ import styles from "./editAfterMealMeasurementModal.module.scss";
 import {
   initialAfterMealMeasurement,
   textFieldStyle,
+  validationRules,
 } from "../../constants/constants";
 import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
@@ -32,10 +33,6 @@ interface EditAfterMeasurementModal {
   open: boolean;
   handleClose: () => void;
 }
-
-const testRules = {
-  required: "Надо заполнить",
-};
 
 const alertEditMeasurementError = "Failed to edit measurement";
 
@@ -65,6 +62,16 @@ export const EditAfterMeasurementModal = ({
   ) => {
     const fieldName = "measurement";
     formatInputValueToNumbers(event, fieldName as FieldName);
+  };
+
+  const handleDishChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number
+  ) => {
+    const { value } = event.target;
+    const fieldName = `afterMealMeasurement.meal.${index}.dish`;
+    setValue(fieldName as FieldName, value);
+    trigger(fieldName as FieldName);
   };
 
   const formatInputValueToNumbers = (
@@ -198,7 +205,7 @@ export const EditAfterMeasurementModal = ({
                 <Controller
                   name="typeOfMeasurement"
                   control={control}
-                  rules={testRules}
+                  rules={validationRules.typeOfMeasurement}
                   render={({ field }) => (
                     <TextField
                       {...field}
@@ -219,10 +226,11 @@ export const EditAfterMeasurementModal = ({
                       <Controller
                         name={`afterMealMeasurement.meal.${index}.dish`}
                         control={control}
-                        rules={testRules}
+                        rules={validationRules.mealItems.dish}
                         render={({ field }) => (
                           <TextField
                             {...field}
+                            onChange={(e) => handleDishChange(e, index)}
                             label="Dish"
                             variant="outlined"
                             error={
@@ -243,7 +251,7 @@ export const EditAfterMeasurementModal = ({
                       <Controller
                         name={`afterMealMeasurement.meal.${index}.portion`}
                         control={control}
-                        rules={testRules}
+                        rules={validationRules.mealItems.dish}
                         render={({ field }) => (
                           <TextField
                             {...field}
@@ -285,7 +293,7 @@ export const EditAfterMeasurementModal = ({
                 <Controller
                   name="measurement"
                   control={control}
-                  rules={testRules}
+                  rules={validationRules.measurement}
                   render={() => (
                     <TextField
                       value={measurement}
