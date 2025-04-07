@@ -57,12 +57,21 @@ const validationRules = {
   },
   createdAt: {
     required: "This field is required",
-    validate: (value: number) => {
+    validate: (value: number | null) => {
+      if (value === null || isNaN(value)) return "Invalid date format";
+
       const date = dayjs.unix(value);
       if (!date.isValid()) return "Invalid date format";
       if (date.isBefore(dayjs("1900-01-01"))) return "Date too early";
       if (date.isAfter(dayjs("2099-12-31"))) return "Date too late";
       return true;
+    },
+  },
+  time: {
+    required: "Time is required",
+    pattern: {
+      value: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/,
+      message: "Please enter time in HH:mm format",
     },
   },
 };
@@ -91,20 +100,23 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
 
   const handleDateChange = (newValue: dayjs.Dayjs | null) => {
+    console.log(newValue);
+
     if (newValue) {
       const newDate = newValue.unix();
       setCreatedAt(newValue.format("YYYY-MM-DD"));
       setValue("createdAt", newDate);
-      trigger("createdAt");
     }
+
+    trigger("createdAt");
   };
 
   const handleOnTimeChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
       setConvertedTime(newValue.format("YYYY-MM-DDTHH:mm"));
       setValue("time", newValue.format("HH:mm"));
-      trigger("time");
     }
+    trigger("time");
   };
 
   const handleTypeOfMeasurementChange = (
@@ -290,7 +302,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   <Controller
                     name="time"
                     control={control}
-                    rules={validationRules.testRules}
+                    rules={validationRules.time}
                     render={() => (
                       <TimePicker
                         label="Time"
