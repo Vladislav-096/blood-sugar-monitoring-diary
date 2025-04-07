@@ -32,7 +32,7 @@ import {
   convertTime,
   convertTimestampToDate,
 } from "../../utils/dateTimeConvert";
-import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
+import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
 import { textFieldStyle, validationRules } from "../../constants/constants";
@@ -75,8 +75,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
 
   const handleDateChange = (newValue: dayjs.Dayjs | null) => {
-    console.log(newValue);
-
     if (newValue) {
       const newDate = newValue.unix();
       setCreatedAt(newValue.format("YYYY-MM-DD"));
@@ -432,7 +430,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
           </Box>
         </Fade>
       </Modal>
-      <CustomErrorAlert
+      <CustomRequestErrorAlert
         title={alertAddMeasurementError}
         isAlert={isAlert}
         setIsAlert={setIsAlert}

@@ -3,7 +3,7 @@ import { modalContentStyles } from "../../utils/modalContentStyles";
 import { CheckoutState } from "../../types/types";
 import { Loader } from "../Loader/Loader";
 import { useEffect, useState } from "react";
-import { CustomErrorAlert } from "../CustomErrorAlert/CustomErrorAlert";
+import { CustomRequestErrorAlert } from "../CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { CustomTypography } from "../CustomTypography/CustomTypography";
 
 interface ConfirmModal {
@@ -83,7 +83,7 @@ export const ConfirmModal = ({
           </Box>
         </Fade>
       </Modal>
-      <CustomErrorAlert
+      <CustomRequestErrorAlert
         title={alertRemoveMeasurementError}
         isAlert={isAlert}
         setIsAlert={setIsAlert}

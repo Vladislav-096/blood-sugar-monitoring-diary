@@ -19,7 +19,7 @@ import {
   textFieldStyle,
   validationRules,
 } from "../../constants/constants";
-import { CustomErrorAlert } from "../../components/CustomErrorAlert/CustomErrorAlert";
+import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
 import dayjs from "dayjs";
@@ -133,7 +133,7 @@ export const EditAfterMeasurementModal = ({
 
     const areObjectsTheSame = areObjectsEqual(afterMealMeasurement, data);
 
-    if (areObjectsTheSame) {
+    if (areObjectsTheSame.result) {
       resetValues();
       setAfterMealMeasurement(initialAfterMealMeasurement);
       handleClose();
@@ -315,7 +315,7 @@ export const EditAfterMeasurementModal = ({
           </Box>
         </Fade>
       </Modal>
-      <CustomErrorAlert
+      <CustomRequestErrorAlert
         title={alertEditMeasurementError}
         isAlert={isAlert}
         setIsAlert={setIsAlert}

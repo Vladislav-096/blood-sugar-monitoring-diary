@@ -22,7 +22,6 @@ export const CreatedAtEditCells = ({
   const handleOnDateChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
       const newDate = newValue.unix();
-      console.log("newDate", newDate);
       setDate(newValue.format("YYYY-MM-DD"));
       params.api.setEditCellValue(
         {

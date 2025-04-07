@@ -13,7 +13,10 @@ import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { CheckoutState, MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
-import { initialAfterMealMeasurement } from "../../constants/constants";
+import {
+  initialAfterMealMeasurement,
+  validationRules,
+} from "../../constants/constants";
 import { CreatedAtEditCells } from "../CreatedAtEditCells/CreatedAtEditCells";
 import {
   convertTime,
@@ -30,6 +33,7 @@ import { MeasurementRenderEditCells } from "../MeasrementRenderEditCells/Measure
 import { ActionsCells } from "../ActionsCells/ActionsCells";
 import { MeasurementRenderCells } from "../MeasurementRenderCells/MeasurementRenderCells";
 import { TypeOfMeasurementEditCells } from "../TypeOfMeasurementEditCells/TypeOfMeasurementEditCells";
+import { CustomErrorAlert } from "../CustomErrorAlert/CustomErrorAlert";
 
 interface Table {
   rows: Measurement[];
@@ -68,6 +72,8 @@ export const Table = ({
   const [idToRemove, setIdToRemove] = useState<string>("");
   const [afterMealMeasurement, setAfterMealMeasurement] =
     useState<MeasurementData>(initialAfterMealMeasurement);
+  const [isAlert, setIsAlert] = useState<boolean>(false);
+  const [alertTitle, setAlertTitle] = useState<string>("");
 
   console.log("Table");
 
@@ -270,10 +276,51 @@ export const Table = ({
     ) => {
       const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
 
-      console.log(oldRow);
       console.log(newRow);
 
-      if (!areObjectsTheSame) {
+      if (areObjectsTheSame.field === "createdAt") {
+        const isValid = validationRules.createdAt.validate(newRow.createdAt);
+
+        if (isValid !== true) {
+          setAlertTitle(isValid);
+          setIsAlert(true);
+          return;
+        }
+      }
+
+      if (areObjectsTheSame.field === "time") {
+        const regExp = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+
+        if (!regExp.test(newRow.time)) {
+          setAlertTitle("Please enter time in HH:mm format");
+          setIsAlert(true);
+          return;
+        }
+      }
+
+      if (areObjectsTheSame.field === "typeOfMeasurement") {
+        if (!newRow.typeOfMeasurement) {
+          setAlertTitle("Measurement type cannot be empty");
+          setIsAlert(true);
+          return;
+        }
+      }
+
+      if (
+        areObjectsTheSame.field === "measurement" &&
+        newRow.typeOfMeasurement !== "2"
+      ) {
+        const isValid = validationRules.measurement.validate(
+          newRow.measurement
+        );
+        if (isValid !== true) {
+          setAlertTitle(isValid);
+          setIsAlert(true);
+          return;
+        }
+      }
+
+      if (!areObjectsTheSame.result) {
         const row: MeasurementData = {
           ...(newRow as MeasurementData),
           updatedAt: dayjs().unix(),
@@ -287,7 +334,6 @@ export const Table = ({
           delete row.afterMealMeasurement;
         }
 
-        console.log(row);
         const res = await mutateRow(row as MeasurementData);
 
         if (res.payload) {
@@ -332,6 +378,18 @@ export const Table = ({
     }
   };
 
+  // Асинхронно работает, не могу так вовремя поймать value
+  // const handleCellEditStop = (
+  //   params: GridCellEditStopParams,
+  //   event: MuiEvent<MuiBaseEvent>
+  // ) => {
+  //   // console.log("params", params);
+  //   // console.log("event", event);
+  //   if (params.field === "createdAt") {
+  //     console.log("params.value", params.value);
+  //   }
+  // };
+
   return (
     <>
       <Paper sx={{ margin: "0 auto", height: "83.5vh", width: "711px" }}>
@@ -352,6 +410,7 @@ export const Table = ({
               fontSize: "14px", // Устанавливаем размер шрифта для всех ячеек
             },
           }}
+          // onCellEditStop={handleCellEditStop}
           disableRowSelectionOnClick
           onPaginationModelChange={handlePaginationModelChange}
           processRowUpdate={processRowUpdate}
@@ -384,6 +443,11 @@ export const Table = ({
         setAfterMealMeasurement={setAfterMealMeasurement}
         open={openEditAfterMealMeasurementModal}
         handleClose={handleCloseEditAfterMealMeasurementModal}
+      />
+      <CustomErrorAlert
+        title={alertTitle}
+        isAlert={isAlert}
+        setIsAlert={setIsAlert}
       />
     </>
   );
