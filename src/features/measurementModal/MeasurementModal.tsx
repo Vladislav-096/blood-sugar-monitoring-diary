@@ -35,7 +35,12 @@ import {
 } from "../../utils/dateTimeConvert";
 import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
-import { textFieldStyle, validationRules } from "../../constants/constants";
+import {
+  formHelperErrorStyles,
+  selectDropdowStyles,
+  textFieldStyle,
+  validationRules,
+} from "../../constants/constants";
 
 interface MeasurementModal {
   open: boolean;
@@ -275,7 +280,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   />
                 </LocalizationProvider>
                 {errors.createdAt && (
-                  <FormHelperText>{errors.createdAt.message}</FormHelperText>
+                  <FormHelperText sx={formHelperErrorStyles}>
+                    {" "}
+                    {errors.createdAt.message}
+                  </FormHelperText>
                 )}
               </FormControl>
               <FormControl error={errors.time ? true : false} fullWidth>
@@ -297,10 +305,16 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   />
                 </LocalizationProvider>
                 {errors.time && (
-                  <FormHelperText>{errors.time.message}</FormHelperText>
+                  <FormHelperText sx={formHelperErrorStyles}>
+                    {" "}
+                    {errors.time.message}
+                  </FormHelperText>
                 )}
               </FormControl>
-              <FormControl fullWidth>
+              <FormControl
+                error={errors.typeOfMeasurement ? true : false}
+                fullWidth
+              >
                 <Controller
                   name="typeOfMeasurement"
                   control={control}
@@ -308,10 +322,11 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   render={() => (
                     <TextField
                       select
-                      error={errors.typeOfMeasurement ? true : false}
+                      slotProps={selectDropdowStyles}
                       onChange={handleTypeOfMeasurementChange}
                       value={measurementType}
-                      helperText={errors.typeOfMeasurement?.message}
+                      error={errors.typeOfMeasurement ? true : false}
+                      // helperText={errors.typeOfMeasurement?.message}
                       label="Type of measurement"
                       variant="outlined"
                       sx={textFieldStyle}
@@ -328,12 +343,24 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                     </TextField>
                   )}
                 />
+                {errors.typeOfMeasurement && (
+                  <FormHelperText sx={formHelperErrorStyles}>
+                    {errors.typeOfMeasurement?.message}
+                  </FormHelperText>
+                )}
               </FormControl>
               {measurementType === "After meal" && (
                 <Box>
                   {fields.map((item, index) => (
                     <Box key={item.id}>
-                      <FormControl fullWidth>
+                      <FormControl
+                        error={
+                          errors.afterMealMeasurement?.meal?.[index]?.dish
+                            ? true
+                            : false
+                        }
+                        fullWidth
+                      >
                         <Controller
                           name={`afterMealMeasurement.meal.${index}.dish`}
                           control={control}
@@ -349,16 +376,31 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                                   ? true
                                   : false
                               }
-                              helperText={
-                                errors.afterMealMeasurement?.meal?.[index]?.dish
-                                  ?.message
-                              }
+                              // helperText={
+                              //   errors.afterMealMeasurement?.meal?.[index]?.dish
+                              //     ?.message
+                              // }
                               sx={textFieldStyle}
                             />
                           )}
                         />
+                        {errors.afterMealMeasurement?.meal?.[index]?.dish && (
+                          <FormHelperText sx={formHelperErrorStyles}>
+                            {
+                              errors.afterMealMeasurement.meal?.[index].dish
+                                .message
+                            }
+                          </FormHelperText>
+                        )}
                       </FormControl>
-                      <FormControl fullWidth>
+                      <FormControl
+                        error={
+                          errors.afterMealMeasurement?.meal?.[index]?.portion
+                            ? true
+                            : false
+                        }
+                        fullWidth
+                      >
                         <Controller
                           name={`afterMealMeasurement.meal.${index}.portion`}
                           control={control}
@@ -375,14 +417,23 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                                   ? true
                                   : false
                               }
-                              helperText={
-                                errors.afterMealMeasurement?.meal?.[index]
-                                  ?.portion?.message
-                              }
+                              // helperText={
+                              //   errors.afterMealMeasurement?.meal?.[index]
+                              //     ?.portion?.message
+                              // }
                               sx={textFieldStyle}
                             />
                           )}
                         />
+                        {errors.afterMealMeasurement?.meal?.[index]
+                          ?.portion && (
+                          <FormHelperText sx={formHelperErrorStyles}>
+                            {
+                              errors.afterMealMeasurement?.meal?.[index]
+                                ?.portion?.message
+                            }
+                          </FormHelperText>
+                        )}
                       </FormControl>
                       <Button
                         variant="outlined"
@@ -402,7 +453,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   </Button>
                 </Box>
               )}
-              <FormControl fullWidth>
+              <FormControl error={errors.measurement ? true : false} fullWidth>
                 <Controller
                   name="measurement"
                   control={control}
@@ -414,11 +465,16 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                       label="Measurement"
                       variant="outlined"
                       error={errors.measurement ? true : false}
-                      helperText={errors.measurement?.message}
+                      // helperText={errors.measurement?.message}
                       sx={textFieldStyle}
                     />
                   )}
                 />
+                {errors.measurement && (
+                  <FormHelperText sx={formHelperErrorStyles}>
+                    {errors.measurement?.message}
+                  </FormHelperText>
+                )}
               </FormControl>
               <SubmitModalButton
                 requestStatus={addMeasurementsStatus}

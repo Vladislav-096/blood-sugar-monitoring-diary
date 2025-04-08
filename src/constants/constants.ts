@@ -11,82 +11,9 @@ export const initialAfterMealMeasurement = {
   measurement: 0,
 };
 
-export const buttonDisabledStyles = {
-  "&.Mui-disabled": {
-    backgroundColor: "#323232f7",
-  },
-};
-
 export const requestErrorInitial = {
   code: "",
   message: "",
-};
-
-export const textFieldStyle = {
-  ".MuiInputLabel-root": {
-    color: "#9198a1",
-    "&.Mui-focused": {
-      color: "#9198a1",
-    },
-    "&.Mui-disabled": {
-      color: "#9198a1",
-    },
-    "&.Mui-error": {
-      // Добавляем стиль для ошибки
-      color: "#f44336 !important", // Красный цвет для лейбла при ошибке
-    },
-  },
-  ".MuiInputBase-root": {
-    backgroundColor: "#151b23",
-  },
-  ".MuiOutlinedInput-root": {
-    input: {
-      color: "#f0f6fc",
-      backgroundColor: "#151b23",
-      borderRadius: "5px",
-    },
-    fieldSet: {
-      border: "1px solid #3d444db3",
-    },
-    "&:hover fieldset": {
-      border: "1px solid #9198a1",
-    },
-    "&.Mui-focused fieldset": {
-      border: "1px solid #9198a1",
-    },
-    "&.Mui-error": {
-      // Стили для состояния ошибки
-      "&:hover fieldset": {
-        borderColor: "#f44336 !important", // Красная рамка при наведении с ошибкой
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#f44336 !important", // Красная рамка при фокусе с ошибкой
-      },
-      "& fieldset": {
-        borderColor: "#f44336 !important", // Базовая красная рамка
-      },
-    },
-  },
-  ".MuiSvgIcon-root": {
-    color: "#f0f6fc",
-  },
-  ".Mui-disabled": {
-    "&.MuiOutlinedInput-root": {
-      input: {
-        WebkitTextFillColor: "#9198a1",
-      },
-      fieldSet: {
-        border: "1px solid #3d444db3",
-      },
-    },
-  },
-  "& .MuiFormHelperText-root": {
-    // Стиль для текста ошибки
-    "&.Mui-error": {
-      color: "#f44336",
-      marginLeft: "14px",
-    },
-  },
 };
 
 export const validationRules = {
@@ -139,4 +66,108 @@ export const validationRules = {
       },
     },
   },
+};
+
+export const buttonDisabledStyles = {
+  "&.Mui-disabled": {
+    backgroundColor: "#323232f7",
+  },
+};
+
+export const textFieldStyle = {
+  marginBottom: "15px",
+  "& .MuiSelect-select": {
+    // Стиль выбранного текста
+    color: "#f0f6fc",
+  },
+  ".MuiInputLabel-root": {
+    color: "#9198a1",
+    "&.Mui-focused": {
+      color: "#9198a1",
+    },
+    "&.Mui-disabled": {
+      color: "#9198a1",
+    },
+    "&.Mui-error": {
+      // Добавляем стиль для ошибки
+      color: "#f44336", // Красный цвет для лейбла при ошибке
+    },
+  },
+  ".MuiInputBase-root": {
+    backgroundColor: "#151b23",
+  },
+  ".MuiOutlinedInput-root": {
+    input: {
+      color: "#f0f6fc",
+      backgroundColor: "#151b23",
+      borderRadius: "5px",
+    },
+    fieldSet: {
+      border: "1px solid #3d444db3",
+    },
+    "&:hover fieldset": {
+      border: "1px solid #9198a1",
+    },
+    "&.Mui-focused fieldset": {
+      border: "1px solid #9198a1",
+    },
+    "&.Mui-error": {
+      // Стили для состояния ошибки
+      "&:hover fieldset": {
+        borderColor: "#f44336", // Красная рамка при наведении с ошибкой
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#f44336", // Красная рамка при фокусе с ошибкой
+      },
+      "& fieldset": {
+        borderColor: "#f44336", // Базовая красная рамка
+      },
+    },
+  },
+  ".MuiSvgIcon-root": {
+    color: "#f0f6fc",
+  },
+  ".Mui-disabled": {
+    "&.MuiOutlinedInput-root": {
+      input: {
+        WebkitTextFillColor: "#9198a1",
+      },
+      fieldSet: {
+        border: "1px solid #3d444db3",
+      },
+    },
+  },
+};
+
+export const selectDropdowStyles = {
+  select: {
+    MenuProps: {
+      PaperProps: {
+        sx: {
+          marginTop: "5px",
+          backgroundColor: "#151b23",
+          border: "1px solid #9198a1",
+          padding: "8px",
+          "& .MuiMenuItem-root": {
+            borderRadius: "5px",
+            color: "#f0f6fc",
+            "&:hover": {
+              backgroundColor: "#388bfd66",
+              // #388bfd66 синий
+              // #3d444db3 серый
+            },
+            "&.Mui-selected": {
+              backgroundColor: " #3d444db3",
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+export const formHelperErrorStyles = {
+  position: "absolute",
+  bottom: "15px",
+  right: "0px",
 };
