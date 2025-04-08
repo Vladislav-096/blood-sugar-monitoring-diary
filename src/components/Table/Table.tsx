@@ -14,6 +14,7 @@ import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { CheckoutState, MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import {
+  dataGridStyles,
   initialAfterMealMeasurement,
   validationRules,
 } from "../../constants/constants";
@@ -89,7 +90,7 @@ export const Table = ({
     {
       field: "actions",
       headerName: "Actions",
-      width: 100,
+      width: 90,
       headerAlign: "center",
       sortable: false,
       disableColumnMenu: true,
@@ -126,7 +127,7 @@ export const Table = ({
           InputComponent: CustomDateFilterField,
         },
       ],
-      width: 153,
+      width: 160,
       valueFormatter: (value) => getDateStringFromUnix(value),
       // type: "date",
       editable: true,
@@ -164,14 +165,14 @@ export const Table = ({
           InputComponent: CustomDateFilterField,
         },
       ],
-      width: 120,
+      width: 135,
       valueFormatter: (value) => getDateStringFromUnix(value),
       // editable: true,
     },
     {
       field: "time",
       headerName: "Time",
-      width: 110,
+      width: 120,
       editable: true,
       renderEditCell: (params: GridRenderEditCellParams) => {
         return (
@@ -186,7 +187,7 @@ export const Table = ({
     {
       field: "typeOfMeasurement",
       headerName: "Measurement Type",
-      width: 175,
+      width: 195,
       // cellClassName: styles['padding-left'],
       filterOperators: [
         {
@@ -398,18 +399,7 @@ export const Table = ({
           columns={columns}
           paginationModel={paginationModel}
           pageSizeOptions={[5]}
-          sx={{
-            border: 0,
-            fontFamily: "'Play'",
-            // Заголовки колонок
-            "& .MuiDataGrid-columnHeaders": {
-              fontSize: "16px",
-            },
-            // Ячейки
-            "& .MuiDataGrid-cell": {
-              fontSize: "14px", // Устанавливаем размер шрифта для всех ячеек
-            },
-          }}
+          sx={dataGridStyles}
           // onCellEditStop={handleCellEditStop}
           disableRowSelectionOnClick
           onPaginationModelChange={handlePaginationModelChange}

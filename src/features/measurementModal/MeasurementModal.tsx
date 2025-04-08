@@ -21,7 +21,6 @@ import {
   FieldName,
   MeasurementData,
 } from "../../types/types";
-import { modalContentStyles } from "../../utils/modalContentStyles";
 import {
   DatePicker,
   LocalizationProvider,
@@ -38,6 +37,7 @@ import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModa
 import {
   dataPisckerCalendar,
   formHelperErrorStyles,
+  modalContentStyles,
   selectDropdowStyles,
   textFieldStyle,
   timePickerMenu,
@@ -259,7 +259,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       >
         <Fade in={open}>
           <Box sx={modalContentStyles}>
-            <Typography component="h2" sx={{ color: "#f0f6fc" }}>
+            <Typography
+              component="h2"
+              sx={{ marginBottom: "10px", fontSize: "20px" }}
+            >
               Add new measurement
             </Typography>
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -360,9 +363,9 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                 )}
               </FormControl>
               {measurementType === "After meal" && (
-                <Box>
+                <Box sx={{ marginBottom: "10px", padding: "0 10px 0 10px" }}>
                   {fields.map((item, index) => (
-                    <Box key={item.id}>
+                    <Box key={item.id} sx={{ marginBottom: "10px" }}>
                       <FormControl
                         error={
                           errors.afterMealMeasurement?.meal?.[index]?.dish

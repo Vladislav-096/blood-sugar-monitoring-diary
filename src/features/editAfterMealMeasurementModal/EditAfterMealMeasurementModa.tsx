@@ -13,10 +13,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { modalContentStyles } from "../../utils/modalContentStyles";
 import styles from "./editAfterMealMeasurementModal.module.scss";
 import {
   initialAfterMealMeasurement,
+  modalContentStyles,
   textFieldStyle,
   validationRules,
 } from "../../constants/constants";

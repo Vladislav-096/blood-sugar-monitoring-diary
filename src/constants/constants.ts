@@ -307,3 +307,107 @@ export const formHelperErrorStyles = {
   bottom: "15px",
   right: "0px",
 };
+
+export const modalContentStyles = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "#151b23",
+  padding: "15px",
+  borderRadius: "5px",
+  textAlign: "center",
+  width: "400px",
+  maxHeight: "650px",
+  overflowY: "auto",
+};
+
+export const dataGridStyles = {
+  border: "1px solid #3d444db3",
+  color: "#f0f6fc",
+  backgroundColor: "#010409",
+
+  // Футер таблицы
+  "& .MuiDataGrid-footerContainer": {
+    borderTop: "1px solid #3d444db3", // Верхняя граница
+  },
+
+  // Заголовки колонок
+  "& .MuiDataGrid-columnHeaders": {
+    fontSize: "16px",
+
+    // Стили для иконки сортировки
+    "& .MuiButtonBase-root": {
+      "&:hover": {
+        backgroundColor: "#3d444db3",
+      },
+
+      "& .MuiDataGrid-sortIcon": {
+        color: "#f0f6fc", // Цвет иконки
+        fontSize: "20px", // Размер
+        borderRadius: "50%",
+        // opacity: '1 !important',
+        // transition: "all 0.2s ease", // Анимация
+
+        "&:hover": {
+          // opacity: '1',
+          // backgroundColor: "#3d444db3",
+          transform: "scale(1.1)",
+        },
+      },
+    },
+
+    // Стили для активной сортировки
+    "& .MuiDataGrid-columnHeader--sorted": {
+      "& .MuiDataGrid-sortIcon": {
+        color: "#f0f6fc", // Другой цвет при активной сортировке
+        opacity: 1,
+      },
+    },
+
+    // Устанавливаем font-weight для текста заголовков
+    "& .MuiDataGrid-columnHeaderTitle": {
+      fontWeight: 700,
+    },
+
+    ".MuiDataGrid-filler": {
+      backgroundColor: "#151b23", // Красит оставшееся постаранство в заголовках
+      borderBottom: "1px solid #3d444db3 !important",
+    },
+  },
+
+  "& .MuiDataGrid-columnHeader": {
+    backgroundColor: "#151b23", // Красит каждую ячейку заголовка
+    borderBottom: "1px solid #3d444db3 !important",
+  },
+
+  // Строки
+  "& .MuiDataGrid-row": {
+    "&:hover": {
+      backgroundColor: "#3d444db3", // Фон строки при наведении
+    },
+  },
+
+  // Ячейки
+  "& .MuiDataGrid-cell": {
+    fontSize: "14px", // Устанавливаем размер шрифта для всех ячеек
+  },
+
+  // Пагинация
+  "& .MuiTablePagination-root": {
+    color: "#f0f6fc",
+
+    // Иконки и кнопки
+    "& .MuiButtonBase-root": {
+      color: "#f0f6fc",
+      "&:hover": {
+        backgroundColor: "#3d444db3",
+      },
+
+      "&.Mui-disabled": {
+        color: "#3d444db3", // Серый цвет для неактивных кнопок
+        cursor: "not-allowed", // Курсор "недоступно"
+      },
+    },
+  },
+};

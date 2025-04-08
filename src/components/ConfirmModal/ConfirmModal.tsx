@@ -7,11 +7,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { modalContentStyles } from "../../utils/modalContentStyles";
 import { CheckoutState } from "../../types/types";
 import { Loader } from "../Loader/Loader";
 import { useEffect, useState } from "react";
 import { CustomRequestErrorAlert } from "../CustomRequestErrorAlert/CustomRequestErrorAlert";
+import { modalContentStyles } from "../../constants/constants";
 
 interface ConfirmModal {
   open: boolean;

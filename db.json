@@ -2,8 +2,8 @@
   "measurements": [
     {
       "id": "019528bf-0b4e-706a-ac90-5eb7b8a5d65d",
-      "createdAt": 1740171600,
-      "updatedAt": 1743942271,
+      "createdAt": 951166800,
+      "updatedAt": 1744133318,
       "time": "16:22",
       "typeOfMeasurement": "1",
       "measurement": 121,
@@ -39,6 +39,22 @@
       "time": "11:11",
       "typeOfMeasurement": "1",
       "measurement": 765
+    },
+    {
+      "id": "0196169d-75c2-74af-882e-b2ebe9baad56",
+      "createdAt": 1744136109,
+      "time": "21:15",
+      "updatedAt": 1744136140,
+      "typeOfMeasurement": "1",
+      "measurement": 123
+    },
+    {
+      "id": "0196169d-8cd8-7589-b8a9-fb744a80ada5",
+      "createdAt": 1744136140,
+      "time": "21:15",
+      "updatedAt": 1744136146,
+      "typeOfMeasurement": "1",
+      "measurement": 321
     }
   ],
   "typesOfMeasuremens": [
