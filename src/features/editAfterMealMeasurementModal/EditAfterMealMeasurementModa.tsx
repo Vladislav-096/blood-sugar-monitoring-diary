@@ -11,6 +11,7 @@ import {
   FormControl,
   Modal,
   TextField,
+  Typography,
 } from "@mui/material";
 import { modalContentStyles } from "../../utils/modalContentStyles";
 import styles from "./editAfterMealMeasurementModal.module.scss";
@@ -21,7 +22,6 @@ import {
 } from "../../constants/constants";
 import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
-import { CustomTypography } from "../../components/CustomTypography/CustomTypography";
 import dayjs from "dayjs";
 import { areObjectsEqual } from "../../utils/areObjectsEqual";
 
@@ -195,11 +195,9 @@ export const EditAfterMeasurementModal = ({
       >
         <Fade in={open}>
           <Box sx={modalContentStyles}>
-            <CustomTypography
-              text="Edit measurement"
-              componentProp="h2"
-              color="#f0f6fc"
-            />
+            <Typography component="h2" sx={{ color: "#f0f6fc" }}>
+              Edit measurement
+            </Typography>
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
               <FormControl fullWidth>
                 <Controller
