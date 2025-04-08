@@ -36,6 +36,7 @@ import {
 import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import {
+  dataPisckerCalendar,
   formHelperErrorStyles,
   selectDropdowStyles,
   textFieldStyle,
@@ -273,7 +274,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         value={dayjs(createdAt)}
                         onChange={handleDateChange}
                         format="DD.MM.YYYY"
-                        slots={{ textField: TextField }}
+                        slotProps={{
+                          textField: { error: errors.createdAt ? true : false },
+                          ...dataPisckerCalendar
+                        }}
                         sx={textFieldStyle}
                       />
                     )}

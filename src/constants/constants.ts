@@ -166,6 +166,90 @@ export const selectDropdowStyles = {
   },
 };
 
+export const dataPisckerCalendar = {
+  popper: {
+    sx: {
+      "& .MuiPaper-root": {
+        // Стили для контейнера календаря
+        marginTop: "5px",
+        backgroundColor: "#151b23",
+        color: "#f0f6fc",
+        borderRadius: "5px",
+        border: "1px solid #9198a1",
+      },
+    },
+  },
+  desktopPaper: {
+    sx: {
+      "& .MuiPickersCalendarHeader-root": {
+        // Заголовок календаря
+        // backgroundColor: "#1e293b",
+        color: "#f0f6fc",
+      },
+      // Сегодня
+      "& .MuiPickersDay-today:not(.Mui-selected)": {
+        border: "1px solid #388bfd66",
+      },
+      // Стрелка переключения вида (месяц/год)
+      "& .MuiPickersCalendarHeader-switchViewButton": {
+        color: "#f0f6fc", // Цвет иконки
+        "&:hover": {
+          backgroundColor: "#388bfd66",
+        },
+      },
+      // Выбранный год
+      "& .MuiYearCalendar-root": {
+        "& .MuiPickersYear-yearButton": {
+          // Обычный год
+          color: "#f0f6fc",
+          "&:hover": {
+            backgroundColor: "#388bfd66",
+          },
+          // Выбранный год
+          "&.Mui-selected": {
+            backgroundColor: "#3d444db3",
+            "&:hover": {
+              backgroundColor: "#3d444db3",
+            },
+          },
+        },
+      },
+      // Стрелки переключения месяцев
+      "& .MuiPickersArrowSwitcher-button": {
+        color: "#f0f6fc", // Основной цвет
+        "&:hover": {
+          color: "#f0f6fc", // При наведении
+          backgroundColor: "#388bfd66", // Фон при наведении
+        },
+        "&.Mui-disabled": {
+          color: "#64748b", // Когда стрелка неактивна
+        },
+      },
+      "& .MuiDayCalendar-weekDayLabel": {
+        // Дни недели (Пн, Вт и т.д.)
+        color: "#f0f6fc",
+      },
+      "& .MuiPickersDay-root": {
+        // Обычные дни
+        color: "#f0f6fc",
+        backgroundColor: "transparent",
+        "&:hover": {
+          backgroundColor: "#388bfd66",
+        },
+        "&.Mui-selected": {
+          // Выбранный день
+          backgroundColor: "#3d444db3 !important",
+          color: "#f0f6fc",
+        },
+        "&.Mui-disabled": {
+          // Неактивные дни
+          color: "#f0f6fc", // хз чо это
+        },
+      },
+    },
+  },
+};
+
 export const formHelperErrorStyles = {
   position: "absolute",
   bottom: "15px",
