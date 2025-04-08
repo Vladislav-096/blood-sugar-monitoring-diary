@@ -40,6 +40,7 @@ import {
   formHelperErrorStyles,
   selectDropdowStyles,
   textFieldStyle,
+  timePickerMenu,
   validationRules,
 } from "../../constants/constants";
 
@@ -274,9 +275,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         value={dayjs(createdAt)}
                         onChange={handleDateChange}
                         format="DD.MM.YYYY"
+                        slots={{ textField: TextField }}
                         slotProps={{
                           textField: { error: errors.createdAt ? true : false },
-                          ...dataPisckerCalendar
+                          ...dataPisckerCalendar,
                         }}
                         sx={textFieldStyle}
                       />
@@ -303,6 +305,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         onChange={handleOnTimeChange}
                         format="HH:mm"
                         slots={{ textField: TextField }}
+                        slotProps={{
+                          textField: { error: errors.time ? true : false },
+                          ...timePickerMenu,
+                        }}
                         sx={textFieldStyle}
                       />
                     )}

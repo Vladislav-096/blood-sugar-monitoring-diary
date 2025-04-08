@@ -127,6 +127,11 @@ export const textFieldStyle = {
   ".MuiSvgIcon-root": {
     color: "#f0f6fc",
   },
+  ".MuiButtonBase-root": {
+    "&:hover": {
+      backgroundColor: "#3d444db3",
+    },
+  },
   ".Mui-disabled": {
     "&.MuiOutlinedInput-root": {
       input: {
@@ -160,6 +165,53 @@ export const selectDropdowStyles = {
               backgroundColor: " #3d444db3",
             },
           },
+        },
+      },
+    },
+  },
+};
+
+export const timePickerMenu = {
+  popper: {
+    sx: {
+      // Стили для контейнера выбора вреимени
+      "& .MuiPaper-root": {
+        marginTop: "5px",
+        backgroundColor: "#151b23",
+        color: "#f0f6fc",
+        borderRadius: "5px",
+        border: "1px solid #9198a1",
+      },
+      ".MuiMultiSectionDigitalClock-root": {
+        borderBottom: "1px solid #9198a1",
+      },
+      ".MuiList-root": {
+        // Стили для скроллбара (работает в Chrome, Edge, Safari)
+        "&::-webkit-scrollbar": {
+          width: "4px", // ширина вертикального скроллбара
+          height: "4px", // высота горизонтального скроллбара
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "#3d444db3", // цвет трека
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "#388bfd66", // цвет ползунка
+          borderRadius: "5px",
+        },
+        //
+
+        "&:not(:first-of-type)": {
+          borderLeft: "1px solid #9198a1",
+        },
+      },
+      ".MuiButtonBase-root": {
+        borderRadius: "5px",
+
+        "&:hover": {
+          backgroundColor: "#388bfd66",
+        },
+        "&.Mui-selected": {
+          backgroundColor: "#3d444db3",
         },
       },
     },
