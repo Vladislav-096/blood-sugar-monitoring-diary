@@ -372,25 +372,49 @@ export const dataGridStyles = {
 
     ".MuiDataGrid-filler": {
       backgroundColor: "#151b23", // Красит оставшееся постаранство в заголовках
-      borderBottom: "1px solid #3d444db3 !important",
+      borderBottom: "none !important",
+    },
+  },
+
+  // Нижняя часть таблицы (Я точно сделал какую-то хуйню)
+  "& .MuiDataGrid-filler": {
+    ".css-1tdeh38": {
+      borderTop: "1px solid #3d444db3",
     },
   },
 
   "& .MuiDataGrid-columnHeader": {
     backgroundColor: "#151b23", // Красит каждую ячейку заголовка
-    borderBottom: "1px solid #3d444db3 !important",
+    borderBottom: "none !important",
   },
 
   // Строки
   "& .MuiDataGrid-row": {
     "&:hover": {
-      backgroundColor: "#3d444db3", // Фон строки при наведении
+      backgroundColor: "#388bfd66", // Фон строки при наведении
     },
-  },
 
-  // Ячейки
-  "& .MuiDataGrid-cell": {
-    fontSize: "14px", // Устанавливаем размер шрифта для всех ячеек
+    "&.Mui-selected": {
+      backgroundColor: "#3d444db3",
+      "&:hover": {
+        backgroundColor: "#3d444db3", // Цвет при наведении на выделенную строку
+      },
+    },
+
+    // Ячейки
+    "& .MuiDataGrid-cell": {
+      fontSize: "14px", // Устанавливаем размер шрифта для всех ячеек
+      borderTop: "1px solid #3d444db3",
+
+      "&:focus": {
+        outline: "none",
+        // backgroundColor: "#3d444db3",
+      },
+    },
+
+    "&.MuiDataGrid-row--firstVisible": {
+      borderTop: "none",
+    },
   },
 
   // Пагинация

@@ -401,7 +401,9 @@ export const Table = ({
           pageSizeOptions={[5]}
           sx={dataGridStyles}
           // onCellEditStop={handleCellEditStop}
-          disableRowSelectionOnClick
+          // disableRowSelectionOnClick
+          // disableMultipleRowSelection={false}
+          hideFooterSelectedRowCount
           onPaginationModelChange={handlePaginationModelChange}
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
