@@ -15,13 +15,13 @@ export const ActionsCells = ({
   return (
     <Button
       variant="text"
-      color="primary"
+      color="error"
       sx={{
         textTransform: "none",
         color: "red",
-        "&:hover": {
-          background: "#ff000023",
-        },
+        // "&:hover": {
+        //   background: "#ff000023",
+        // },
       }}
       onClick={() => {
         setIdToRemove(row.id);

@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { CheckoutState } from "../../types/types";
 import { EditCellLoader } from "../EditCellLoader/EditCellLoader";
+import { dataPisckerCalendar } from "../../constants/constants";
 
 interface CreatedAtEditCells {
   initialValue: string;
@@ -59,6 +60,7 @@ export const CreatedAtEditCells = ({
                 },
               },
             },
+            ...dataPisckerCalendar,
             openPickerButton: {
               sx: { display: editStatus === "LOADING" ? "none" : "block" },
             },

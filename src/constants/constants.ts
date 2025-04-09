@@ -149,8 +149,9 @@ export const selectDropdowStyles = {
     MenuProps: {
       PaperProps: {
         sx: {
+          backgroundImage: "none",
           marginTop: "5px",
-          backgroundColor: "#151b23",
+          backgroundColor: "#0d1117",
           border: "1px solid #9198a1",
           padding: "8px",
           "& .MuiMenuItem-root": {
@@ -158,8 +159,6 @@ export const selectDropdowStyles = {
             color: "#f0f6fc",
             "&:hover": {
               backgroundColor: "#388bfd66",
-              // #388bfd66 синий
-              // #3d444db3 серый
             },
             "&.Mui-selected": {
               backgroundColor: " #3d444db3",
@@ -171,13 +170,29 @@ export const selectDropdowStyles = {
   },
 };
 
+export const scrollBarStyles = {
+  "&::-webkit-scrollbar": {
+    width: "4px", // ширина вертикального скроллбара
+    height: "4px", // высота горизонтального скроллбара
+  },
+  "&::-webkit-scrollbar-track": {
+    background: "#3d444db3", // цвет трека
+  },
+  "&::-webkit-scrollbar-thumb": {
+    background: "#388bfd66", // цвет ползунка
+    borderRadius: "5px",
+  },
+};
+
 export const timePickerMenu = {
   popper: {
     sx: {
       // Стили для контейнера выбора вреимени
       "& .MuiPaper-root": {
         marginTop: "5px",
-        backgroundColor: "#151b23",
+        backgroundColor: "#0d1117",
+        // backgroundColor: "#121212",
+        backgroundImage: "none",
         color: "#f0f6fc",
         borderRadius: "5px",
         border: "1px solid #9198a1",
@@ -187,17 +202,7 @@ export const timePickerMenu = {
       },
       ".MuiList-root": {
         // Стили для скроллбара (работает в Chrome, Edge, Safari)
-        "&::-webkit-scrollbar": {
-          width: "4px", // ширина вертикального скроллбара
-          height: "4px", // высота горизонтального скроллбара
-        },
-        "&::-webkit-scrollbar-track": {
-          background: "#3d444db3", // цвет трека
-        },
-        "&::-webkit-scrollbar-thumb": {
-          background: "#388bfd66", // цвет ползунка
-          borderRadius: "5px",
-        },
+        ...scrollBarStyles,
         //
 
         "&:not(:first-of-type)": {
@@ -211,6 +216,7 @@ export const timePickerMenu = {
           backgroundColor: "#388bfd66",
         },
         "&.Mui-selected": {
+          color: "#f0f6fc",
           backgroundColor: "#3d444db3",
         },
       },
@@ -224,7 +230,9 @@ export const dataPisckerCalendar = {
       "& .MuiPaper-root": {
         // Стили для контейнера календаря
         marginTop: "5px",
-        backgroundColor: "#151b23",
+        backgroundColor: "#0d1117",
+        // backgroundColor: "#121212",
+        backgroundImage: "none",
         color: "#f0f6fc",
         borderRadius: "5px",
         border: "1px solid #9198a1",
@@ -251,6 +259,8 @@ export const dataPisckerCalendar = {
       },
       // Выбранный год
       "& .MuiYearCalendar-root": {
+        ...scrollBarStyles,
+
         "& .MuiPickersYear-yearButton": {
           // Обычный год
           color: "#f0f6fc",
@@ -320,18 +330,14 @@ export const modalContentStyles = {
   width: "400px",
   maxHeight: "650px",
   overflowY: "auto",
+  ...scrollBarStyles,
 };
 
-// Я пытался (встрял на кастомизации компонентов тулбара)
+// Полностью в ручную. Отказался. Частично воспользовался темами библиотеки
 export const dataGridStyles = {
   border: "1px solid #3d444db3",
   color: "#f0f6fc",
   backgroundColor: "#010409",
-
-  "& .MuiDataGrid-panel": {
-    backgroundColor: "red", // Красный фон
-    border: "2px solid black",
-  },
 
   // Футер таблицы
   "& .MuiDataGrid-footerContainer": {
@@ -458,4 +464,57 @@ export const dataGridStyles = {
 
 export const dataGridStylesTest = {
   backgroundColor: "#010409",
+
+  // Устанавливаем font-weight для текста заголовков
+  "& .MuiDataGrid-columnHeaderTitle": {
+    fontSize: "16px",
+    fontWeight: 700,
+    userSelect: "none",
+  },
+
+  "& .MuiDataGrid-columnHeader": {
+    backgroundColor: "#0d1117", // Красит каждую ячейку заголовка
+  },
+
+  ".MuiDataGrid-filler": {
+    backgroundColor: "#0d1117", // Красит оставшееся постаранство в заголовках
+
+    // Вот тут, предположительно, хуета. Странный класс
+    ".css-1tdeh38": {
+      backgroundColor: "#010409",
+    },
+  },
+
+  "& .MuiDataGrid-row": {
+    "&:hover": {
+      backgroundColor: "#3187ff1a", // Фон строки при наведении
+    },
+
+    "&.Mui-selected": {
+      backgroundColor: "#3d444db3",
+      "&:hover": {
+        backgroundColor: "#3d444db3", // Цвет при наведении на выделенную строку
+      },
+    },
+  },
+};
+
+export const controlPanelStyles = {
+  // Кастомизация окон фильтрации
+  columnsPanel: {
+    sx: {
+      backgroundColor: "#0d1117",
+      backgroundImage: "none",
+      // borderRight: "1px solid #9198a1",
+      // borderBottom: "1px solid #9198a1",
+    },
+  },
+  filterPanel: {
+    sx: {
+      backgroundColor: "#0d1117",
+      backgroundImage: "none",
+      // borderRight: "1px solid #9198a1",
+      // borderBottom: "1px solid #9198a1",
+    },
+  },
 };

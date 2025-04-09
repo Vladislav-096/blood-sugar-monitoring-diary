@@ -1,5 +1,43 @@
+@use "../../styles/variables" as *;
+
 .header {
   margin-bottom: 15px;
   padding: 15px 0 15px 0;
   border-bottom: 1px solid #3d444db3;
+
+  .link {
+    font-size: 18px;
+    color: $linkColor;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $primaryColor;
+    }
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .active {
+    position: relative;
+    transition: color 0.2s, background-color 0.2s;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: $linkColor;
+      transition: background-color 0.2s;
+    }
+
+    &:hover {
+      &::before {
+        background-color: $primaryColor;
+      }
+    }
+  }
 }

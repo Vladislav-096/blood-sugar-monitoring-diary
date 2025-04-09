@@ -14,6 +14,7 @@ import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { CheckoutState, MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import {
+  controlPanelStyles,
   dataGridStylesTest,
   initialAfterMealMeasurement,
   validationRules,
@@ -413,6 +414,7 @@ export const Table = ({
           slots={{
             toolbar: CustomTableToolbar,
           }}
+          slotProps={controlPanelStyles}
           initialState={{
             columns: {
               columnVisibilityModel: {

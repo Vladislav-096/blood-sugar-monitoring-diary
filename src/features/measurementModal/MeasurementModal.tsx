@@ -457,7 +457,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                       </Button>
                     </Box>
                   ))}
-
                   <Button
                     variant="contained"
                     onClick={() => append({ dish: "", portion: "" })}

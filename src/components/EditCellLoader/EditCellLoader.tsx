@@ -14,6 +14,7 @@ export const EditCellLoader = ({ children, editStatus }: EditCellLoader) => {
       sx={{
         width: "100%",
         position: "relative",
+        backgroundColor: '#0d1117',
       }}
     >
       {children}

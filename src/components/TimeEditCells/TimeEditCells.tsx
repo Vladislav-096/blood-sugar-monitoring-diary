@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { CheckoutState } from "../../types/types";
 import { EditCellLoader } from "../EditCellLoader/EditCellLoader";
+import { timePickerMenu } from "../../constants/constants";
 
 interface TimeEditCells {
   initialValue: string;
@@ -59,6 +60,7 @@ export const TimeEditCells = ({
                 },
               },
             },
+            ...timePickerMenu,
             openPickerButton: {
               sx: { display: editStatus === "LOADING" ? "none" : "block" },
             },
