@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Loader } from "../Loader/Loader";
 import { CheckoutState } from "../../types/types";
 
@@ -20,7 +20,7 @@ export const SubmitModalButton = ({
         paddingRight: requestStatus === "LOADING" ? "33px" : "16px",
       }}
     >
-      <Typography>{buttonName}</Typography>
+      {buttonName}
       {requestStatus === "LOADING" && (
         <Box
           sx={{
@@ -30,7 +30,7 @@ export const SubmitModalButton = ({
             right: "7px",
           }}
         >
-          <Loader />
+          <Loader lineColor = "#010409"/>
         </Box>
       )}
     </Button>

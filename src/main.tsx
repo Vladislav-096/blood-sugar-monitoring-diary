@@ -12,6 +12,21 @@ const theme = createTheme({
   typography: {
     fontFamily: "Play",
   },
+  palette: {
+    mode: "dark", // Включаем темный режим
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontWeight: 700,
+        },
+      },
+      // defaultProps: {
+      //   variant: "outlined",
+      // },
+    },
+  },
 });
 
 root.render(

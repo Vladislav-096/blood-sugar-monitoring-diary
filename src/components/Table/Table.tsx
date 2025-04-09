@@ -14,7 +14,7 @@ import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { CheckoutState, MeasurementData } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import {
-  dataGridStyles,
+  dataGridStylesTest,
   initialAfterMealMeasurement,
   validationRules,
 } from "../../constants/constants";
@@ -399,7 +399,8 @@ export const Table = ({
           columns={columns}
           paginationModel={paginationModel}
           pageSizeOptions={[5]}
-          sx={dataGridStyles}
+          // sx={dataGridStyles}
+          sx={dataGridStylesTest}
           // onCellEditStop={handleCellEditStop}
           // disableRowSelectionOnClick
           // disableMultipleRowSelection={false}

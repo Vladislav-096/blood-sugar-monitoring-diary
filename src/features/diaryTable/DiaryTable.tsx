@@ -139,9 +139,11 @@ export const DiaryTable = () => {
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}
         dispatchEditMeasurementSync={dispatchEditMeasurementSync}
       />
-      <Button onClick={handleOpen} variant="contained">
-        add measurement
-      </Button>
+      <Box sx={{ marginTop: "15px", textAlign: 'center' }}>
+        <Button onClick={handleOpen} variant="contained">
+          add measurement
+        </Button>
+      </Box>
       <MeasurementModal open={open} handleClose={handleClose} />
     </>
   );

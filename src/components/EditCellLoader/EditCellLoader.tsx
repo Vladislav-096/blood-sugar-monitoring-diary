@@ -28,7 +28,7 @@ export const EditCellLoader = ({ children, editStatus }: EditCellLoader) => {
             transform: "translateY(-50%)",
           }}
         >
-          <Loader lineColor="#000" />
+          <Loader />
         </Box>
       )}
     </Box>

@@ -16,7 +16,13 @@ export const ActionsCells = ({
     <Button
       variant="text"
       color="primary"
-      sx={{ textTransform: "none", color: "red" }}
+      sx={{
+        textTransform: "none",
+        color: "red",
+        "&:hover": {
+          background: "#ff000023",
+        },
+      }}
       onClick={() => {
         setIdToRemove(row.id);
         handleOpenRemoveConfirmModal();

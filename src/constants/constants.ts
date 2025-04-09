@@ -322,10 +322,16 @@ export const modalContentStyles = {
   overflowY: "auto",
 };
 
+// Я пытался (встрял на кастомизации компонентов тулбара)
 export const dataGridStyles = {
   border: "1px solid #3d444db3",
   color: "#f0f6fc",
   backgroundColor: "#010409",
+
+  "& .MuiDataGrid-panel": {
+    backgroundColor: "red", // Красный фон
+    border: "2px solid black",
+  },
 
   // Футер таблицы
   "& .MuiDataGrid-footerContainer": {
@@ -359,15 +365,25 @@ export const dataGridStyles = {
 
     // Стили для активной сортировки
     "& .MuiDataGrid-columnHeader--sorted": {
+      "&:focus": {
+        outline: "1px solid #3d444db3",
+      },
+
       "& .MuiDataGrid-sortIcon": {
         color: "#f0f6fc", // Другой цвет при активной сортировке
         opacity: 1,
       },
     },
 
+    // Стили ячеек заголовков при активной сортировки если сортировал по клику на кнопку сортировки
+    "& .MuiDataGrid-columnHeader:focus-within": {
+      outline: "1px solid #3d444db3",
+    },
+
     // Устанавливаем font-weight для текста заголовков
     "& .MuiDataGrid-columnHeaderTitle": {
       fontWeight: 700,
+      userSelect: "none",
     },
 
     ".MuiDataGrid-filler": {
@@ -386,6 +402,10 @@ export const dataGridStyles = {
   "& .MuiDataGrid-columnHeader": {
     backgroundColor: "#151b23", // Красит каждую ячейку заголовка
     borderBottom: "none !important",
+
+    "&:focus": {
+      outline: "1px solid #3d444db3", // Оранжевая обводка
+    },
   },
 
   // Строки
@@ -434,4 +454,8 @@ export const dataGridStyles = {
       },
     },
   },
+};
+
+export const dataGridStylesTest = {
+  backgroundColor: "#010409",
 };

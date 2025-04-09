@@ -57,8 +57,12 @@ export const ConfirmModal = ({
       >
         <Fade in={open}>
           <Box sx={modalContentStyles}>
-            <Typography component="h2">{title}</Typography>
-            <Stack spacing={2} direction="row">
+            <Typography sx={{marginBottom: '10px'}} component="h2">{title}</Typography>
+            <Stack
+              spacing={2}
+              direction="row"
+              sx={{ justifyContent: "center" }}
+            >
               <Button
                 onClick={() => {
                   confirmFn(idToRemove);
@@ -69,7 +73,9 @@ export const ConfirmModal = ({
                   paddingRight: status === "LOADING" ? "33px" : "16px",
                 }}
               >
-                <Typography>yes</Typography>
+                <Typography sx={{ fontWeight: 700, fontSize: "14px" }}>
+                  yes
+                </Typography>
                 {status === "LOADING" && (
                   <Box
                     sx={{
@@ -79,12 +85,12 @@ export const ConfirmModal = ({
                       right: "7px",
                     }}
                   >
-                    <Loader />
+                    <Loader lineColor="#010409" />
                   </Box>
                 )}
               </Button>
               <Button onClick={handleClose} variant="contained">
-                <Typography>no</Typography>
+                no
               </Button>
             </Stack>
           </Box>
