@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(rootElement);
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Play",
+    fontFamily: "Helvetica",
   },
   palette: {
     mode: "dark", // Включаем темный режим

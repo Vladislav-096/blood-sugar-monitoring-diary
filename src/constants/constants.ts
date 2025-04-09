@@ -464,12 +464,29 @@ export const dataGridStyles = {
 
 export const dataGridStylesTest = {
   backgroundColor: "#010409",
+  color: "#f0f6fc",
+
+  // Скроллбар талблицы
+  "& .MuiDataGrid-scrollbar": {
+    ...scrollBarStyles,
+  },
+
+  // Стили для ячейки в режиме редактирования
+  "& .MuiDataGrid-cell--editing": {
+    "& .MuiInputBase-input": {
+      fontSize: "15px",
+    },
+  },
 
   // Устанавливаем font-weight для текста заголовков
   "& .MuiDataGrid-columnHeaderTitle": {
     fontSize: "16px",
     fontWeight: 700,
     userSelect: "none",
+  },
+
+  "& .MuiDataGrid-cell": {
+    fontSize: "15px", // Устанавливаем размер шрифта для всех ячеек
   },
 
   "& .MuiDataGrid-columnHeader": {

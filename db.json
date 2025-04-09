@@ -2,9 +2,9 @@
   "measurements": [
     {
       "id": "019528bf-0b4e-706a-ac90-5eb7b8a5d65d",
-      "createdAt": 1743541200,
-      "updatedAt": 1744207659,
-      "time": "16:22",
+      "createdAt": 1744146000,
+      "updatedAt": 1744232921,
+      "time": "01:00",
       "typeOfMeasurement": "1",
       "measurement": 121,
       "afterMealMeasurement": {
@@ -19,15 +19,15 @@
     {
       "id": "0196038b-de1d-74cb-a582-706edd93dec3",
       "createdAt": 1743541200,
-      "updatedAt": 1744069547,
+      "updatedAt": 1744220483,
       "time": "04:11",
-      "typeOfMeasurement": "3",
+      "typeOfMeasurement": "5",
       "measurement": 111
     },
     {
       "id": "01960b09-f0c9-71da-afc3-a7388c6d1aeb",
       "createdAt": 1739912400,
-      "updatedAt": 1743964754,
+      "updatedAt": 1744220495,
       "time": "15:18",
       "typeOfMeasurement": "2",
       "measurement": 55

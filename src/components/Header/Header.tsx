@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./header.module.scss";
 import { scrollBarStyles } from "../../constants/constants";
 

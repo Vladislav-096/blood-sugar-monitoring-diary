@@ -91,7 +91,7 @@ export const Table = ({
     {
       field: "actions",
       headerName: "Actions",
-      width: 90,
+      width: 92,
       headerAlign: "center",
       sortable: false,
       disableColumnMenu: true,
@@ -173,7 +173,7 @@ export const Table = ({
     {
       field: "time",
       headerName: "Time",
-      width: 120,
+      width: 115,
       editable: true,
       renderEditCell: (params: GridRenderEditCellParams) => {
         return (

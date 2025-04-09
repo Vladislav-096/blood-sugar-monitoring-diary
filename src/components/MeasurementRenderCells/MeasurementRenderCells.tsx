@@ -35,7 +35,7 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
           component="span"
           sx={{
             paddingRight: "25px",
-            fontSize: "14px",
+            // fontSize: "14px",
           }}
         >
           {row.measurement}
@@ -63,7 +63,7 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
         component="span"
         sx={{
           paddingRight: "25px",
-          fontSize: "14px",
+          fontSize: "15px",
         }}
       >
         {row.measurement}
