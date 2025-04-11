@@ -355,8 +355,7 @@ export const Table = ({
       if (!areObjectsTheSame.result) {
         // delete newRow.time;
         // const { time, ...theRest } = newRow;
-        
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         const { time: _, ...theRest } = newRow;
 
         const row: MeasurementData = {
