@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import {
   convertTime,
   convertTimestampToDate,
+  mergeDateAndTime,
 } from "../../utils/dateTimeConvert";
 import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
@@ -191,21 +192,25 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
 
   const onSubmit = async (formData: FormTypes) => {
     const measurementId = uuidv4();
-    // const unixTimestampDate = Math.floor(new Date().getTime() / 1000);
     const unixTimestampDate = formData.createdAt;
+    const unixTimestampTime = dayjs(convertedTime).unix();
     const measurement = Number(formData.measurement);
     const typeOfMeasurement = typesOptions.filter(
       (item) => item.name === formData.typeOfMeasurement
     );
 
+    // console.log(new Date(unixTimestampDate * 1000));
+    // console.log(new Date(unixTimestampTime * 1000));
+
     let data: MeasurementData = {
       id: measurementId,
-      createdAt: unixTimestampDate,
-      time: formData.time,
+      createdAt: mergeDateAndTime(unixTimestampDate, unixTimestampTime),
       updatedAt: dayjs().unix(),
       typeOfMeasurement: typeOfMeasurement[0].id,
       measurement: measurement,
     };
+
+    // console.log(new Date(data.createdAt * 1000));
 
     if (formData.afterMealMeasurement.meal.length > 0) {
       data = {

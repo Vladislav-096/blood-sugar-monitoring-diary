@@ -121,7 +121,6 @@ export const EditAfterMeasurementModal = ({
       id: afterMealMeasurement.id,
       createdAt: afterMealMeasurement.createdAt,
       updatedAt: afterMealMeasurement.updatedAt,
-      time: afterMealMeasurement.time,
       typeOfMeasurement: afterMealMeasurement.typeOfMeasurement,
       measurement: Number(formData.measurement),
       ...(formData.afterMealMeasurement.meal.length > 0 && {

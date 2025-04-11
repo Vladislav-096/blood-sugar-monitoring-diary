@@ -1,6 +1,6 @@
 import ReactECharts from "echarts-for-react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
+import { getDateStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 import { requestErrorInitial } from "../../constants/constants";
 import { Box } from "@mui/material";
 import { Loader } from "../Loader/Loader";

@@ -12,3 +12,21 @@ export const convertTime = (time: string) => {
     .set("minute", minutes)
     .format("YYYY-MM-DDTHH:mm");
 };
+
+export const mergeDateAndTime = (
+  timestampDate: number,
+  timestampTime: number
+) => {
+  // Парсим таймстампы в Day.js объекты
+  const datePart = dayjs.unix(timestampDate);
+  const timePart = dayjs.unix(timestampTime);
+
+  // Берем дату из первого таймстампа
+  const merged = datePart
+    .hour(timePart.hour()) // Подставляем часы
+    .minute(timePart.minute()) // Минуты
+    .second(timePart.second()); // Секунды
+
+  // Возвращаем результат в Unix-таймстампе
+  return merged.unix();
+};

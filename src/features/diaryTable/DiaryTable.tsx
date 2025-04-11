@@ -13,6 +13,7 @@ import { recieveTypesOfMeasurements } from "../measurementModal/typesOfMeasureme
 import { Loader } from "../../components/Loader/Loader";
 import { GetMeasurementsErrorNotification } from "../../components/GetMeasurementsErrorNotification/GetMeasurementsErrorNotification";
 import { requestErrorInitial } from "../../constants/constants";
+import { getTimeStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 
 export const DiaryTable = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -127,10 +128,14 @@ export const DiaryTable = () => {
     );
   }
 
+  const formattedMeasurements = [...measurements].map((item) => {
+    return { ...item, time: getTimeStringFromUnix(item.createdAt) };
+  });
+
   return (
     <>
       <Table
-        rows={measurements}
+        rows={formattedMeasurements}
         editStatus={editMeasurementsStatus}
         removeStatus={removeMeasurementStatus}
         // getTypesOfMeasurementStatus={getTypesOfMeasurementStatus}
@@ -139,7 +144,7 @@ export const DiaryTable = () => {
         dispatchRemoveMeasurement={dispatchRemoveMeasurement}
         dispatchEditMeasurementSync={dispatchEditMeasurementSync}
       />
-      <Box sx={{ marginTop: "15px", textAlign: 'center' }}>
+      <Box sx={{ marginTop: "15px", textAlign: "center" }}>
         <Button onClick={handleOpen} variant="contained">
           add measurement
         </Button>

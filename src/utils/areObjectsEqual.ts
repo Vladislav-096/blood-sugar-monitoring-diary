@@ -18,7 +18,7 @@ export const areObjectsEqual = (
   if (newRow.updatedAt !== oldRow.updatedAt)
     return { result: false, field: "updatedAt" };
   if (newRow.time !== oldRow.time) return { result: false, field: "time" };
-  if (newRow.measurement !== oldRow.measurement)
+  if (newRow.measurement.toString() !== oldRow.measurement.toString())
     return { result: false, field: "measurement" };
 
   // Сравнение afterMealMeasurement

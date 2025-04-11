@@ -7,7 +7,6 @@ import {
   GridRowModel,
   GridValidRowModel,
 } from "@mui/x-data-grid";
-import { getDateStringFromUnix } from "../../utils/getDateStringFromUnix";
 import { Paper } from "@mui/material";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
@@ -23,6 +22,7 @@ import { CreatedAtEditCells } from "../CreatedAtEditCells/CreatedAtEditCells";
 import {
   convertTime,
   convertTimestampToDate,
+  mergeDateAndTime,
 } from "../../utils/dateTimeConvert";
 import dayjs from "dayjs";
 import { areObjectsEqual } from "../../utils/areObjectsEqual";
@@ -30,21 +30,23 @@ import { TimeEditCells } from "../TimeEditCells/TimeEditCells";
 import { CustomTableToolbar } from "../CustomTableToolbar/CustomTableToolbar";
 import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
 import { CustomMeasurementTypeFilterField } from "../CustomMeasurementTypeFilterField/CustomMeasurementTypeFilterField";
-import { FetchMeasurementResponse } from "../../features/shared/slices/measurementsSlice";
 import { MeasurementRenderEditCells } from "../MeasrementRenderEditCells/MeasurementRenderEditCells";
 import { ActionsCells } from "../ActionsCells/ActionsCells";
 import { MeasurementRenderCells } from "../MeasurementRenderCells/MeasurementRenderCells";
 import { TypeOfMeasurementEditCells } from "../TypeOfMeasurementEditCells/TypeOfMeasurementEditCells";
 import { CustomErrorAlert } from "../CustomErrorAlert/CustomErrorAlert";
+import { getDateStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 
 interface Table {
   rows: Measurement[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchRemoveMeasurement: (id: string) => void;
   // Тут хуета написана, нету типа никакого, решить эту проблему
-  dispatchEditMeasurementSync: (
-    data: MeasurementData
-  ) => Promise<FetchMeasurementResponse>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dispatchEditMeasurementSync: any;
+  // (
+  //   data: MeasurementData
+  // ) => Promise<FetchMeasurementResponse>;
   editStatus: CheckoutState;
   removeStatus: CheckoutState;
 }
@@ -77,7 +79,7 @@ export const Table = ({
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [alertTitle, setAlertTitle] = useState<string>("");
 
-  console.log("Table");
+  console.log("Table", rows);
 
   const columns: GridColDef[] = [
     // {
@@ -175,6 +177,16 @@ export const Table = ({
       headerName: "Time",
       width: 115,
       editable: true,
+      // Пометочка: Могу брать значение из разных ключей rows объекиа через valueGetter. В valueFormatter, как я понял,
+      // тоже есть row, но через него такое провернуть нельзя. valueFormatter я использовл в таблице
+      // чтобы измнить значение, которое на прямую получаю.
+      // valueGetter: (_, row) => {
+      //   // console.log("here", row);
+      //   return getTimeStringFromUnix(row.createdAt);
+      // },
+      // valueFormatter: (value) => {
+      //   getTimeStringFromUnix(value);
+      // },
       renderEditCell: (params: GridRenderEditCellParams) => {
         return (
           <TimeEditCells
@@ -278,7 +290,8 @@ export const Table = ({
     ) => {
       const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
 
-      console.log(newRow);
+      console.log("newRow", newRow);
+      console.log("oldRow", oldRow);
 
       if (areObjectsTheSame.field === "createdAt") {
         const isValid = validationRules.createdAt.validate(newRow.createdAt);
@@ -287,6 +300,13 @@ export const Table = ({
           setAlertTitle(isValid);
           setIsAlert(true);
           return;
+        } else {
+          const unixTimestampDate = newRow.createdAt;
+          const unixTimestampTime = oldRow.createdAt;
+          newRow = {
+            ...newRow,
+            createdAt: mergeDateAndTime(unixTimestampDate, unixTimestampTime),
+          };
         }
       }
 
@@ -297,6 +317,13 @@ export const Table = ({
           setAlertTitle("Please enter time in HH:mm format");
           setIsAlert(true);
           return;
+        } else {
+          const unixTimestampDate = newRow.createdAt;
+          const unixTimestampTime = dayjs(convertTime(newRow.time)).unix();
+          newRow = {
+            ...newRow,
+            createdAt: mergeDateAndTime(unixTimestampDate, unixTimestampTime),
+          };
         }
       }
 
@@ -319,14 +346,22 @@ export const Table = ({
           setAlertTitle(isValid);
           setIsAlert(true);
           return;
+        } else {
+          console.log("here");
+          newRow = { ...newRow, measurement: Number(newRow.measurement) };
         }
       }
 
       if (!areObjectsTheSame.result) {
+        // delete newRow.time;
+        // const { time, ...theRest } = newRow;
+        
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { time: _, ...theRest } = newRow;
+
         const row: MeasurementData = {
-          ...(newRow as MeasurementData),
+          ...(theRest as MeasurementData),
           updatedAt: dayjs().unix(),
-          measurement: Number(newRow.measurement),
         };
 
         if (
@@ -379,18 +414,6 @@ export const Table = ({
       params.isEditable = false;
     }
   };
-
-  // Асинхронно работает, не могу так вовремя поймать value
-  // const handleCellEditStop = (
-  //   params: GridCellEditStopParams,
-  //   event: MuiEvent<MuiBaseEvent>
-  // ) => {
-  //   // console.log("params", params);
-  //   // console.log("event", event);
-  //   if (params.field === "createdAt") {
-  //     console.log("params.value", params.value);
-  //   }
-  // };
 
   return (
     <>
