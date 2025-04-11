@@ -27,10 +27,22 @@
     {
       "id": "01960b09-f0c9-71da-afc3-a7388c6d1aeb",
       "createdAt": 1739912400,
-      "updatedAt": 1744220495,
+      "updatedAt": 1744302205,
       "time": "15:18",
       "typeOfMeasurement": "2",
-      "measurement": 55
+      "measurement": 55,
+      "afterMealMeasurement": {
+        "meal": [
+          {
+            "portion": 111,
+            "dish": "qqq"
+          },
+          {
+            "portion": 222,
+            "dish": "www"
+          }
+        ]
+      }
     },
     {
       "id": "01960b14-7c86-755f-82ee-b71065ddf7c1",
@@ -55,6 +67,262 @@
       "updatedAt": 1744136146,
       "typeOfMeasurement": "1",
       "measurement": 321
+    },
+    {
+      "id": "1",
+      "createdAt": 1712713200,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 98
+    },
+    {
+      "id": "2",
+      "createdAt": 1712799600,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 145
+    },
+    {
+      "id": "3",
+      "createdAt": 1712886000,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 214
+    },
+    {
+      "id": "4",
+      "createdAt": 1712972400,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 47
+    },
+    {
+      "id": "5",
+      "createdAt": 1713058800,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 267
+    },
+    {
+      "id": "6",
+      "createdAt": 1713145200,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 109
+    },
+    {
+      "id": "7",
+      "createdAt": 1713231600,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 193
+    },
+    {
+      "id": "8",
+      "createdAt": 1713318000,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 63
+    },
+    {
+      "id": "9",
+      "createdAt": 1713404400,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 282
+    },
+    {
+      "id": "10",
+      "createdAt": 1713490800,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 39
+    },
+    {
+      "id": "11",
+      "createdAt": 1713577200,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 201
+    },
+    {
+      "id": "12",
+      "createdAt": 1713663600,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 307
+    },
+    {
+      "id": "13",
+      "createdAt": 1713750000,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 155
+    },
+    {
+      "id": "14",
+      "createdAt": 1713836400,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 131
+    },
+    {
+      "id": "15",
+      "createdAt": 1713922800,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 224
+    },
+    {
+      "id": "16",
+      "createdAt": 1714009200,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 309
+    },
+    {
+      "id": "17",
+      "createdAt": 1714095600,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 14
+    },
+    {
+      "id": "18",
+      "createdAt": 1714182000,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 180
+    },
+    {
+      "id": "19",
+      "createdAt": 1714268400,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 259
+    },
+    {
+      "id": "20",
+      "createdAt": 1714354800,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 75
+    },
+    {
+      "id": "21",
+      "createdAt": 1714441200,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 301
+    },
+    {
+      "id": "22",
+      "createdAt": 1714527600,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 203
+    },
+    {
+      "id": "23",
+      "createdAt": 1714614000,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 276
+    },
+    {
+      "id": "24",
+      "createdAt": 1714700400,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 56
+    },
+    {
+      "id": "25",
+      "createdAt": 1714786800,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 199
+    },
+    {
+      "id": "26",
+      "createdAt": 1714873200,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 84
+    },
+    {
+      "id": "27",
+      "createdAt": 1714959600,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 330
+    },
+    {
+      "id": "28",
+      "createdAt": 1715046000,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 24
+    },
+    {
+      "id": "29",
+      "createdAt": 1715132400,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 188
+    },
+    {
+      "id": "30",
+      "createdAt": 1715218800,
+      "updatedAt": 1744212581,
+      "time": "11:11",
+      "typeOfMeasurement": "1",
+      "measurement": 120
+    },
+    {
+      "id": "0196216c-d6bb-7481-90d7-f02d9393675c",
+      "createdAt": 1744317496,
+      "time": "23:38",
+      "updatedAt": 1744317503,
+      "typeOfMeasurement": "2",
+      "measurement": 123
+    },
+    {
+      "id": "0196216d-b62a-745c-97ba-305d723fddc7",
+      "createdAt": 1744146000,
+      "time": "23:38",
+      "updatedAt": 1744317560,
+      "typeOfMeasurement": "1",
+      "measurement": 444
     }
   ],
   "typesOfMeasuremens": [
