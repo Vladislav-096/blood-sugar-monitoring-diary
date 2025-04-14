@@ -1,0 +1,40 @@
+.list {
+  width: 100%;
+  max-height: 50vh;
+  max-width: 300px; // Ограничиваем максимальную ширину тултипа
+  // word-wrap: break-word; // Перенос длинных слов
+  overflow-y: auto;
+
+  .list-item {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      bottom: 0;
+      left: 0;
+      background-color: #9198a1;
+    }
+
+    .dish {
+      flex: 1; // Занимает доступное пространство
+      min-width: 0; // Позволяет тексту переноситься
+      word-break: break-word; // Перенос слов
+      padding-right: 10px; // Отступ между названием и весом
+    }
+
+    .portion {
+      margin-left: 5px;
+    }
+  }
+}

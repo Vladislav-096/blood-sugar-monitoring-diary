@@ -8,21 +8,28 @@ import {
 } from "@mui/material";
 import { Meals, Measurement } from "../../app/measurements";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
+import styles from "./measurementRenderCells.module.scss";
+import { scrollBarStyles } from "../../constants/constants";
 
 interface MeasurementRenderCells {
   row: Measurement;
 }
+
+const afterMealMeasurementTooltipStyles = {
+  padding: "20px",
+  border: "1px solid #9198a1",
+  borderRadius: "4px",
+  backgroundColor: "#0d1117",
+  color: "#f0f6fc",
+};
 
 export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: "#f5f5f9",
-      color: "rgba(0, 0, 0, 0.87)",
-      maxWidth: 220,
-      fontSize: theme.typography.pxToRem(12),
-      border: "1px solid #dadde9",
+      ...afterMealMeasurementTooltipStyles,
+      fontSize: theme.typography.pxToRem(14),
     },
   }));
 
@@ -34,7 +41,7 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
         <Typography
           component="span"
           sx={{
-            paddingRight: "25px",
+            paddingRight: "5px",
             // fontSize: "14px",
           }}
         >
@@ -43,11 +50,16 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
         <HtmlTooltip
           title={
             <>
-              {meals.map((item, index) => (
-                <li key={index}>
-                  <span>{item.dish}</span> <span>{item.portion}</span>
-                </li>
-              ))}
+              <Box sx={scrollBarStyles} className={`${styles.list} list-reset`}>
+                {meals.map((item, index) => (
+                  <Box key={index} className={styles["list-item"]}>
+                    <span className={styles.dish}>{`${item.dish}:`}</span>
+                    <span
+                      className={styles.portion}
+                    >{`${item.portion} g`}</span>
+                  </Box>
+                ))}
+              </Box>
             </>
           }
         >

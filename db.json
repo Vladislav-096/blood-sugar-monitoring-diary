@@ -1,5 +1,52 @@
 {
-  "measurements": [],
+  "measurements": [
+    {
+      "id": "0196344c-bf78-7017-8bc1-8517e9e84e5d",
+      "createdAt": 1744632300,
+      "updatedAt": 1744646783,
+      "typeOfMeasurement": "2",
+      "measurement": 123,
+      "afterMealMeasurement": {
+        "meal": [
+          {
+            "portion": 321,
+            "dish": "Гречневая каша с сельдереем залитые байкалом"
+          },
+          {
+            "portion": 444,
+            "dish": "testtesttesttesttesttesttesttesttesttesttesttest"
+          },
+          {
+            "portion": 111,
+            "dish": "Мороженное"
+          },
+          {
+            "portion": 7.777777777777777e+22,
+            "dish": "Кебаб"
+          }
+        ]
+      }
+    },
+    {
+      "id": "0196350b-4e0e-718c-aef1-c92140f4578a",
+      "createdAt": 1744646580,
+      "updatedAt": 1744646753,
+      "typeOfMeasurement": "2",
+      "measurement": 123,
+      "afterMealMeasurement": {
+        "meal": [
+          {
+            "portion": 1,
+            "dish": "test1"
+          },
+          {
+            "portion": 2,
+            "dish": "test2"
+          }
+        ]
+      }
+    }
+  ],
   "typesOfMeasuremens": [
     {
       "id": "1",
