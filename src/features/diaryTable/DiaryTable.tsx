@@ -21,7 +21,7 @@ export const DiaryTable = () => {
   const handleClose = () => setOpen(false);
   const dispatch = useAppDispatch();
 
-  console.log("Diary");
+  console.log("DiaryTable");
 
   const dispatchMeasurementsAndTypesOfMeasurements = () => {
     dispatch(fetchGetMeasurements());

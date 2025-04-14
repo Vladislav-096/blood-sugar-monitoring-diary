@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { FieldName, FormTypes, MeasurementData } from "../../types/types";
+import {
+  FieldNameEditMeasurementForm,
+  FormTypesEditMeasurement,
+  MeasurementData,
+} from "../../types/types";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { fetchEditMeasurement } from "../shared/slices/measurementsSlice";
 import {
@@ -57,14 +61,14 @@ export const EditAfterMeasurementModal = ({
     index: number
   ) => {
     const fieldName = `afterMealMeasurement.meal.${index}.portion`;
-    formatInputValueToNumbers(event, fieldName as FieldName);
+    formatInputValueToNumbers(event, fieldName as FieldNameEditMeasurementForm);
   };
 
   const handleMeasurementChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const fieldName = "measurement";
-    formatInputValueToNumbers(event, fieldName as FieldName);
+    formatInputValueToNumbers(event, fieldName as FieldNameEditMeasurementForm);
   };
 
   const handleDishChange = (
@@ -73,13 +77,13 @@ export const EditAfterMeasurementModal = ({
   ) => {
     const { value } = event.target;
     const fieldName = `afterMealMeasurement.meal.${index}.dish`;
-    setValue(fieldName as FieldName, value);
-    trigger(fieldName as FieldName);
+    setValue(fieldName as FieldNameEditMeasurementForm, value);
+    trigger(fieldName as FieldNameEditMeasurementForm);
   };
 
   const formatInputValueToNumbers = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    fieldName: FieldName
+    fieldName: FieldNameEditMeasurementForm
   ) => {
     const { value } = event.target;
     const pettern = /[^0-9]/g;
@@ -89,8 +93,8 @@ export const EditAfterMeasurementModal = ({
       setMeasurement(numericValue);
     }
 
-    setValue(fieldName, numericValue);
-    trigger(fieldName);
+    setValue(fieldName as FieldNameEditMeasurementForm, numericValue);
+    trigger(fieldName as FieldNameEditMeasurementForm);
   };
 
   const {
@@ -101,7 +105,7 @@ export const EditAfterMeasurementModal = ({
     trigger,
     formState: { errors },
     clearErrors,
-  } = useForm<FormTypes>();
+  } = useForm<FormTypesEditMeasurement>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -116,7 +120,7 @@ export const EditAfterMeasurementModal = ({
     remove();
   };
 
-  const onSubmit = async (formData: FormTypes) => {
+  const onSubmit = async (formData: FormTypesEditMeasurement) => {
     const data: MeasurementData = {
       id: afterMealMeasurement.id,
       createdAt: afterMealMeasurement.createdAt,
@@ -159,7 +163,7 @@ export const EditAfterMeasurementModal = ({
   useEffect(() => {
     if (afterMealMeasurement.id) {
       const measurement =
-        afterMealMeasurement.measurement.toString() as FieldName;
+        afterMealMeasurement.measurement.toString() as FieldNameEditMeasurementForm;
       setValue("measurement", measurement);
       setValue("typeOfMeasurement", "After meal");
       setMeasurement(measurement);

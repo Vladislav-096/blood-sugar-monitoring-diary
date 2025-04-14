@@ -9,7 +9,7 @@ export interface AfterMealMeasurement {
   meal: Meal[];
 }
 
-export type FieldName =
+export type FieldNameCreateMeasurementForm =
   | "typeOfMeasurement"
   | "measurement"
   | "time"
@@ -18,6 +18,11 @@ export type FieldName =
   | `afterMealMeasurement.meal.${number}`
   | `afterMealMeasurement.meal.${number}.portion`
   | `afterMealMeasurement.meal.${number}.dish`;
+
+export type FieldNameEditMeasurementForm = Exclude<
+  FieldNameCreateMeasurementForm,
+  "time" | "createdAt"
+>;
 
 export type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
 
@@ -40,17 +45,20 @@ export interface EditMeasurement {
 
 export type PartialMeasurementData = Partial<MeasurementData>;
 
-export interface FormTypes {
+export interface FormTypesCreateMeasurement {
+  createdAt: number;
+  time: string;
   typeOfMeasurement: string;
   afterMealMeasurement: AfterMealMeasurement;
   measurement: string;
-  createdAt: string;
-  updatedAt: string;
-  time: string;
 }
+
+export type FormTypesEditMeasurement = Omit<
+  FormTypesCreateMeasurement,
+  "createdAt" | "time"
+>;
 
 export interface RequestError {
   code: string;
   message: string;
 }
-

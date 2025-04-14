@@ -79,7 +79,7 @@ export const Table = ({
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [alertTitle, setAlertTitle] = useState<string>("");
 
-  console.log("Table", rows);
+  console.log("Table");
 
   const columns: GridColDef[] = [
     // {
@@ -290,9 +290,6 @@ export const Table = ({
     ) => {
       const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
 
-      console.log("newRow", newRow);
-      console.log("oldRow", oldRow);
-
       if (areObjectsTheSame.field === "createdAt") {
         const isValid = validationRules.createdAt.validate(newRow.createdAt);
 
@@ -347,7 +344,6 @@ export const Table = ({
           setIsAlert(true);
           return;
         } else {
-          console.log("here");
           newRow = { ...newRow, measurement: Number(newRow.measurement) };
         }
       }

@@ -17,8 +17,8 @@ import { useEffect, useState } from "react";
 import { v7 as uuidv4 } from "uuid";
 import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
 import {
-  AfterMealMeasurement,
-  FieldName,
+  FieldNameCreateMeasurementForm,
+  FormTypesCreateMeasurement,
   MeasurementData,
 } from "../../types/types";
 import {
@@ -49,14 +49,6 @@ interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
   // afterMealMeasurementData?: afterMealMeasurementData;
-}
-
-interface FormTypes {
-  createdAt: number;
-  time: string;
-  typeOfMeasurement: string;
-  afterMealMeasurement: AfterMealMeasurement;
-  measurement: string;
 }
 
 const alertAddMeasurementError = "Failed to add measurement";
@@ -125,7 +117,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     index: number
   ) => {
     const fieldName = `afterMealMeasurement.meal.${index}.portion`;
-    formatInputValueToNumbers(event, fieldName as FieldName);
+    formatInputValueToNumbers(
+      event,
+      fieldName as FieldNameCreateMeasurementForm
+    );
   };
 
   const handleDishChange = (
@@ -134,20 +129,23 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   ) => {
     const { value } = event.target;
     const fieldName = `afterMealMeasurement.meal.${index}.dish`;
-    setValue(fieldName as FieldName, value);
-    trigger(fieldName as FieldName);
+    setValue(fieldName as FieldNameCreateMeasurementForm, value);
+    trigger(fieldName as FieldNameCreateMeasurementForm);
   };
 
   const handleMeasurementChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const fieldName = "measurement";
-    formatInputValueToNumbers(event, fieldName as FieldName);
+    formatInputValueToNumbers(
+      event,
+      fieldName as FieldNameCreateMeasurementForm
+    );
   };
 
   const formatInputValueToNumbers = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    fieldName: FieldName
+    fieldName: FieldNameCreateMeasurementForm
   ) => {
     const { value } = event.target;
     const pettern = /[^0-9]/g;
@@ -169,7 +167,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     trigger,
     formState: { errors },
     clearErrors,
-  } = useForm<FormTypes>();
+  } = useForm<FormTypesCreateMeasurement>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -190,7 +188,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     remove();
   };
 
-  const onSubmit = async (formData: FormTypes) => {
+  const onSubmit = async (formData: FormTypesCreateMeasurement) => {
     const measurementId = uuidv4();
     const unixTimestampDate = formData.createdAt;
     const unixTimestampTime = dayjs(convertedTime).unix();
