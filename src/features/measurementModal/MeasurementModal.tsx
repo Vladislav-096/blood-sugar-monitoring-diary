@@ -52,6 +52,8 @@ interface MeasurementModal {
 }
 
 const alertAddMeasurementError = "Failed to add measurement";
+const measurementAndPortionMaxLength = 5;
+const dishNameLegth = 100;
 
 export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const dispatch = useAppDispatch();
@@ -392,10 +394,13 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                                   ? true
                                   : false
                               }
-                              // helperText={
-                              //   errors.afterMealMeasurement?.meal?.[index]?.dish
-                              //     ?.message
-                              // }
+                              slotProps={{
+                                input: {
+                                  inputProps: {
+                                    maxLength: dishNameLegth,
+                                  },
+                                },
+                              }}
                               sx={textFieldStyle}
                             />
                           )}
@@ -438,6 +443,13 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                               //     ?.portion?.message
                               // }
                               sx={textFieldStyle}
+                              slotProps={{
+                                input: {
+                                  inputProps: {
+                                    maxLength: measurementAndPortionMaxLength,
+                                  },
+                                },
+                              }}
                             />
                           )}
                         />
@@ -482,6 +494,13 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                       error={errors.measurement ? true : false}
                       // helperText={errors.measurement?.message}
                       sx={textFieldStyle}
+                      slotProps={{
+                        input: {
+                          inputProps: {
+                            maxLength: measurementAndPortionMaxLength,
+                          },
+                        },
+                      }}
                     />
                   )}
                 />

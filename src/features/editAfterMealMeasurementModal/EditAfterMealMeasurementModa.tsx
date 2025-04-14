@@ -42,6 +42,8 @@ interface EditAfterMeasurementModal {
 }
 
 const alertEditMeasurementError = "Failed to edit measurement";
+const measurementAndPortionMaxLength = 5;
+const dishNameLegth = 100;
 
 export const EditAfterMeasurementModal = ({
   open,
@@ -200,7 +202,7 @@ export const EditAfterMeasurementModal = ({
         }}
       >
         <Fade in={open}>
-          <Box sx={modalContentStyles}>
+          <Box sx={{ ...modalContentStyles }}>
             <Typography
               component="h2"
               sx={{ marginBottom: "10px", fontSize: "20px" }}
@@ -263,10 +265,13 @@ export const EditAfterMeasurementModal = ({
                                 ? true
                                 : false
                             }
-                            // helperText={
-                            //   errors.afterMealMeasurement?.meal?.[index]?.dish
-                            //     ?.message
-                            // }
+                            slotProps={{
+                              input: {
+                                inputProps: {
+                                  maxLength: dishNameLegth,
+                                },
+                              },
+                            }}
                             sx={textFieldStyle}
                           />
                         )}
@@ -304,10 +309,13 @@ export const EditAfterMeasurementModal = ({
                                 ? true
                                 : false
                             }
-                            // helperText={
-                            //   errors.afterMealMeasurement?.meal?.[index]
-                            //     ?.portion?.message
-                            // }
+                            slotProps={{
+                              input: {
+                                inputProps: {
+                                  maxLength: measurementAndPortionMaxLength,
+                                },
+                              },
+                            }}
                             sx={textFieldStyle}
                           />
                         )}
@@ -349,7 +357,13 @@ export const EditAfterMeasurementModal = ({
                       label="Measurement"
                       variant="outlined"
                       error={errors.measurement ? true : false}
-                      // helperText={errors.measurement?.message}
+                      slotProps={{
+                        input: {
+                          inputProps: {
+                            maxLength: measurementAndPortionMaxLength,
+                          },
+                        },
+                      }}
                       sx={textFieldStyle}
                     />
                   )}

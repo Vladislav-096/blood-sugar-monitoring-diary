@@ -3,26 +3,22 @@
     {
       "id": "0196344c-bf78-7017-8bc1-8517e9e84e5d",
       "createdAt": 1744632300,
-      "updatedAt": 1744646783,
+      "updatedAt": 1744652544,
       "typeOfMeasurement": "2",
-      "measurement": 123,
+      "measurement": 12345,
       "afterMealMeasurement": {
         "meal": [
           {
-            "portion": 321,
-            "dish": "Гречневая каша с сельдереем залитые байкалом"
-          },
-          {
-            "portion": 444,
-            "dish": "testtesttesttesttesttesttesttesttesttesttesttest"
-          },
-          {
-            "portion": 111,
+            "portion": 12345,
             "dish": "Мороженное"
           },
           {
-            "portion": 7.777777777777777e+22,
-            "dish": "Кебаб"
+            "portion": 12345,
+            "dish": "Гречневая каша с сельдереем залитые байкалом"
+          },
+          {
+            "portion": 1,
+            "dish": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestt100"
           }
         ]
       }
