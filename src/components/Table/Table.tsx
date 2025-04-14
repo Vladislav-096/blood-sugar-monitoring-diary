@@ -414,9 +414,16 @@ export const Table = ({
     }
   };
 
+  // 83.5vh
   return (
     <>
-      <Paper sx={{ margin: "0 auto", height: "83.5vh", width: "711px" }}>
+      <Paper
+        sx={{
+          margin: "0 auto",
+          height: "83.5vh",
+          maxWidth: "711px",
+        }}
+      >
         <DataGrid
           rows={rows}
           columns={columns}
