@@ -445,6 +445,9 @@ export const Table = ({
               },
             },
           }}
+          localeText={{
+            noRowsLabel: "No measurements", // Ваш кастомный текст
+          }}
         />
       </Paper>
       <ConfirmModal

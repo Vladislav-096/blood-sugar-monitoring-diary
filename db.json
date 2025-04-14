@@ -1,20 +1,5 @@
 {
-  "measurements": [
-    {
-      "id": "01962592-b3f2-763b-a4d1-0882d303f5f7",
-      "createdAt": 574125060,
-      "updatedAt": 1744631339,
-      "typeOfMeasurement": "1",
-      "measurement": 222
-    },
-    {
-      "id": "0196262a-5220-75df-a1ab-8bd12912d7d5",
-      "createdAt": 923850660,
-      "updatedAt": 1744631312,
-      "typeOfMeasurement": "1",
-      "measurement": 123
-    }
-  ],
+  "measurements": [],
   "typesOfMeasuremens": [
     {
       "id": "1",

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { CheckoutState } from "../../types/types";
 import { Loader } from "../Loader/Loader";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CustomRequestErrorAlert } from "../CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { modalContentStyles } from "../../constants/constants";
 
@@ -33,8 +33,13 @@ export const ConfirmModal = ({
   status,
 }: ConfirmModal) => {
   const [isAlert, setIsAlert] = useState<boolean>(false);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
+    // if (open && buttonRef.current) {
+    //   buttonRef.current.focus();
+    // }
+
     if (status === "READY") {
       handleClose();
     }
@@ -55,15 +60,18 @@ export const ConfirmModal = ({
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={open} onEntered={() => buttonRef.current?.focus()}>
           <Box sx={modalContentStyles}>
-            <Typography sx={{marginBottom: '10px'}} component="h2">{title}</Typography>
+            <Typography sx={{ marginBottom: "10px" }} component="h2">
+              {title}
+            </Typography>
             <Stack
               spacing={2}
               direction="row"
               sx={{ justifyContent: "center" }}
             >
               <Button
+                ref={buttonRef}
                 onClick={() => {
                   confirmFn(idToRemove);
                 }}
