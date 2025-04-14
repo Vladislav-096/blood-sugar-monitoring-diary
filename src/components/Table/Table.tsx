@@ -37,8 +37,12 @@ import { TypeOfMeasurementEditCells } from "../TypeOfMeasurementEditCells/TypeOf
 import { CustomErrorAlert } from "../CustomErrorAlert/CustomErrorAlert";
 import { getDateStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 
+interface Rows extends Measurement {
+  time: string;
+}
+
 interface Table {
-  rows: Measurement[];
+  rows: Rows[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchRemoveMeasurement: (id: string) => void;
   // Тут хуета написана, нету типа никакого, решить эту проблему
