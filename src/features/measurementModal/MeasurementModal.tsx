@@ -39,6 +39,7 @@ import {
   dataPisckerCalendar,
   formHelperErrorStyles,
   modalContentStyles,
+  modalInnerContentStyles,
   selectDropdowStyles,
   textFieldStyle,
   timePickerMenu,
@@ -264,257 +265,265 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       >
         <Fade in={open}>
           <Box sx={modalContentStyles}>
-            <Typography
-              component="h2"
-              sx={{ marginBottom: "10px", fontSize: "20px" }}
-            >
-              Add new measurement
-            </Typography>
-            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-              <FormControl error={errors.createdAt ? true : false} fullWidth>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Controller
-                    name="createdAt"
-                    control={control}
-                    rules={validationRules.createdAt}
-                    render={() => (
-                      <DatePicker
-                        label="Date"
-                        value={dayjs(createdAt)}
-                        onChange={handleDateChange}
-                        format="DD.MM.YYYY"
-                        slots={{ textField: TextField }}
-                        slotProps={{
-                          textField: { error: errors.createdAt ? true : false },
-                          ...dataPisckerCalendar,
-                        }}
-                        sx={textFieldStyle}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-                {errors.createdAt && (
-                  <FormHelperText sx={formHelperErrorStyles}>
-                    {" "}
-                    {errors.createdAt.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <FormControl error={errors.time ? true : false} fullWidth>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Controller
-                    name="time"
-                    control={control}
-                    rules={validationRules.time}
-                    render={() => (
-                      <TimePicker
-                        label="Time"
-                        value={dayjs(convertedTime)}
-                        onChange={handleOnTimeChange}
-                        format="HH:mm"
-                        slots={{ textField: TextField }}
-                        slotProps={{
-                          textField: { error: errors.time ? true : false },
-                          ...timePickerMenu,
-                        }}
-                        sx={textFieldStyle}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-                {errors.time && (
-                  <FormHelperText sx={formHelperErrorStyles}>
-                    {" "}
-                    {errors.time.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <FormControl
-                error={errors.typeOfMeasurement ? true : false}
-                fullWidth
+            <Box sx={modalInnerContentStyles}>
+              <Typography
+                component="h2"
+                sx={{ marginBottom: "10px", fontSize: "20px" }}
               >
-                <Controller
-                  name="typeOfMeasurement"
-                  control={control}
-                  rules={validationRules.typeOfMeasurement}
-                  render={() => (
-                    <TextField
-                      select
-                      slotProps={selectDropdowStyles}
-                      onChange={handleTypeOfMeasurementChange}
-                      value={measurementType}
-                      error={errors.typeOfMeasurement ? true : false}
-                      // helperText={errors.typeOfMeasurement?.message}
-                      label="Type of measurement"
-                      variant="outlined"
-                      sx={textFieldStyle}
-                    >
-                      {typesOptions.map((option) => (
-                        <MenuItem
-                          key={option.id}
-                          value={option.name}
-                          onClick={() => clearErrors("typeOfMeasurement")}
-                        >
-                          {option.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                />
-                {errors.typeOfMeasurement && (
-                  <FormHelperText sx={formHelperErrorStyles}>
-                    {errors.typeOfMeasurement?.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              {measurementType === "After meal" && (
-                <Box sx={{ marginBottom: "10px", padding: "0 10px 0 10px" }}>
-                  {fields.map((item, index) => (
-                    <Box key={item.id} sx={{ marginBottom: "10px" }}>
-                      <FormControl
-                        error={
-                          errors.afterMealMeasurement?.meal?.[index]?.dish
-                            ? true
-                            : false
-                        }
-                        fullWidth
-                      >
-                        <Controller
-                          name={`afterMealMeasurement.meal.${index}.dish`}
-                          control={control}
-                          rules={validationRules.mealItems.dish}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              onChange={(e) => handleDishChange(e, index)}
-                              label="Dish"
-                              variant="outlined"
-                              error={
-                                errors.afterMealMeasurement?.meal?.[index]?.dish
-                                  ? true
-                                  : false
-                              }
-                              slotProps={{
-                                input: {
-                                  inputProps: {
-                                    maxLength: dishNameLegth,
-                                  },
-                                },
-                              }}
-                              sx={textFieldStyle}
-                            />
-                          )}
+                Add new measurement
+              </Typography>
+              <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                <FormControl error={errors.createdAt ? true : false} fullWidth>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Controller
+                      name="createdAt"
+                      control={control}
+                      rules={validationRules.createdAt}
+                      render={() => (
+                        <DatePicker
+                          label="Date"
+                          value={dayjs(createdAt)}
+                          onChange={handleDateChange}
+                          format="DD.MM.YYYY"
+                          slots={{ textField: TextField }}
+                          slotProps={{
+                            textField: {
+                              error: errors.createdAt ? true : false,
+                            },
+                            ...dataPisckerCalendar,
+                          }}
+                          sx={textFieldStyle}
                         />
-                        {errors.afterMealMeasurement?.meal?.[index]?.dish && (
-                          <FormHelperText sx={formHelperErrorStyles}>
-                            {
-                              errors.afterMealMeasurement.meal?.[index].dish
-                                .message
-                            }
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                      <FormControl
-                        error={
-                          errors.afterMealMeasurement?.meal?.[index]?.portion
-                            ? true
-                            : false
-                        }
-                        fullWidth
-                      >
-                        <Controller
-                          name={`afterMealMeasurement.meal.${index}.portion`}
-                          control={control}
-                          rules={validationRules.mealItems.portion}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              onChange={(e) => handlePortionChange(e, index)}
-                              label="Portion (grams)"
-                              variant="outlined"
-                              error={
-                                errors.afterMealMeasurement?.meal?.[index]
-                                  ?.portion
-                                  ? true
-                                  : false
-                              }
-                              // helperText={
-                              //   errors.afterMealMeasurement?.meal?.[index]
-                              //     ?.portion?.message
-                              // }
-                              sx={textFieldStyle}
-                              slotProps={{
-                                input: {
-                                  inputProps: {
-                                    maxLength: measurementAndPortionMaxLength,
-                                  },
-                                },
-                              }}
-                            />
-                          )}
-                        />
-                        {errors.afterMealMeasurement?.meal?.[index]
-                          ?.portion && (
-                          <FormHelperText sx={formHelperErrorStyles}>
-                            {
-                              errors.afterMealMeasurement?.meal?.[index]
-                                ?.portion?.message
-                            }
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={() => remove(index)}
-                      >
-                        Remove
-                      </Button>
-                    </Box>
-                  ))}
-                  <Button
-                    variant="contained"
-                    onClick={() => append({ dish: "", portion: "" })}
-                  >
-                    Add Meal
-                  </Button>
-                </Box>
-              )}
-              <FormControl error={errors.measurement ? true : false} fullWidth>
-                <Controller
-                  name="measurement"
-                  control={control}
-                  rules={validationRules.measurement}
-                  render={() => (
-                    <TextField
-                      value={measurement}
-                      onChange={handleMeasurementChange}
-                      label="Measurement"
-                      variant="outlined"
-                      error={errors.measurement ? true : false}
-                      // helperText={errors.measurement?.message}
-                      sx={textFieldStyle}
-                      slotProps={{
-                        input: {
-                          inputProps: {
-                            maxLength: measurementAndPortionMaxLength,
-                          },
-                        },
-                      }}
+                      )}
                     />
+                  </LocalizationProvider>
+                  {errors.createdAt && (
+                    <FormHelperText sx={formHelperErrorStyles}>
+                      {" "}
+                      {errors.createdAt.message}
+                    </FormHelperText>
                   )}
-                />
-                {errors.measurement && (
-                  <FormHelperText sx={formHelperErrorStyles}>
-                    {errors.measurement?.message}
-                  </FormHelperText>
+                </FormControl>
+                <FormControl error={errors.time ? true : false} fullWidth>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Controller
+                      name="time"
+                      control={control}
+                      rules={validationRules.time}
+                      render={() => (
+                        <TimePicker
+                          label="Time"
+                          value={dayjs(convertedTime)}
+                          onChange={handleOnTimeChange}
+                          format="HH:mm"
+                          slots={{ textField: TextField }}
+                          slotProps={{
+                            textField: { error: errors.time ? true : false },
+                            ...timePickerMenu,
+                          }}
+                          sx={textFieldStyle}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                  {errors.time && (
+                    <FormHelperText sx={formHelperErrorStyles}>
+                      {" "}
+                      {errors.time.message}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+                <FormControl
+                  error={errors.typeOfMeasurement ? true : false}
+                  fullWidth
+                >
+                  <Controller
+                    name="typeOfMeasurement"
+                    control={control}
+                    rules={validationRules.typeOfMeasurement}
+                    render={() => (
+                      <TextField
+                        select
+                        slotProps={selectDropdowStyles}
+                        onChange={handleTypeOfMeasurementChange}
+                        value={measurementType}
+                        error={errors.typeOfMeasurement ? true : false}
+                        // helperText={errors.typeOfMeasurement?.message}
+                        label="Type of measurement"
+                        variant="outlined"
+                        sx={textFieldStyle}
+                      >
+                        {typesOptions.map((option) => (
+                          <MenuItem
+                            key={option.id}
+                            value={option.name}
+                            onClick={() => clearErrors("typeOfMeasurement")}
+                          >
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    )}
+                  />
+                  {errors.typeOfMeasurement && (
+                    <FormHelperText sx={formHelperErrorStyles}>
+                      {errors.typeOfMeasurement?.message}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+                {measurementType === "After meal" && (
+                  <Box sx={{ marginBottom: "10px", padding: "0 10px 0 10px" }}>
+                    {fields.map((item, index) => (
+                      <Box key={item.id} sx={{ marginBottom: "10px" }}>
+                        <FormControl
+                          error={
+                            errors.afterMealMeasurement?.meal?.[index]?.dish
+                              ? true
+                              : false
+                          }
+                          fullWidth
+                        >
+                          <Controller
+                            name={`afterMealMeasurement.meal.${index}.dish`}
+                            control={control}
+                            rules={validationRules.mealItems.dish}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                onChange={(e) => handleDishChange(e, index)}
+                                label="Dish"
+                                variant="outlined"
+                                error={
+                                  errors.afterMealMeasurement?.meal?.[index]
+                                    ?.dish
+                                    ? true
+                                    : false
+                                }
+                                slotProps={{
+                                  input: {
+                                    inputProps: {
+                                      maxLength: dishNameLegth,
+                                    },
+                                  },
+                                }}
+                                sx={textFieldStyle}
+                              />
+                            )}
+                          />
+                          {errors.afterMealMeasurement?.meal?.[index]?.dish && (
+                            <FormHelperText sx={formHelperErrorStyles}>
+                              {
+                                errors.afterMealMeasurement.meal?.[index].dish
+                                  .message
+                              }
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                        <FormControl
+                          error={
+                            errors.afterMealMeasurement?.meal?.[index]?.portion
+                              ? true
+                              : false
+                          }
+                          fullWidth
+                        >
+                          <Controller
+                            name={`afterMealMeasurement.meal.${index}.portion`}
+                            control={control}
+                            rules={validationRules.mealItems.portion}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                onChange={(e) => handlePortionChange(e, index)}
+                                label="Portion (grams)"
+                                variant="outlined"
+                                error={
+                                  errors.afterMealMeasurement?.meal?.[index]
+                                    ?.portion
+                                    ? true
+                                    : false
+                                }
+                                // helperText={
+                                //   errors.afterMealMeasurement?.meal?.[index]
+                                //     ?.portion?.message
+                                // }
+                                sx={textFieldStyle}
+                                slotProps={{
+                                  input: {
+                                    inputProps: {
+                                      maxLength: measurementAndPortionMaxLength,
+                                    },
+                                  },
+                                }}
+                              />
+                            )}
+                          />
+                          {errors.afterMealMeasurement?.meal?.[index]
+                            ?.portion && (
+                            <FormHelperText sx={formHelperErrorStyles}>
+                              {
+                                errors.afterMealMeasurement?.meal?.[index]
+                                  ?.portion?.message
+                              }
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          onClick={() => remove(index)}
+                        >
+                          Remove
+                        </Button>
+                      </Box>
+                    ))}
+                    <Button
+                      variant="contained"
+                      onClick={() => append({ dish: "", portion: "" })}
+                    >
+                      Add Meal
+                    </Button>
+                  </Box>
                 )}
-              </FormControl>
-              <SubmitModalButton
-                requestStatus={addMeasurementsStatus}
-                buttonName={"submit"}
-              />
-            </form>
+                <FormControl
+                  error={errors.measurement ? true : false}
+                  fullWidth
+                >
+                  <Controller
+                    name="measurement"
+                    control={control}
+                    rules={validationRules.measurement}
+                    render={() => (
+                      <TextField
+                        value={measurement}
+                        onChange={handleMeasurementChange}
+                        label="Measurement"
+                        variant="outlined"
+                        error={errors.measurement ? true : false}
+                        // helperText={errors.measurement?.message}
+                        sx={textFieldStyle}
+                        slotProps={{
+                          input: {
+                            inputProps: {
+                              maxLength: measurementAndPortionMaxLength,
+                            },
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                  {errors.measurement && (
+                    <FormHelperText sx={formHelperErrorStyles}>
+                      {errors.measurement?.message}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+                <SubmitModalButton
+                  requestStatus={addMeasurementsStatus}
+                  buttonName={"submit"}
+                />
+              </form>
+            </Box>
           </Box>
         </Fade>
       </Modal>

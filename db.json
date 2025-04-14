@@ -41,6 +41,34 @@
           }
         ]
       }
+    },
+    {
+      "id": "01963616-6da9-711a-ae3f-6dcb5ff9bac3",
+      "createdAt": 1744664100,
+      "updatedAt": 1744664161,
+      "typeOfMeasurement": "1",
+      "measurement": 1
+    },
+    {
+      "id": "01963616-7df0-717a-a396-3892eeca75e7",
+      "createdAt": 1744664160,
+      "updatedAt": 1744664165,
+      "typeOfMeasurement": "1",
+      "measurement": 2
+    },
+    {
+      "id": "01963616-872c-71f7-9acc-99f9ef85a57c",
+      "createdAt": 1744664160,
+      "updatedAt": 1744664168,
+      "typeOfMeasurement": "1",
+      "measurement": 3
+    },
+    {
+      "id": "01963616-9443-759c-92d1-d1b8896f187e",
+      "createdAt": 1744664160,
+      "updatedAt": 1744664171,
+      "typeOfMeasurement": "1",
+      "measurement": 4
     }
   ],
   "typesOfMeasuremens": [

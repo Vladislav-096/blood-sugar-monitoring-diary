@@ -328,6 +328,9 @@ export const modalContentStyles = {
   borderRadius: "5px",
   textAlign: "center",
   width: "400px",
+};
+
+export const modalInnerContentStyles = {
   maxHeight: "650px",
   overflowY: "auto",
   ...scrollBarStyles,
