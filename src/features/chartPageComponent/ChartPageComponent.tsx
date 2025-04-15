@@ -5,6 +5,10 @@ import {
   getTimeStringFromUnix,
 } from "../../utils/getDateTimeStringFromUnix";
 import { PagesCommonProps } from "../shared/pagesCommon/PagesCommon";
+import { Box } from "@mui/material";
+import { ChartTable } from "../../components/ChartTable/ChartTable";
+import { useMemo } from "react";
+import styles from "./chartPageComponent.module.scss";
 // import { requestErrorInitial } from "../../constants/constants";
 // import { Box } from "@mui/material";
 // import { Loader } from "../Loader/Loader";
@@ -13,7 +17,7 @@ import { PagesCommonProps } from "../shared/pagesCommon/PagesCommon";
 // import { recieveTypesOfMeasurements } from "../../features/measurementModal/typesOfMeasurementsSlice";
 // import { useEffect } from "react";
 
-export const ChartComponent = () => {
+export const ChartPageComponent = () => {
   // test
   // const dispatch = useAppDispatch();
 
@@ -22,7 +26,7 @@ export const ChartComponent = () => {
   //   dispatch(recieveTypesOfMeasurements());
   // };
 
-  console.log("ChartComponent");
+  console.log("ChartPageComponent");
 
   const measurements = useAppSelector(
     (state) => state.measurements.measurements
@@ -46,21 +50,20 @@ export const ChartComponent = () => {
 
   // test
 
-  const data = [...measurements]
-    .sort((a, b) => a.createdAt - b.createdAt)
-    .map((item) => {
-      return {
-        x: `${getDateStringFromUnix(item.createdAt)}, ${getTimeStringFromUnix(
-          item.createdAt
-        )}`,
-        y: item.measurement,
-      };
-    });
+  const data = useMemo(() => {
+    return [...measurements]
+      .sort((a, b) => a.createdAt - b.createdAt)
+      .map((item) => {
+        return {
+          x: `${getDateStringFromUnix(item.createdAt)}, ${getTimeStringFromUnix(
+            item.createdAt
+          )}`,
+          y: item.measurement,
+        };
+      });
+  }, [measurements]);
 
   const option = {
-    title: {
-      text: "Chart",
-    },
     tooltip: {
       trigger: "axis",
     },
@@ -92,6 +95,16 @@ export const ChartComponent = () => {
       },
     ],
   };
+
+  const formattedMeasurements = useMemo(() => {
+    return [...measurements].map((item) => {
+      return {
+        id: item.id,
+        date: item.createdAt,
+        measurement: item.measurement,
+      };
+    });
+  }, [measurements]);
 
   // useEffect(() => {
   //   dispatchMeasurementsAndTypesOfMeasurements();
@@ -152,7 +165,16 @@ export const ChartComponent = () => {
 
   return (
     <PagesCommonProps>
-      <ReactECharts option={option} style={{ height: "400px" }} />
+      <ReactECharts option={option} className={styles.chart} />
+      <Box
+        sx={{
+          // display: "flex",
+          // border: "1px solid red",
+          height: "calc(45vh - 45px)",
+        }}
+      >
+        <ChartTable rows={formattedMeasurements} />
+      </Box>
     </PagesCommonProps>
   );
 };

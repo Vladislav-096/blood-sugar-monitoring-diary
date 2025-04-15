@@ -83,7 +83,7 @@ export const MeasurementsTable = ({
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [alertTitle, setAlertTitle] = useState<string>("");
 
-  console.log("Table");
+  console.log("MeasurementTable");
 
   const columns: GridColDef[] = [
     // {
@@ -420,6 +420,7 @@ export const MeasurementsTable = ({
       <Paper
         sx={{
           margin: "0 auto",
+          marginTop: "15px",
           height: "83.5vh",
           maxWidth: "711px",
         }}

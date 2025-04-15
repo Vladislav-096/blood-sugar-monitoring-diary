@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Box, Button } from "@mui/material";
 import { MeasurementModal } from "../measurementModal/MeasurementModal";
@@ -135,9 +135,12 @@ export const MainPageComponent = () => {
   //   );
   // }
 
-  const formattedMeasurements = [...measurements].map((item) => {
-    return { ...item, time: getTimeStringFromUnix(item.createdAt) };
-  });
+  const formattedMeasurements = useMemo(() => {
+    return measurements.map((item) => ({
+      ...item,
+      time: getTimeStringFromUnix(item.createdAt),
+    }));
+  }, [measurements]);
 
   return (
     <PagesCommonProps>

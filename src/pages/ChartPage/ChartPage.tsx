@@ -1,10 +1,10 @@
-import { ChartComponent } from "../../features/chartComponent/ChartComponent";
+import { ChartPageComponent } from "../../features/chartPageComponent/ChartPageComponent";
 
 export const ChartPage = () => {
   return (
     <section>
       <div className="container">
-        <ChartComponent />
+        <ChartPageComponent />
       </div>
     </section>
   );
