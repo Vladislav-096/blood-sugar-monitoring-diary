@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router";
 import { MainPage } from "../../pages/MainPage/MainPage";
-import { GraphPage } from "../../pages/GraphPage/GraphPage";
+import { ChartPage } from "../../pages/ChartPage/ChartPage";
 
 export const Main = () => {
   return (
     <main>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/graph" element={<GraphPage />} />
+        <Route path="/graph" element={<ChartPage />} />
       </Routes>
     </main>
   );

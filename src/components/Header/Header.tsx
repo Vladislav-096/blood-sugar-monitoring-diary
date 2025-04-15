@@ -28,7 +28,7 @@ export const Header = () => {
               `${styles.link} ${isActive ? styles.active : ""}`
             }
           >
-            Graph
+            Chart
           </NavLink>
           {/* <Link className={styles.link} to={"/"}>
             Main

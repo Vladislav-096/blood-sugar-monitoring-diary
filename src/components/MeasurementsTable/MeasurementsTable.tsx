@@ -41,13 +41,13 @@ interface Rows extends Measurement {
   time: string;
 }
 
-interface Table {
+interface MeasurementsTable {
   rows: Rows[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchRemoveMeasurement: (id: string) => void;
-  // Тут хуета написана, нету типа никакого, решить эту проблему
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatchEditMeasurementSync: any;
+  // Нету типа никакого, решить эту проблему
   // (
   //   data: MeasurementData
   // ) => Promise<FetchMeasurementResponse>;
@@ -55,14 +55,14 @@ interface Table {
   removeStatus: CheckoutState;
 }
 
-export const Table = ({
+export const MeasurementsTable = ({
   rows,
   typesOfMeasurement,
   dispatchRemoveMeasurement,
   dispatchEditMeasurementSync,
   editStatus,
   removeStatus,
-}: Table) => {
+}: MeasurementsTable) => {
   const defaultMeasurementValue = "Just Measurement";
   const [openRemoveConfirmModal, setOpenRemoveConfirmModal] =
     useState<boolean>(false);

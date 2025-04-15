@@ -1,5 +1,5 @@
 // import { v7 as uuidv4 } from "uuid";
-import { DiaryTable } from "../../features/diaryTable/DiaryTable";
+import { MainPageComponent } from "../../features/mainPageComponent/MainPageComponent";
 
 export const MainPage = () => {
   // const id = uuidv4();
@@ -7,7 +7,7 @@ export const MainPage = () => {
   return (
     <section>
       <div className="container">
-        <DiaryTable />
+        <MainPageComponent />
       </div>
     </section>
   );
