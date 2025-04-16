@@ -21,7 +21,8 @@ import {
   getDateStringFromUnix,
   getTimeStringFromUnix,
 } from "../../utils/getDateTimeStringFromUnix";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CustomErrorAlert } from "../CustomErrorAlert/CustomErrorAlert";
 
 interface SelectDateRange {
   initialMinDate: string;
@@ -41,6 +42,8 @@ interface FormTypes {
   dateStart: number;
   dateEnd: number;
 }
+
+const alertTitle = "The second date should be greater than the first date";
 
 const setTheEndOfTheDay = (timestamp: number) => {
   return dayjs.unix(timestamp).hour(23).minute(59).second(59).unix();
@@ -65,20 +68,19 @@ export const SelectDateRange = ({
   setTableDateRange,
   setChartDateRange,
   tableDateRange,
-}: // dateRangeChart,
-SelectDateRange) => {
+}: SelectDateRange) => {
+  const [isAlert, setIsAlert] = useState<boolean>(false);
+
   const handleDateStartChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
       const newDate = newValue.unix();
       if (!areDatesValid(newDate, dayjs(dateEnd).unix())) {
-        // The second date should be greater than the first one
-        console.log("here");
-        setDateStart((prev) => prev);
-      } else {
-        console.log("or here");
-        setDateStart(newValue.format("YYYY-MM-DD"));
-        setValue("dateStart", newDate);
+        setIsAlert(true);
+        return;
       }
+      console.log("or here");
+      setDateStart(newValue.format("YYYY-MM-DD"));
+      setValue("dateStart", newDate);
     }
 
     trigger("dateStart");
@@ -88,15 +90,13 @@ SelectDateRange) => {
     if (newValue) {
       const newDate = newValue.unix();
       if (!areDatesValid(dayjs(dateStart).unix(), newDate)) {
-        // The second date should be greater than the first one
-        console.log("here");
-        setDateEnd(dateEnd);
-        setValue("dateEnd", dayjs(dateEnd).unix());
-      } else {
-        console.log("or here");
-        setDateEnd(newValue.format("YYYY-MM-DD"));
-        setValue("dateEnd", newDate);
+        setIsAlert(true);
+        return;
       }
+
+      console.log("or here");
+      setDateEnd(newValue.format("YYYY-MM-DD"));
+      setValue("dateEnd", newDate);
     }
 
     trigger("dateEnd");
@@ -227,6 +227,11 @@ SelectDateRange) => {
           </Button>
         </Box>
       </form>
+      <CustomErrorAlert
+        title={alertTitle}
+        isAlert={isAlert}
+        setIsAlert={setIsAlert}
+      />
     </Box>
   );
 };
