@@ -305,7 +305,7 @@ export const dataPisckerCalendar = {
         },
         "&.Mui-disabled": {
           // Неактивные дни
-          color: "#f0f6fc", // хз чо это
+          color: "#31363d !important",
         },
       },
     },

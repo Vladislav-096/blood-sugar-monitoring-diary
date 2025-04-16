@@ -7,8 +7,11 @@ import {
 import { PagesCommonProps } from "../shared/pagesCommon/PagesCommon";
 import { Box } from "@mui/material";
 import { ChartTable } from "../../components/ChartTable/ChartTable";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./chartPageComponent.module.scss";
+import { SelectDateRange } from "../../components/SelectDateRange/SelectDateRange";
+import { DateRangeChart, DateRangeTableRow } from "../../types/types";
+import { convertTimestampToDate } from "../../utils/dateTimeConvert";
 // import { requestErrorInitial } from "../../constants/constants";
 // import { Box } from "@mui/material";
 // import { Loader } from "../Loader/Loader";
@@ -26,11 +29,23 @@ export const ChartPageComponent = () => {
   //   dispatch(recieveTypesOfMeasurements());
   // };
 
+  const [dateStart, setDateStart] = useState<string>(""); // YYYY-MM-DD
+  const [dateEnd, setDateEnd] = useState<string>(""); // YYYY-MM-DD
+  const [tableDateRange, setTableDateRange] = useState<DateRangeTableRow[]>([]);
+  const [chartDateRange, setChartDateRange] = useState<DateRangeChart[]>([]);
+
   console.log("ChartPageComponent");
+  // console.log(dayjs(dateStart).unix());
+  // console.log(tableDateRange.length);
+  // console.log(chartDateRange.length);
 
   const measurements = useAppSelector(
     (state) => state.measurements.measurements
   );
+
+  const sortedMeasurementsByDate = useMemo(() => {
+    return [...measurements].sort((a, b) => a.createdAt - b.createdAt);
+  }, [measurements]);
 
   // const getMeasurementsStatus = useAppSelector(
   //   (state) => state.measurements.checkoutGetMeasurementsState
@@ -50,18 +65,16 @@ export const ChartPageComponent = () => {
 
   // test
 
-  const data = useMemo(() => {
-    return [...measurements]
-      .sort((a, b) => a.createdAt - b.createdAt)
-      .map((item) => {
-        return {
-          x: `${getDateStringFromUnix(item.createdAt)}, ${getTimeStringFromUnix(
-            item.createdAt
-          )}`,
-          y: item.measurement,
-        };
-      });
-  }, [measurements]);
+  const chartData: DateRangeChart[] = useMemo(() => {
+    return [...sortedMeasurementsByDate].map((item) => {
+      return {
+        x: `${getDateStringFromUnix(item.createdAt)}, ${getTimeStringFromUnix(
+          item.createdAt
+        )}`,
+        y: item.measurement,
+      };
+    });
+  }, [sortedMeasurementsByDate]);
 
   const option = {
     tooltip: {
@@ -69,7 +82,7 @@ export const ChartPageComponent = () => {
     },
     xAxis: {
       // type: "category",
-      data: data.map((item) => item.x),
+      data: chartDateRange.map((item) => item.x),
     },
     yAxis: {
       type: "value",
@@ -91,20 +104,33 @@ export const ChartPageComponent = () => {
         name: "Measurement",
         type: "line",
         showSymbol: true,
-        data: data.map((item) => item.y),
+        data: chartDateRange.map((item) => item.y),
       },
     ],
   };
 
-  const formattedMeasurements = useMemo(() => {
-    return [...measurements].map((item) => {
+  const formattedMeasurements: DateRangeTableRow[] = useMemo(() => {
+    return [...sortedMeasurementsByDate].map((item) => {
       return {
         id: item.id,
         date: item.createdAt,
         measurement: item.measurement,
       };
     });
-  }, [measurements]);
+  }, [sortedMeasurementsByDate]);
+
+  const setInitialValues = () => {
+    if (chartData.length > 0 && formattedMeasurements.length > 0) {
+      const firstDate = sortedMeasurementsByDate[0].createdAt;
+      const lastDate =
+        sortedMeasurementsByDate[sortedMeasurementsByDate.length - 1].createdAt;
+
+      setDateStart(convertTimestampToDate(firstDate));
+      setDateEnd(convertTimestampToDate(lastDate));
+      setTableDateRange(formattedMeasurements);
+      setChartDateRange(chartData);
+    }
+  };
 
   // useEffect(() => {
   //   dispatchMeasurementsAndTypesOfMeasurements();
@@ -163,17 +189,40 @@ export const ChartPageComponent = () => {
   //   );
   // }
 
+  // Мб один раз отсортировать данные для chartData и formattedMeasurements?
+  useEffect(() => {
+    setInitialValues();
+  }, [chartData, formattedMeasurements]);
+
   return (
     <PagesCommonProps>
       <ReactECharts option={option} className={styles.chart} />
       <Box
         sx={{
-          // display: "flex",
+          display: "flex",
           // border: "1px solid red",
           height: "calc(45vh - 45px)",
         }}
       >
-        <ChartTable rows={formattedMeasurements} />
+        <ChartTable rows={tableDateRange} />
+        <SelectDateRange
+          initialMinDate={convertTimestampToDate(
+            sortedMeasurementsByDate[0]?.createdAt
+          )}
+          initialMaxDate={convertTimestampToDate(
+            sortedMeasurementsByDate[sortedMeasurementsByDate.length - 1]
+              ?.createdAt
+          )}
+          setInitialValues={setInitialValues}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          // chartDateRange={chartDateRange}
+          tableDateRange={tableDateRange}
+          setDateStart={setDateStart}
+          setDateEnd={setDateEnd}
+          setTableDateRange={setTableDateRange}
+          setChartDateRange={setChartDateRange}
+        />
       </Box>
     </PagesCommonProps>
   );

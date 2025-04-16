@@ -62,3 +62,14 @@ export interface RequestError {
   code: string;
   message: string;
 }
+
+export interface DateRangeTableRow {
+  id: string;
+  date: number;
+  measurement: number;
+}
+
+export interface DateRangeChart {
+  x: string;
+  y: number;
+}

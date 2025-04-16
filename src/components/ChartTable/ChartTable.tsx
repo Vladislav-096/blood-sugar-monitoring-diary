@@ -3,18 +3,13 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import { getDateStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 import { dataGridStylesTest } from "../../constants/constants";
-
-interface Rows {
-  date: number;
-  measurement: number;
-}
+import { DateRangeTableRow } from "../../types/types";
 
 interface ChartTable {
-  rows: Rows[];
+  rows: DateRangeTableRow[];
 }
 
 export const ChartTable = ({ rows }: ChartTable) => {
-  const [filteredRows, setFilteredRows] = useState<Rows[]>(rows);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 5,
@@ -44,14 +39,14 @@ export const ChartTable = ({ rows }: ChartTable) => {
   return (
     <Paper
       sx={{
-        margin: "0 auto",
+        // margin: "0 auto",
         width: "260px",
         height: "100%",
         // marginRight: "15px",
       }}
     >
       <DataGrid
-        rows={filteredRows}
+        rows={rows}
         columns={columns}
         paginationModel={paginationModel}
         pageSizeOptions={[5]}
@@ -59,8 +54,9 @@ export const ChartTable = ({ rows }: ChartTable) => {
         onPaginationModelChange={handlePaginationModelChange}
         hideFooterSelectedRowCount
         disableColumnMenu
+        disableColumnSorting={true}
         localeText={{
-          noRowsLabel: "No measurements", // Ваш кастомный текст
+          noRowsLabel: "No measurements",
         }}
       />
     </Paper>
