@@ -95,7 +95,6 @@ export const measurementsSlice = createSlice({
     );
     builder.addCase(fetchGetMeasurements.rejected, (state, action) => {
       state.checkoutGetMeasurementsState = "ERROR";
-      console.log("action", action);
       const errorObject = {
         code: action.error.code || "",
         message: action.error.message || "",

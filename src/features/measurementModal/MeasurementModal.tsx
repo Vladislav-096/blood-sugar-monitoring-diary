@@ -99,7 +99,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = event.target;
-    console.log(value);
     if (!value) return;
 
     setMeasurementType(value);
@@ -110,7 +109,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
 
     const typeId = typesOptions.filter((item) => item.name === value);
     if (typeId.length > 0) {
-      console.log(typeId[0].name);
       setValue("typeOfMeasurement", typeId[0].name);
     }
   };
@@ -200,9 +198,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       (item) => item.name === formData.typeOfMeasurement
     );
 
-    // console.log(new Date(unixTimestampDate * 1000));
-    // console.log(new Date(unixTimestampTime * 1000));
-
     let data: MeasurementData = {
       id: measurementId,
       createdAt: mergeDateAndTime(unixTimestampDate, unixTimestampTime),
@@ -210,8 +205,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       typeOfMeasurement: typeOfMeasurement[0].id,
       measurement: measurement,
     };
-
-    // console.log(new Date(data.createdAt * 1000));
 
     if (formData.afterMealMeasurement.meal.length > 0) {
       data = {
@@ -223,8 +216,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
         },
       };
     }
-
-    console.log(data);
 
     const res = await dispatch(fetchAddMeasurement(data));
 

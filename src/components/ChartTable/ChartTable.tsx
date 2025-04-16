@@ -9,10 +9,12 @@ interface ChartTable {
   rows: DateRangeTableRow[];
 }
 
+const tablePageSize = 5;
+
 export const ChartTable = ({ rows }: ChartTable) => {
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 5,
+    pageSize: tablePageSize,
   });
 
   const columns: GridColDef[] = [
@@ -39,9 +41,10 @@ export const ChartTable = ({ rows }: ChartTable) => {
   return (
     <Paper
       sx={{
-        // margin: "0 auto",
+        margin: "0 auto",
         width: "260px",
-        height: "100%",
+        // height: "100%",
+        height: "calc(44.4vh - 45px)",
         // marginRight: "15px",
       }}
     >
@@ -49,7 +52,7 @@ export const ChartTable = ({ rows }: ChartTable) => {
         rows={rows}
         columns={columns}
         paginationModel={paginationModel}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[tablePageSize]}
         sx={dataGridStylesTest}
         onPaginationModelChange={handlePaginationModelChange}
         hideFooterSelectedRowCount

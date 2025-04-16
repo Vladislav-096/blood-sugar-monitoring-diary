@@ -78,7 +78,6 @@ export const SelectDateRange = ({
         setIsAlert(true);
         return;
       }
-      console.log("or here");
       setDateStart(newValue.format("YYYY-MM-DD"));
       setValue("dateStart", newDate);
     }
@@ -93,8 +92,6 @@ export const SelectDateRange = ({
         setIsAlert(true);
         return;
       }
-
-      console.log("or here");
       setDateEnd(newValue.format("YYYY-MM-DD"));
       setValue("dateEnd", newDate);
     }
@@ -146,7 +143,15 @@ export const SelectDateRange = ({
   }, [setValue, dateStart, dateEnd]);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        margin: "0 auto",
+        width: "300px",
+        "@media (max-width: 360px)": {
+          width: "100%",
+        },
+      }}
+    >
       <Typography
         component="h2"
         sx={{ marginBottom: "10px", fontSize: "20px" }}

@@ -92,5 +92,5 @@ export const PagesCommonProps = ({ children }: PagesCommonProps) => {
     );
   }
 
-  return <>{children}</>;
+  return <Box sx={{ padding: "15px 0 15px 0" }}>{children}</Box>;
 };

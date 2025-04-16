@@ -5,7 +5,6 @@ import {
   getTimeStringFromUnix,
 } from "../../utils/getDateTimeStringFromUnix";
 import { PagesCommonProps } from "../shared/pagesCommon/PagesCommon";
-import { Box } from "@mui/material";
 import { ChartTable } from "../../components/ChartTable/ChartTable";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./chartPageComponent.module.scss";
@@ -33,11 +32,6 @@ export const ChartPageComponent = () => {
   const [dateEnd, setDateEnd] = useState<string>(""); // YYYY-MM-DD
   const [tableDateRange, setTableDateRange] = useState<DateRangeTableRow[]>([]);
   const [chartDateRange, setChartDateRange] = useState<DateRangeChart[]>([]);
-
-  console.log("ChartPageComponent");
-  // console.log(dayjs(dateStart).unix());
-  // console.log(tableDateRange.length);
-  // console.log(chartDateRange.length);
 
   const measurements = useAppSelector(
     (state) => state.measurements.measurements
@@ -196,34 +190,34 @@ export const ChartPageComponent = () => {
 
   return (
     <PagesCommonProps>
+      <SelectDateRange
+        initialMinDate={convertTimestampToDate(
+          sortedMeasurementsByDate[0]?.createdAt
+        )}
+        initialMaxDate={convertTimestampToDate(
+          sortedMeasurementsByDate[sortedMeasurementsByDate.length - 1]
+            ?.createdAt
+        )}
+        setInitialValues={setInitialValues}
+        dateStart={dateStart}
+        dateEnd={dateEnd}
+        // chartDateRange={chartDateRange}
+        tableDateRange={tableDateRange}
+        setDateStart={setDateStart}
+        setDateEnd={setDateEnd}
+        setTableDateRange={setTableDateRange}
+        setChartDateRange={setChartDateRange}
+      />
       <ReactECharts option={option} className={styles.chart} />
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           // border: "1px solid red",
           height: "calc(45vh - 45px)",
         }}
-      >
-        <ChartTable rows={tableDateRange} />
-        <SelectDateRange
-          initialMinDate={convertTimestampToDate(
-            sortedMeasurementsByDate[0]?.createdAt
-          )}
-          initialMaxDate={convertTimestampToDate(
-            sortedMeasurementsByDate[sortedMeasurementsByDate.length - 1]
-              ?.createdAt
-          )}
-          setInitialValues={setInitialValues}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          // chartDateRange={chartDateRange}
-          tableDateRange={tableDateRange}
-          setDateStart={setDateStart}
-          setDateEnd={setDateEnd}
-          setTableDateRange={setTableDateRange}
-          setChartDateRange={setChartDateRange}
-        />
-      </Box>
+      > */}
+      <ChartTable rows={tableDateRange} />
+      {/* </Box> */}
     </PagesCommonProps>
   );
 };

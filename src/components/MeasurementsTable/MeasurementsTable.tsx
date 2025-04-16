@@ -55,6 +55,8 @@ interface MeasurementsTable {
   removeStatus: CheckoutState;
 }
 
+const tablePageSize = 10;
+
 export const MeasurementsTable = ({
   rows,
   typesOfMeasurement,
@@ -82,8 +84,6 @@ export const MeasurementsTable = ({
     useState<MeasurementData>(initialAfterMealMeasurement);
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [alertTitle, setAlertTitle] = useState<string>("");
-
-  console.log("MeasurementTable");
 
   const columns: GridColDef[] = [
     // {
@@ -265,7 +265,7 @@ export const MeasurementsTable = ({
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 5,
+    pageSize: tablePageSize,
   });
 
   const handlePaginationModelChange = (newPaginationModel: {
@@ -420,8 +420,7 @@ export const MeasurementsTable = ({
       <Paper
         sx={{
           margin: "0 auto",
-          marginTop: "15px",
-          height: "83.5vh",
+          height: "71.1vh",
           maxWidth: "711px",
         }}
       >
@@ -429,7 +428,7 @@ export const MeasurementsTable = ({
           rows={rows}
           columns={columns}
           paginationModel={paginationModel}
-          pageSizeOptions={[5]}
+          pageSizeOptions={[tablePageSize]}
           // sx={dataGridStyles}
           sx={dataGridStylesTest}
           // onCellEditStop={handleCellEditStop}

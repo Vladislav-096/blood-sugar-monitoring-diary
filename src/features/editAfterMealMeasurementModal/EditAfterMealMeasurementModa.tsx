@@ -138,7 +138,6 @@ export const EditAfterMeasurementModal = ({
         },
       }),
     };
-    // console.log({ ...data, updatedAt: dayjs().unix() });
 
     const areObjectsTheSame = areObjectsEqual(afterMealMeasurement, data);
 

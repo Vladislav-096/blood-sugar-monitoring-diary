@@ -501,7 +501,7 @@ export const dataGridStylesTest = {
 
     // Вот тут, предположительно, хуета. Странный класс
     ".css-1tdeh38": {
-      backgroundColor: "#010409",
+      // backgroundColor: "red",
     },
   },
 
