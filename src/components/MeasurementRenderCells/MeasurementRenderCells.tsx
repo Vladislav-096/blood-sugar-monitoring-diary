@@ -42,7 +42,6 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
           component="span"
           sx={{
             paddingRight: "5px",
-            // fontSize: "14px",
           }}
         >
           {row.measurement}

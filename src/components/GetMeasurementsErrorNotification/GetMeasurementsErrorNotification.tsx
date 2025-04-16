@@ -5,15 +5,11 @@ import { RequestError } from "../../types/types";
 
 interface GetMeasurementsErrorNotification {
   refetch: () => void;
-  //   measurementsError: string;
-  //   typesOfMeasurementsError: string;
   error: RequestError;
 }
 
 export const GetMeasurementsErrorNotification = ({
   refetch,
-  //   measurementsError,
-  //   typesOfMeasurementsError,
   error,
 }: GetMeasurementsErrorNotification) => {
   const [isDisabled, setIsDisabled] = useState(false);

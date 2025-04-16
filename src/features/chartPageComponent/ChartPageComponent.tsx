@@ -11,23 +11,8 @@ import styles from "./chartPageComponent.module.scss";
 import { SelectDateRange } from "../../components/SelectDateRange/SelectDateRange";
 import { DateRangeChart, DateRangeTableRow } from "../../types/types";
 import { convertTimestampToDate } from "../../utils/dateTimeConvert";
-// import { requestErrorInitial } from "../../constants/constants";
-// import { Box } from "@mui/material";
-// import { Loader } from "../Loader/Loader";
-// import { GetMeasurementsErrorNotification } from "../GetMeasurementsErrorNotification/GetMeasurementsErrorNotification";
-// import { fetchGetMeasurements } from "../../features/shared/slices/measurementsSlice";
-// import { recieveTypesOfMeasurements } from "../../features/measurementModal/typesOfMeasurementsSlice";
-// import { useEffect } from "react";
 
 export const ChartPageComponent = () => {
-  // test
-  // const dispatch = useAppDispatch();
-
-  // const dispatchMeasurementsAndTypesOfMeasurements = () => {
-  //   dispatch(fetchGetMeasurements());
-  //   dispatch(recieveTypesOfMeasurements());
-  // };
-
   const [dateStart, setDateStart] = useState<string>(""); // YYYY-MM-DD
   const [dateEnd, setDateEnd] = useState<string>(""); // YYYY-MM-DD
   const [tableDateRange, setTableDateRange] = useState<DateRangeTableRow[]>([]);
@@ -40,24 +25,6 @@ export const ChartPageComponent = () => {
   const sortedMeasurementsByDate = useMemo(() => {
     return [...measurements].sort((a, b) => a.createdAt - b.createdAt);
   }, [measurements]);
-
-  // const getMeasurementsStatus = useAppSelector(
-  //   (state) => state.measurements.checkoutGetMeasurementsState
-  // );
-
-  // const getTypesOfMeasurementStatus = useAppSelector(
-  //   (state) => state.typesOfMeasurements.checkoutState
-  // );
-
-  // const getMeasurementsError = useAppSelector(
-  //   (state) => state.measurements.errorGetMeasurements
-  // );
-
-  // const typesOfMeasurementsError = useAppSelector(
-  //   (state) => state.typesOfMeasurements.error
-  // );
-
-  // test
 
   const chartData: DateRangeChart[] = useMemo(() => {
     return [...sortedMeasurementsByDate].map((item) => {
@@ -75,7 +42,6 @@ export const ChartPageComponent = () => {
       trigger: "axis",
     },
     xAxis: {
-      // type: "category",
       data: chartDateRange.map((item) => item.x),
     },
     yAxis: {
@@ -126,64 +92,6 @@ export const ChartPageComponent = () => {
     }
   };
 
-  // useEffect(() => {
-  //   dispatchMeasurementsAndTypesOfMeasurements();
-  // }, []);
-
-  // if (
-  //   getMeasurementsStatus === "LOADING" ||
-  //   getTypesOfMeasurementStatus === "LOADING"
-  // ) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         position: "absolute",
-  //         width: "10vw",
-  //         height: "10vh",
-  //         top: "50%",
-  //         left: "50%",
-  //         transform: "translate(-50%, -50%)",
-  //       }}
-  //     >
-  //       <Loader />
-  //     </Box>
-  //   );
-  // }
-
-  // if (
-  //   getMeasurementsStatus === "ERROR" ||
-  //   getTypesOfMeasurementStatus === "ERROR"
-  // ) {
-  //   let error = requestErrorInitial;
-  //   if (
-  //     getMeasurementsError.message === "" ||
-  //     typesOfMeasurementsError.message === ""
-  //   ) {
-  //     error = getMeasurementsError.message
-  //       ? getMeasurementsError
-  //       : typesOfMeasurementsError;
-  //   } else if (
-  //     getMeasurementsError.code === "500" &&
-  //     typesOfMeasurementsError.code === "500"
-  //   ) {
-  //     error = getMeasurementsError;
-  //   } else {
-  //     error =
-  //       getMeasurementsError.code !== "500"
-  //         ? getMeasurementsError
-  //         : typesOfMeasurementsError;
-  //   }
-  //   return (
-  //     <GetMeasurementsErrorNotification
-  //       // measurementsErrorMessage={measurementsErrorMessage}
-  //       // typesOfMeasurementsError={typesOfMeasurementsError}
-  //       error={error}
-  //       refetch={dispatchMeasurementsAndTypesOfMeasurements}
-  //     />
-  //   );
-  // }
-
-  // Мб один раз отсортировать данные для chartData и formattedMeasurements?
   useEffect(() => {
     setInitialValues();
   }, [chartData, formattedMeasurements]);
@@ -201,7 +109,6 @@ export const ChartPageComponent = () => {
         setInitialValues={setInitialValues}
         dateStart={dateStart}
         dateEnd={dateEnd}
-        // chartDateRange={chartDateRange}
         tableDateRange={tableDateRange}
         setDateStart={setDateStart}
         setDateEnd={setDateEnd}
@@ -209,15 +116,7 @@ export const ChartPageComponent = () => {
         setChartDateRange={setChartDateRange}
       />
       <ReactECharts option={option} className={styles.chart} />
-      {/* <Box
-        sx={{
-          display: "flex",
-          // border: "1px solid red",
-          height: "calc(45vh - 45px)",
-        }}
-      > */}
       <ChartTable rows={tableDateRange} />
-      {/* </Box> */}
     </PagesCommonProps>
   );
 };

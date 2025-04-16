@@ -31,7 +31,6 @@ interface SelectDateRange {
   dateStart: string;
   dateEnd: string;
   tableDateRange: DateRangeTableRow[];
-  // dateRangeChart: DateRangeChart[];
   setDateStart: React.Dispatch<React.SetStateAction<string>>;
   setDateEnd: React.Dispatch<React.SetStateAction<string>>;
   setTableDateRange: React.Dispatch<React.SetStateAction<DateRangeTableRow[]>>;
@@ -101,8 +100,8 @@ export const SelectDateRange = ({
 
   const handleReset = () => {
     setInitialValues();
-    reset(); // Сброс формы react-hook-form
-    clearErrors(); // Очистка ошибок валидации
+    reset();
+    clearErrors();
   };
 
   const {

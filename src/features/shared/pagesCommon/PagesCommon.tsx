@@ -84,8 +84,6 @@ export const PagesCommonProps = ({ children }: PagesCommonProps) => {
     }
     return (
       <GetMeasurementsErrorNotification
-        // measurementsErrorMessage={measurementsErrorMessage}
-        // typesOfMeasurementsError={typesOfMeasurementsError}
         error={error}
         refetch={dispatchMeasurementsAndTypesOfMeasurements}
       />

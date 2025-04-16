@@ -191,7 +191,6 @@ export const timePickerMenu = {
       "& .MuiPaper-root": {
         marginTop: "5px",
         backgroundColor: "#0d1117",
-        // backgroundColor: "#121212",
         backgroundImage: "none",
         color: "#f0f6fc",
         borderRadius: "5px",
@@ -231,7 +230,6 @@ export const dataPisckerCalendar = {
         // Стили для контейнера календаря
         marginTop: "5px",
         backgroundColor: "#0d1117",
-        // backgroundColor: "#121212",
         backgroundImage: "none",
         color: "#f0f6fc",
         borderRadius: "5px",
@@ -243,7 +241,6 @@ export const dataPisckerCalendar = {
     sx: {
       "& .MuiPickersCalendarHeader-root": {
         // Заголовок календаря
-        // backgroundColor: "#1e293b",
         color: "#f0f6fc",
       },
       // Сегодня
@@ -288,7 +285,7 @@ export const dataPisckerCalendar = {
         },
       },
       "& .MuiDayCalendar-weekDayLabel": {
-        // Дни недели (Пн, Вт и т.д.)
+        // Дни недели
         color: "#f0f6fc",
       },
       "& .MuiPickersDay-root": {
@@ -361,12 +358,8 @@ export const dataGridStyles = {
         color: "#f0f6fc", // Цвет иконки
         fontSize: "20px", // Размер
         borderRadius: "50%",
-        // opacity: '1 !important',
-        // transition: "all 0.2s ease", // Анимация
 
         "&:hover": {
-          // opacity: '1',
-          // backgroundColor: "#3d444db3",
           transform: "scale(1.1)",
         },
       },
@@ -437,7 +430,6 @@ export const dataGridStyles = {
 
       "&:focus": {
         outline: "none",
-        // backgroundColor: "#3d444db3",
       },
     },
 
@@ -498,11 +490,6 @@ export const dataGridStylesTest = {
 
   ".MuiDataGrid-filler": {
     backgroundColor: "#0d1117", // Красит оставшееся постаранство в заголовках
-
-    // Вот тут, предположительно, хуета. Странный класс
-    ".css-1tdeh38": {
-      // backgroundColor: "red",
-    },
   },
 
   "& .MuiDataGrid-row": {
@@ -525,16 +512,12 @@ export const controlPanelStyles = {
     sx: {
       backgroundColor: "#0d1117",
       backgroundImage: "none",
-      // borderRight: "1px solid #9198a1",
-      // borderBottom: "1px solid #9198a1",
     },
   },
   filterPanel: {
     sx: {
       backgroundColor: "#0d1117",
       backgroundImage: "none",
-      // borderRight: "1px solid #9198a1",
-      // borderBottom: "1px solid #9198a1",
     },
   },
 };

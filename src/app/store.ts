@@ -2,15 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { measurementsSlice } from "../features/shared/slices/measurementsSlice";
 import { typesOfMeasurementsSlice } from "../features/measurementModal/typesOfMeasurementsSlice";
 
-// Глобальный стейт приложения
 export const store = configureStore({
   reducer: {
     measurements: measurementsSlice.reducer,
     typesOfMeasurements: typesOfMeasurementsSlice.reducer,
   },
 });
-
-console.log("store", store.getState()); // Будет пустой, вроде потому что увижу только при первом рендере
 
 // ReturnType — это утилита в TypeScript, которая позволяет получить тип возвращаемого значения функции.
 export type RootState = ReturnType<typeof store.getState>;

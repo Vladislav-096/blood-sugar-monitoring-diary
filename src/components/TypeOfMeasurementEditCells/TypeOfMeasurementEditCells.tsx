@@ -15,8 +15,6 @@ interface TypeOfMeasurementEditCells {
 
 export const TypeOfMeasurementEditCells = ({
   typesOfMeasurements,
-  // dispatchEditMeasurement,
-  // row,
   initialValue,
   params,
   editStatus,
@@ -27,11 +25,6 @@ export const TypeOfMeasurementEditCells = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { value: newValue } = event.target;
-    // const newValueId = typesOfMeasurements.filter(
-    //   (item) => item.name === newValue
-    // )[0].id;
-
-    // setChosenOption(newValueId);
     setChosenOption(newValue);
     params.api.setEditCellValue(
       {
@@ -41,9 +34,6 @@ export const TypeOfMeasurementEditCells = ({
       },
       true
     ); // true означает немедленное применение изменений
-
-    // const newRow: MeasurementData = { ...row, typeOfMeasurement: newValueId };
-    // dispatchEditMeasurement(newRow);
   };
 
   return (
@@ -60,13 +50,13 @@ export const TypeOfMeasurementEditCells = ({
             height: "100%", // Корневой элемент ввода
           },
           "& .MuiOutlinedInput-notchedOutline": {
-            border: "none", // Убирает бордер
+            border: "none",
           },
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            border: "none", // Убирает бордер при наведении
+            border: "none",
           },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            border: "none", // Убирает бордер при фокусе
+            border: "none",
           },
 
           "& .MuiSelect-icon": {
@@ -80,30 +70,6 @@ export const TypeOfMeasurementEditCells = ({
           </MenuItem>
         ))}
       </TextField>
-      {/* <Select
-        value={chosenOption}
-        onChange={handleChange}
-        fullWidth
-        sx={{
-          height: "100%", // Главный контейнер
-          "& .MuiOutlinedInput-root": {
-            height: "100%", // Корневой элемент ввода
-          },
-          "& .MuiOutlinedInput-notchedOutline": {
-            border: "none", // Убирает бордер
-          },
-          "&:hover .MuiOutlinedInput-notchedOutline": {
-            border: "none", // Убирает бордер при наведении
-          },
-          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            border: "none", // Убирает бордер при фокусе
-          },
-
-          "& .MuiSelect-icon": {
-            display: editStatus === "LOADING" ? "none" : "block",
-          },
-        }}
-      ></Select> */}
     </EditCellLoader>
   );
 };

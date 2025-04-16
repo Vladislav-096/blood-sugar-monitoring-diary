@@ -36,10 +36,6 @@ export const ConfirmModal = ({
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    // if (open && buttonRef.current) {
-    //   buttonRef.current.focus();
-    // }
-
     if (status === "READY") {
       handleClose();
     }

@@ -1,9 +1,9 @@
 class CustomError extends Error {
-  public readonly code: string; // Явно объявляем как string
+  public readonly code: string;
 
   constructor(code: number, message: string) {
     super(message);
-    this.code = code.toString(); // Конвертируем number в string
+    this.code = code.toString();
 
     // Важно для корректной работы instanceof
     Object.setPrototypeOf(this, CustomError.prototype);

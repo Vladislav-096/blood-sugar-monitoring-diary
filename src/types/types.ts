@@ -38,10 +38,10 @@ export interface MeasurementData {
 }
 
 // Не используется
-export interface EditMeasurement {
-  id: string;
-  data: PartialMeasurementData;
-}
+// export interface EditMeasurement {
+//   id: string;
+//   data: PartialMeasurementData;
+// }
 
 export type PartialMeasurementData = Partial<MeasurementData>;
 

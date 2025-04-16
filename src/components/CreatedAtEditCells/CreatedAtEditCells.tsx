@@ -43,20 +43,19 @@ export const CreatedAtEditCells = ({
           value={dayjs(date)}
           onChange={handleOnDateChange}
           format="DD.MM.YYYY"
-          // slots={{ textField: TextField }}
           slotProps={{
             textField: {
               sx: {
                 height: "100%",
                 ".MuiInputBase-root": { height: "100%" },
                 "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none", // Убирает бордер
+                  border: "none",
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  border: "none", // Убирает бордер при наведении
+                  border: "none",
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  border: "none", // Убирает бордер при фокусе
+                  border: "none",
                 },
               },
             },

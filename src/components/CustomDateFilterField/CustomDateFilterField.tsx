@@ -9,17 +9,12 @@ export const CustomDateFilterField = (props: GridFilterInputValueProps) => {
   const [value, setValue] = useState<string>("");
 
   const filterTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
-  // const [filterValueState, setFilterValueState] = useState<[string, string]>(
-  //   item.value ?? ""
-  // );
   const [applying, setIsApplying] = useState<boolean>(false);
 
   const onValueChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { value: newValue } = e.target;
-    // setValue(value);
-    // applyValue({ ...item, value });
     updateValue(newValue);
   };
 

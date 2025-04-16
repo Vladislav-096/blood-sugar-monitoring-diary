@@ -18,7 +18,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import styles from "./editAfterMealMeasurementModal.module.scss";
 import {
   formHelperErrorStyles,
   initialAfterMealMeasurement,
@@ -57,7 +56,7 @@ export const EditAfterMeasurementModal = ({
     (state) => state.measurements.checkoutEditMeasurementState
   );
   const [isAlert, setIsAlert] = useState<boolean>(false);
-  const [measurement, setMeasurement] = useState<string>(" "); // Чтобы визуально не съебывал лэйбл при открытии модалки. Оставлю?
+  const [measurement, setMeasurement] = useState<string>(" "); // Чтобы визуально не уезжал лэйбл при открытии модалки. Оставлю?
 
   const handlePortionChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -153,8 +152,6 @@ export const EditAfterMeasurementModal = ({
     );
 
     if (!res.payload) {
-      // В алерт улетит строка "ERROR", потому что произойдет ререндер. Но что вызывает ререндер,
-      // если тут прерывается выполнение кода?
       return;
     }
 
@@ -177,9 +174,6 @@ export const EditAfterMeasurementModal = ({
         });
       });
     }
-    //  else {
-    //   resetValues();
-    // }
   }, [afterMealMeasurement]);
 
   return (
@@ -210,7 +204,7 @@ export const EditAfterMeasurementModal = ({
               >
                 Edit measurement
               </Typography>
-              <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl
                   fullWidth
                   error={errors.typeOfMeasurement ? true : false}
@@ -222,9 +216,7 @@ export const EditAfterMeasurementModal = ({
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        // Это, наверное тут не нужно
                         slotProps={selectDropdowStyles}
-                        // helperText={errors.typeOfMeasurement?.message}
                         error={errors.typeOfMeasurement ? true : false}
                         label="Type of measurement"
                         variant="outlined"
@@ -233,7 +225,6 @@ export const EditAfterMeasurementModal = ({
                       ></TextField>
                     )}
                   />
-                  {/* По сути это тут не нужно */}
                   {errors.typeOfMeasurement && (
                     <FormHelperText sx={formHelperErrorStyles}>
                       {errors.typeOfMeasurement?.message}

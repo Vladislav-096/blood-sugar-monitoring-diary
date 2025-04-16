@@ -23,7 +23,6 @@ export const TimeEditCells = ({
   const handleOnTimeChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
       const newTime = newValue.format("HH:mm");
-      console.log("newTime", newTime);
       setConvertedTime(newValue.format("YYYY-MM-DDTHH:mm"));
       params.api.setEditCellValue(
         {
@@ -42,7 +41,6 @@ export const TimeEditCells = ({
         <TimePicker
           value={dayjs(convertedTime)}
           onChange={handleOnTimeChange}
-          // ampm={false}
           format="HH:mm"
           slotProps={{
             textField: {
@@ -50,13 +48,13 @@ export const TimeEditCells = ({
                 height: "100%",
                 ".MuiInputBase-root": { height: "100%" },
                 "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none", // Убирает border
+                  border: "none",
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  border: "none", // Убирает border при наведении
+                  border: "none",
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  border: "none", // Убирает border при фокусе
+                  border: "none",
                 },
               },
             },

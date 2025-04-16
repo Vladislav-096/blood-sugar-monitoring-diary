@@ -86,14 +86,6 @@ export const MeasurementsTable = ({
   const [alertTitle, setAlertTitle] = useState<string>("");
 
   const columns: GridColDef[] = [
-    // {
-    //   field: "id",
-    //   headerName: "ID",
-    //   width: 90,
-    //   renderCell: commonRenderCell,
-
-    //   // editable: true,
-    // },
     {
       field: "actions",
       headerName: "Actions",
@@ -181,7 +173,7 @@ export const MeasurementsTable = ({
       headerName: "Time",
       width: 115,
       editable: true,
-      // Пометочка: Могу брать значение из разных ключей rows объекиа через valueGetter. В valueFormatter, как я понял,
+      // Пометочка: Могу брать значение из разных ключей rows объекта через valueGetter. В valueFormatter, как я понял,
       // тоже есть row, но через него такое провернуть нельзя. valueFormatter я использовл в таблице
       // чтобы измнить значение, которое на прямую получаю.
       // valueGetter: (_, row) => {
@@ -205,7 +197,6 @@ export const MeasurementsTable = ({
       field: "typeOfMeasurement",
       headerName: "Measurement Type",
       width: 195,
-      // cellClassName: styles['padding-left'],
       filterOperators: [
         {
           value: "contains",
@@ -261,8 +252,6 @@ export const MeasurementsTable = ({
     },
   ];
 
-  // const paginationModel = { page: 0, pageSize: 5 };
-
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: tablePageSize,
@@ -285,13 +274,7 @@ export const MeasurementsTable = ({
   const mutateRow = useEditMutation();
 
   const processRowUpdate = React.useCallback(
-    async (
-      newRow: GridRowModel,
-      oldRow: GridValidRowModel
-      // params: {
-      //   rowId: GridRowId;
-      // }
-    ) => {
+    async (newRow: GridRowModel, oldRow: GridValidRowModel) => {
       const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
 
       if (areObjectsTheSame.field === "createdAt") {
@@ -353,9 +336,6 @@ export const MeasurementsTable = ({
       }
 
       if (!areObjectsTheSame.result) {
-        // delete newRow.time;
-        // const { time, ...theRest } = newRow;
-
         const { time: _, ...theRest } = newRow;
 
         const row: MeasurementData = {
@@ -388,23 +368,11 @@ export const MeasurementsTable = ({
     console.log("error", error);
   }, []);
 
-  const handleCellDoubleClick = (
-    params: GridCellParams
-    // event: MuiEvent,
-    // details: GridCallbackDetails
-  ) => {
+  const handleCellDoubleClick = (params: GridCellParams) => {
     if (
       params.field === "measurement" &&
       params.row.typeOfMeasurement === "2"
     ) {
-      // const data: afterMealMeasurementData = {
-      //   afterMealMeasurementId: params.row.id,
-      //   afterMealMeasurementMeasurement: params.row.measurement,
-      //   afterMealMeasurementMeals: params.row.afterMealMeasurement
-      //     ? params.row.afterMealMeasurement.meal
-      //     : [],
-      // };
-
       const data: MeasurementData = params.row;
 
       setAfterMealMeasurement(data);
@@ -413,8 +381,6 @@ export const MeasurementsTable = ({
       params.isEditable = false;
     }
   };
-
-  // 83.5vh
   return (
     <>
       <Paper
@@ -429,11 +395,7 @@ export const MeasurementsTable = ({
           columns={columns}
           paginationModel={paginationModel}
           pageSizeOptions={[tablePageSize]}
-          // sx={dataGridStyles}
           sx={dataGridStylesTest}
-          // onCellEditStop={handleCellEditStop}
-          // disableRowSelectionOnClick
-          // disableMultipleRowSelection={false}
           hideFooterSelectedRowCount
           onPaginationModelChange={handlePaginationModelChange}
           processRowUpdate={processRowUpdate}
@@ -448,12 +410,11 @@ export const MeasurementsTable = ({
             columns: {
               columnVisibilityModel: {
                 updatedAt: false, // Скрыть колонку по умолчанию
-                // Добавьте другие колонки, которые хотите скрыть
               },
             },
           }}
           localeText={{
-            noRowsLabel: "No measurements", // Ваш кастомный текст
+            noRowsLabel: "No measurements",
           }}
         />
       </Paper>

@@ -13,7 +13,7 @@ const theme = createTheme({
     fontFamily: "Helvetica",
   },
   palette: {
-    mode: "dark", // Включаем темный режим
+    mode: "dark",
   },
   components: {
     MuiButton: {
@@ -22,9 +22,6 @@ const theme = createTheme({
           fontWeight: 700,
         },
       },
-      // defaultProps: {
-      //   variant: "outlined",
-      // },
     },
   },
 });

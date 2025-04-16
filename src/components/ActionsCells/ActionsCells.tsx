@@ -19,9 +19,6 @@ export const ActionsCells = ({
       sx={{
         textTransform: "none",
         color: "red",
-        // "&:hover": {
-        //   background: "#ff000023",
-        // },
       }}
       onClick={() => {
         setIdToRemove(row.id);

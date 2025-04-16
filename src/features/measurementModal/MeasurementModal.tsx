@@ -49,7 +49,6 @@ import {
 interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
-  // afterMealMeasurementData?: afterMealMeasurementData;
 }
 
 const alertAddMeasurementError = "Failed to add measurement";
@@ -220,8 +219,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     const res = await dispatch(fetchAddMeasurement(data));
 
     if (!res.payload) {
-      // В алерт улетит строка "ERROR", потому что произойдет ререндер. Но что вызывает ререндер,
-      // если тут прерывается выполнение кода?
       return;
     }
 
@@ -231,9 +228,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   useEffect(() => {
     setValue("createdAt", dayjs().unix());
     setValue("time", dayjs().format("HH:mm"));
-    // if (addMeasurementsErrorStatus === "ERROR") {
-    //   setIsAlert(true);
-    // }
   }, [setValue]);
 
   return (
@@ -339,7 +333,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         onChange={handleTypeOfMeasurementChange}
                         value={measurementType}
                         error={errors.typeOfMeasurement ? true : false}
-                        // helperText={errors.typeOfMeasurement?.message}
                         label="Type of measurement"
                         variant="outlined"
                         sx={textFieldStyle}
@@ -434,10 +427,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                                     ? true
                                     : false
                                 }
-                                // helperText={
-                                //   errors.afterMealMeasurement?.meal?.[index]
-                                //     ?.portion?.message
-                                // }
                                 sx={textFieldStyle}
                                 slotProps={{
                                   input: {
@@ -491,7 +480,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         label="Measurement"
                         variant="outlined"
                         error={errors.measurement ? true : false}
-                        // helperText={errors.measurement?.message}
                         sx={textFieldStyle}
                         slotProps={{
                           input: {

@@ -1,8 +1,7 @@
 .list {
   width: 100%;
   max-height: 50vh;
-  max-width: 300px; // Ограничиваем максимальную ширину тултипа
-  // word-wrap: break-word; // Перенос длинных слов
+  max-width: 300px;
   overflow-y: auto;
 
   .list-item {
@@ -28,9 +27,9 @@
 
     .dish {
       flex: 1; // Занимает доступное пространство
-      min-width: 0; // Позволяет тексту переноситься
+      min-width: 0;
       word-break: break-word; // Перенос слов
-      padding-right: 10px; // Отступ между названием и весом
+      padding-right: 10px;
     }
 
     .portion {

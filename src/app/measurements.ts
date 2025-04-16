@@ -19,7 +19,6 @@ const MeasurementSchema = z.object({
   id: z.string(),
   createdAt: z.number(),
   updatedAt: z.number(),
-  // time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format"),
   typeOfMeasurement: z.string(),
   measurement: z.number(),
   afterMealMeasurement: AfterMealMeasurementSchema.optional(),
@@ -35,7 +34,6 @@ const TypeOfMeasurementsSchema = z.object({
 
 const TypesOfMeasurementsSchema = z.array(TypeOfMeasurementsSchema);
 export type TypesOfMeasurements = z.infer<typeof TypesOfMeasurementsSchema>;
-// export type Measurements = z.infer<typeof MeasurementsSchema>;
 
 export interface filters extends Record<string, string> {
   createdAt_gte: string;
