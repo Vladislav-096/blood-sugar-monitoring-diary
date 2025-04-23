@@ -3,9 +3,22 @@ import { API_URL } from "../constants/constants";
 import { validateGetResponse, validateResponse } from "./validationResponse";
 import { MeasurementData } from "../types/types";
 
+const DishStatisticSchema = z.object({
+  id: z.number(),
+  calories: z.number(),
+  proteins: z.number(),
+  carbohydrates: z.number(),
+  fats: z.number(),
+  comment: z.string(),
+});
+
+export type DishStatistic = z.infer<typeof DishStatisticSchema>;
+
 const MealSchema = z.object({
+  id: z.number(),
   portion: z.number(),
   dish: z.string(),
+  statistic: DishStatisticSchema.optional(),
 });
 
 const MealsSchema = z.array(MealSchema);

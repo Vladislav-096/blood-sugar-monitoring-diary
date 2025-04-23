@@ -1,6 +1,7 @@
 export type CheckoutState = "LOADING" | "READY" | "ERROR";
 
 export interface Meal {
+  id: number | null;
   portion: string;
   dish: string;
 }
@@ -17,7 +18,8 @@ export type FieldNameCreateMeasurementForm =
   | "afterMealMeasurement"
   | `afterMealMeasurement.meal.${number}`
   | `afterMealMeasurement.meal.${number}.portion`
-  | `afterMealMeasurement.meal.${number}.dish`;
+  | `afterMealMeasurement.meal.${number}.dish`
+  | `afterMealMeasurement.meal.${number}.id`;
 
 export type FieldNameEditMeasurementForm = Exclude<
   FieldNameCreateMeasurementForm,

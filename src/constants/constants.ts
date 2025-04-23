@@ -2,6 +2,9 @@ import dayjs from "dayjs";
 
 export const API_URL = "http://localhost:8653";
 
+export const loaderDefaultColor = "#f0f6fc";
+export const loaderDarkColor = "#010409";
+
 export const initialAfterMealMeasurement = {
   id: "",
   time: "",

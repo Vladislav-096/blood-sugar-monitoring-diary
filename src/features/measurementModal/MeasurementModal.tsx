@@ -13,7 +13,7 @@ import {
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styles from "./measurementModal.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v7 as uuidv4 } from "uuid";
 import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
 import {
@@ -45,7 +45,9 @@ import {
   timePickerMenu,
   validationRules,
 } from "../../constants/constants";
-
+import { getDishStatistic } from "../../app/dishStatistic";
+import { DishStatistic } from "../../app/measurements";
+import { Loader } from "../../components/Loader/Loader";
 interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
@@ -67,7 +69,31 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [measurementType, setMeasurementType] = useState<string>("");
   const [measurement, setMeasurement] = useState<string>("");
-
+  const testData = [
+    {
+      id: 0,
+      calories: 111,
+      proteins: 1.29,
+      fats: 0.33,
+      carbohydrates: 22.84,
+      comment: "medium glycemic index",
+    },
+    {
+      id: 1,
+      calories: 222,
+      proteins: 9.8,
+      fats: 29.5,
+      carbohydrates: 3.8,
+      comment: "The glycemic index is considered low",
+    },
+  ];
+  const [dishStatistic, setDishStatistic] = useState<DishStatistic[]>([]);
+  // const abortControllerRef = useRef<AbortController | null>(null);
+  // const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortControllersRef = useRef<Record<number, AbortController>>({});
+  const debounceTimeoutsRef = useRef<
+    Record<number, ReturnType<typeof setTimeout>>
+  >({});
   const [createdAt, setCreatedAt] = useState<string>(
     convertTimestampToDate(dayjs().unix())
   ); // YYYY-MM-DD
@@ -75,6 +101,10 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     convertTime(dayjs().format("HH:mm"))
   ); // YYYY-MM-DDTHH:mm
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
+  const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
+    {}
+  );
+  const isAnyLoading = Object.values(loadingStates).some(Boolean);
 
   const handleDateChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
@@ -123,7 +153,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     );
   };
 
-  const handleDishChange = (
+  const handleDishChange = async (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
@@ -131,6 +161,73 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     const fieldName = `afterMealMeasurement.meal.${index}.dish`;
     setValue(fieldName as FieldNameCreateMeasurementForm, value);
     trigger(fieldName as FieldNameCreateMeasurementForm);
+
+    // Очистить старый debounce таймер
+    if (debounceTimeoutsRef.current[index]) {
+      clearTimeout(debounceTimeoutsRef.current[index]);
+    }
+
+    debounceTimeoutsRef.current[index] = setTimeout(async () => {
+      // Отменяем предыдущий запрос
+      if (abortControllersRef.current[index]) {
+        abortControllersRef.current[index].abort();
+      }
+
+      // Создаём новый AbortController
+      const controller = new AbortController();
+      abortControllersRef.current[index] = controller;
+
+      // Установить флаг загрузки
+      setLoadingStates((prev) => ({ ...prev, [index]: true }));
+
+      try {
+        console.log(`started loading ${index}`);
+        const DishStatisticResponse = await getDishStatistic({
+          dishName: value,
+          signal: controller.signal,
+        });
+
+        const DishStatisticJson = await DishStatisticResponse.json();
+        console.log("DishStatisticJson", DishStatisticJson);
+
+        console.log(`stopped loading ${index}`);
+        const DishStatisticData: DishStatistic = {
+          id: index,
+          ...JSON.parse(DishStatisticJson.choices[0].message.content),
+        };
+        console.log("DishStatisticData", DishStatisticData);
+
+        // Тупая нейросеть отказывается отвечать мне пустой строкой, как я прошу, в случае
+        // если dishName не еда. Вместо этого она отвечает объектом, в котором protein,
+        // fat, carbs и calories равны 0. Поэтому делаю проверку по этим полям
+        if (
+          DishStatisticData.calories === 0 &&
+          DishStatisticData.proteins === 0 &&
+          DishStatisticData.fats === 0 &&
+          DishStatisticData.carbohydrates === 0
+        ) {
+          return;
+        }
+
+        setDishStatistic((prev) => {
+          const existingIndex = prev.findIndex((item) => item.id === index);
+
+          if (existingIndex !== -1) {
+            const newArray = [...prev];
+            newArray[existingIndex] = DishStatisticData;
+            return newArray;
+          }
+
+          return [...prev, DishStatisticData];
+        });
+      } catch (err) {
+        console.log(err);
+        return;
+      } finally {
+        // Сбросить флаг загрузки
+        setLoadingStates((prev) => ({ ...prev, [index]: false }));
+      }
+    }, 400);
   };
 
   const handleMeasurementChange = (
@@ -157,6 +254,65 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
 
     setValue(fieldName, numericValue);
     trigger(fieldName);
+  };
+
+  const handleDishAndPortionFocus = (index: number) => {
+    console.log(index);
+    setValue(
+      `afterMealMeasurement.meal.${index}.id` as FieldNameCreateMeasurementForm,
+      index
+    );
+  };
+
+  const handleRemoveMeal = (index: number) => {
+    // Отменяем текущий запрос
+    if (abortControllersRef.current[index]) {
+      abortControllersRef.current[index].abort();
+    }
+
+    remove(index);
+
+    // setDishStatistic((prev) => {
+    //   const existingIndex = prev.findIndex((item) => item.id === index);
+    //   if (existingIndex !== -1) {
+    //     const newArray = [...prev];
+    //     newArray.splice(existingIndex, 1);
+    //     return newArray;
+    //   }
+    //   return prev;
+    // });
+
+    setDishStatistic((prev) => {
+      // Удаляем нужный индекс
+      const filtered = prev.filter((item) => item.id !== index);
+
+      // Сдвигаем все id после удалённого вниз на 1
+      const updated = filtered.map((item) => {
+        if (item.id > index) {
+          return { ...item, id: item.id - 1 };
+        }
+        return item;
+      });
+
+      return updated;
+    });
+
+    setLoadingStates((prev) => {
+      const newStates: Record<number, boolean> = {};
+
+      for (const key in prev) {
+        const keyNum = Number(key);
+
+        if (keyNum < index) {
+          newStates[keyNum] = prev[keyNum];
+        } else if (keyNum > index) {
+          newStates[keyNum - 1] = prev[keyNum];
+        }
+        // keyNum === index → не добавляем
+      }
+
+      return newStates;
+    });
   };
 
   const {
@@ -189,6 +345,9 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   };
 
   const onSubmit = async (formData: FormTypesCreateMeasurement) => {
+    // console.log(formData);
+    console.log("dishStatistic", dishStatistic);
+    console.log("loadingStates", loadingStates);
     const measurementId = uuidv4();
     const unixTimestampDate = formData.createdAt;
     const unixTimestampTime = dayjs(convertedTime).unix();
@@ -210,7 +369,13 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
         ...data,
         afterMealMeasurement: {
           meal: formData.afterMealMeasurement.meal.map((item) => {
-            return { portion: Number(item.portion), dish: item.dish };
+            const statistic = dishStatistic.find((el) => el.id === item.id);
+            return {
+              id: item.id,
+              portion: Number(item.portion),
+              dish: item.dish,
+              ...(statistic && { statistic }),
+            };
           }),
         },
       };
@@ -257,6 +422,18 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
               >
                 Add new measurement
               </Typography>
+              {/* <Box>
+                {dishStatistic.map((item, index) => (
+                  <div key={index}>
+                    <div>{item.id}</div>
+                    <div>{item.carbohydrates}</div>
+                    <div>{item.fats}</div>
+                    <div>{item.proteins}</div>
+                    <div>{item.comment}</div>
+                    <div>{item.calories}</div>
+                  </div>
+                ))}
+              </Box> */}
               <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                 <FormControl error={errors.createdAt ? true : false} fullWidth>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -359,6 +536,13 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                   <Box sx={{ marginBottom: "10px", padding: "0 10px 0 10px" }}>
                     {fields.map((item, index) => (
                       <Box key={item.id} sx={{ marginBottom: "10px" }}>
+                        <FormControl sx={{ display: "none" }}>
+                          <Controller
+                            name={`afterMealMeasurement.meal.${index}.id`}
+                            control={control}
+                            render={() => <TextField />}
+                          />
+                        </FormControl>
                         <FormControl
                           error={
                             errors.afterMealMeasurement?.meal?.[index]?.dish
@@ -375,6 +559,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                               <TextField
                                 {...field}
                                 onChange={(e) => handleDishChange(e, index)}
+                                onFocus={() => handleDishAndPortionFocus(index)}
                                 label="Dish"
                                 variant="outlined"
                                 error={
@@ -402,6 +587,24 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                               }
                             </FormHelperText>
                           )}
+                          {loadingStates[index] && (
+                            <Box
+                              sx={{
+                                position: "absolute",
+                                width: "10%",
+                                height: "40%",
+                                top: "50%",
+                                transform: errors.afterMealMeasurement?.meal?.[
+                                  index
+                                ]?.dish
+                                  ? "translateY(-30px)"
+                                  : "translateY(-22px)",
+                                right: "14px",
+                              }}
+                            >
+                              <Loader />
+                            </Box>
+                          )}
                         </FormControl>
                         <FormControl
                           error={
@@ -419,6 +622,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                               <TextField
                                 {...field}
                                 onChange={(e) => handlePortionChange(e, index)}
+                                onFocus={() => handleDishAndPortionFocus(index)}
                                 label="Portion (grams)"
                                 variant="outlined"
                                 error={
@@ -451,7 +655,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                         <Button
                           variant="outlined"
                           color="error"
-                          onClick={() => remove(index)}
+                          onClick={() => handleRemoveMeal(index)}
                         >
                           Remove
                         </Button>
@@ -459,7 +663,9 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                     ))}
                     <Button
                       variant="contained"
-                      onClick={() => append({ dish: "", portion: "" })}
+                      onClick={() =>
+                        append({ id: null, dish: "", portion: "" })
+                      }
                     >
                       Add Meal
                     </Button>
@@ -500,6 +706,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                 <SubmitModalButton
                   requestStatus={addMeasurementsStatus}
                   buttonName={"submit"}
+                  isDisbled={isAnyLoading}
                 />
               </form>
             </Box>
