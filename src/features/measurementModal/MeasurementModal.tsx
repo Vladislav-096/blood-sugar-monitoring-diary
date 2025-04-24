@@ -40,6 +40,7 @@ import {
   formHelperErrorStyles,
   modalContentStyles,
   modalInnerContentStyles,
+  scrollBarStyles,
   selectDropdowStyles,
   textFieldStyle,
   timePickerMenu,
@@ -48,6 +49,9 @@ import {
 import { getDishStatistic } from "../../app/dishStatistic";
 import { DishStatistic } from "../../app/measurements";
 import { Loader } from "../../components/Loader/Loader";
+import { HtmlTooltip } from "../../components/HtmlTooltip/HtmlTooltip";
+import InfoIcon from "@mui/icons-material/Info";
+
 interface MeasurementModal {
   open: boolean;
   handleClose: () => void;
@@ -69,24 +73,25 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [measurementType, setMeasurementType] = useState<string>("");
   const [measurement, setMeasurement] = useState<string>("");
-  const testData = [
-    {
-      id: 0,
-      calories: 111,
-      proteins: 1.29,
-      fats: 0.33,
-      carbohydrates: 22.84,
-      comment: "medium glycemic index",
-    },
-    {
-      id: 1,
-      calories: 222,
-      proteins: 9.8,
-      fats: 29.5,
-      carbohydrates: 3.8,
-      comment: "The glycemic index is considered low",
-    },
-  ];
+  // const testData = [
+  //   {
+  //     id: 0,
+  //     calories: 111,
+  //     proteins: 1.29,
+  //     fats: 0.33,
+  //     carbohydrates: 22.84,
+  //     comment:
+  //       "medium glycemic indexmedium glycemic indexmedium glycemic indexmedium glycemic indexmedium glycemic index",
+  //   },
+  //   {
+  //     id: 1,
+  //     calories: 222,
+  //     proteins: 9.8,
+  //     fats: 29.5,
+  //     carbohydrates: 3.8,
+  //     comment: "The glycemic index is considered low",
+  //   },
+  // ];
   const [dishStatistic, setDishStatistic] = useState<DishStatistic[]>([]);
   // const abortControllerRef = useRef<AbortController | null>(null);
   // const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -180,6 +185,22 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       // Установить флаг загрузки
       setLoadingStates((prev) => ({ ...prev, [index]: true }));
 
+      // Удаляю предыдущую статистику если она есть
+      setDishStatistic((prev) => {
+        // Удаляем нужный индекс
+        const filtered = prev.filter((item) => item.id !== index);
+
+        // Сдвигаем все id после удалённого вниз на 1
+        const updated = filtered.map((item) => {
+          if (item.id > index) {
+            return { ...item, id: item.id - 1 };
+          }
+          return item;
+        });
+
+        return updated;
+      });
+
       try {
         console.log(`started loading ${index}`);
         const DishStatisticResponse = await getDishStatistic({
@@ -198,8 +219,8 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
         console.log("DishStatisticData", DishStatisticData);
 
         // Тупая нейросеть отказывается отвечать мне пустой строкой, как я прошу, в случае
-        // если dishName не еда. Вместо этого она отвечает объектом, в котором protein,
-        // fat, carbs и calories равны 0. Поэтому делаю проверку по этим полям
+        // если dishName не еда. Вместо этого она отвечает объектом, в котором proteins,
+        // fats, carbs и calories равны 0. Поэтому делаю проверку по этим полям
         if (
           DishStatisticData.calories === 0 &&
           DishStatisticData.proteins === 0 &&
@@ -271,16 +292,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
     }
 
     remove(index);
-
-    // setDishStatistic((prev) => {
-    //   const existingIndex = prev.findIndex((item) => item.id === index);
-    //   if (existingIndex !== -1) {
-    //     const newArray = [...prev];
-    //     newArray.splice(existingIndex, 1);
-    //     return newArray;
-    //   }
-    //   return prev;
-    // });
 
     setDishStatistic((prev) => {
       // Удаляем нужный индекс
@@ -422,18 +433,6 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
               >
                 Add new measurement
               </Typography>
-              {/* <Box>
-                {dishStatistic.map((item, index) => (
-                  <div key={index}>
-                    <div>{item.id}</div>
-                    <div>{item.carbohydrates}</div>
-                    <div>{item.fats}</div>
-                    <div>{item.proteins}</div>
-                    <div>{item.comment}</div>
-                    <div>{item.calories}</div>
-                  </div>
-                ))}
-              </Box> */}
               <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                 <FormControl error={errors.createdAt ? true : false} fullWidth>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -603,6 +602,59 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                               }}
                             >
                               <Loader />
+                            </Box>
+                          )}
+                          {dishStatistic.some((stat) => stat.id === index) && (
+                            <Box
+                              sx={{
+                                position: "absolute",
+                                top: "50%",
+                                transform: errors.afterMealMeasurement?.meal?.[
+                                  index
+                                ]?.dish
+                                  ? "translateY(-28px)"
+                                  : "translateY(-20px)",
+                                right: "14px",
+                              }}
+                            >
+                              <HtmlTooltip
+                                title={
+                                  <Box
+                                    sx={scrollBarStyles}
+                                    className={`${styles.list} list-reset`}
+                                  >
+                                    {dishStatistic.map((statisticItem, _) => {
+                                      if (statisticItem.id === index) {
+                                        return Object.entries(
+                                          statisticItem
+                                        ).map(([key, value], fieldIndex) => (
+                                          <Box
+                                            key={fieldIndex}
+                                            className={styles["list-item"]}
+                                          >
+                                            <span className={styles.descr}>
+                                              {`${key}:`}
+                                            </span>
+                                            <span className={styles.value}>
+                                              {`${value} ${
+                                                ![
+                                                  "comment",
+                                                  "calories",
+                                                  "id",
+                                                ].includes(key)
+                                                  ? "g"
+                                                  : ""
+                                              }`}
+                                            </span>
+                                          </Box>
+                                        ));
+                                      }
+                                    })}
+                                  </Box>
+                                }
+                              >
+                                <InfoIcon />
+                              </HtmlTooltip>
                             </Box>
                           )}
                         </FormControl>
