@@ -10,7 +10,7 @@ import {
 import { Paper } from "@mui/material";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { CheckoutState, MeasurementData } from "../../types/types";
+import { CheckoutState } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import {
   controlPanelStyles,
@@ -80,8 +80,11 @@ export const MeasurementsTable = ({
   const handleCloseEditAfterMealMeasurementModal = () =>
     setOpenEditAfterMealMeasurementModal(false);
   const [idToRemove, setIdToRemove] = useState<string>("");
-  const [afterMealMeasurement, setAfterMealMeasurement] =
-    useState<MeasurementData>(initialAfterMealMeasurement);
+  // Для модалки редактирования after meal замеров, а так туда полностью замер отдаю.
+  // Переименовать по человечески стейт
+  const [afterMealMeasurement, setAfterMealMeasurement] = useState<Measurement>(
+    initialAfterMealMeasurement
+  );
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [alertTitle, setAlertTitle] = useState<string>("");
 
@@ -265,7 +268,7 @@ export const MeasurementsTable = ({
   };
 
   const useEditMutation = () => {
-    return React.useCallback(async (data: MeasurementData) => {
+    return React.useCallback(async (data: Measurement) => {
       const res = dispatchEditMeasurementSync(data);
       return res;
     }, []);
@@ -338,8 +341,8 @@ export const MeasurementsTable = ({
       if (!areObjectsTheSame.result) {
         const { time: _, ...theRest } = newRow;
 
-        const row: MeasurementData = {
-          ...(theRest as MeasurementData),
+        const row: Measurement = {
+          ...(theRest as Measurement),
           updatedAt: dayjs().unix(),
         };
 
@@ -350,7 +353,7 @@ export const MeasurementsTable = ({
           delete row.afterMealMeasurement;
         }
 
-        const res = await mutateRow(row as MeasurementData);
+        const res = await mutateRow(row as Measurement);
 
         if (res.payload) {
           return row;
@@ -373,7 +376,7 @@ export const MeasurementsTable = ({
       params.field === "measurement" &&
       params.row.typeOfMeasurement === "2"
     ) {
-      const data: MeasurementData = params.row;
+      const data: Measurement = params.row;
 
       setAfterMealMeasurement(data);
 

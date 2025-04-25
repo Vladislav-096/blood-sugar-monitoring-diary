@@ -83,6 +83,35 @@
           }
         ]
       }
+    },
+    {
+      "id": "01966d99-7aa4-76ec-96e0-4c1bdd405f0d",
+      "createdAt": 1745595420,
+      "updatedAt": 1745595497,
+      "typeOfMeasurement": "2",
+      "measurement": 33,
+      "afterMealMeasurement": {
+        "meal": [
+          {
+            "id": 0,
+            "portion": 33,
+            "dish": "Какахи"
+          },
+          {
+            "id": 1,
+            "portion": 33,
+            "dish": "макароны",
+            "statistic": {
+              "id": 1,
+              "calories": 158,
+              "proteins": 5.5,
+              "fats": 1.1,
+              "carbohydrates": 30.2,
+              "comment": "Glycemic index is relatively high"
+            }
+          }
+        ]
+      }
     }
   ],
   "typesOfMeasuremens": [

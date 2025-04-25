@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   FieldNameEditMeasurementForm,
   FormTypesEditMeasurement,
-  MeasurementData,
 } from "../../types/types";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { fetchEditMeasurement } from "../shared/slices/measurementsSlice";
@@ -31,11 +30,12 @@ import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAler
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import dayjs from "dayjs";
 import { areObjectsEqual } from "../../utils/areObjectsEqual";
+import { DishStatistic, Measurement } from "../../app/measurements";
 
 interface EditAfterMeasurementModal {
-  afterMealMeasurement: MeasurementData;
+  afterMealMeasurement: Measurement;
   setAfterMealMeasurement: React.Dispatch<
-    React.SetStateAction<MeasurementData>
+    React.SetStateAction<Measurement>
   >;
   open: boolean;
   handleClose: () => void;
@@ -57,6 +57,7 @@ export const EditAfterMeasurementModal = ({
   );
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [measurement, setMeasurement] = useState<string>(" "); // Чтобы визуально не уезжал лэйбл при открытии модалки. Оставлю?
+  const [dishStatistic, setDishStatistic] = useState<DishStatistic[]>([]);
 
   const handlePortionChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -123,7 +124,7 @@ export const EditAfterMeasurementModal = ({
   };
 
   const onSubmit = async (formData: FormTypesEditMeasurement) => {
-    const data: MeasurementData = {
+    const data: Measurement = {
       id: afterMealMeasurement.id,
       createdAt: afterMealMeasurement.createdAt,
       updatedAt: afterMealMeasurement.updatedAt,
@@ -168,7 +169,12 @@ export const EditAfterMeasurementModal = ({
       setMeasurement(measurement);
 
       afterMealMeasurement.afterMealMeasurement?.meal.forEach((item) => {
+        // setDishStatistic((prev) => {
+        //   return [...prev, {id: item.}]
+        // })
+
         append({
+          id: item.id,
           portion: item.portion.toString(),
           dish: item.dish,
         });

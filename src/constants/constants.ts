@@ -7,7 +7,6 @@ export const loaderDarkColor = "#010409";
 
 export const initialAfterMealMeasurement = {
   id: "",
-  time: "",
   createdAt: 0,
   updatedAt: 0,
   typeOfMeasurement: "",

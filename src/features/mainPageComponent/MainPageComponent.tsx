@@ -7,9 +7,9 @@ import {
   fetchRemoveMeasurement,
 } from "../shared/slices/measurementsSlice";
 import { MeasurementsTable } from "../../components/MeasurementsTable/MeasurementsTable";
-import { MeasurementData } from "../../types/types";
 import { getTimeStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 import { PagesCommonProps } from "../shared/pagesCommon/PagesCommon";
+import { Measurement } from "../../app/measurements";
 
 export const MainPageComponent = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -22,7 +22,7 @@ export const MainPageComponent = () => {
     dispatch(fetchRemoveMeasurement(id));
   };
 
-  const dispatchEditMeasurementSync = async (data: MeasurementData) => {
+  const dispatchEditMeasurementSync = async (data: Measurement) => {
     const response = await dispatch(fetchEditMeasurement(data));
     return response;
   };

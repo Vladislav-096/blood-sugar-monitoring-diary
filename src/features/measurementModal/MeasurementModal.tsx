@@ -19,7 +19,6 @@ import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
 import {
   FieldNameCreateMeasurementForm,
   FormTypesCreateMeasurement,
-  MeasurementData,
 } from "../../types/types";
 import {
   DatePicker,
@@ -47,7 +46,7 @@ import {
   validationRules,
 } from "../../constants/constants";
 import { getDishStatistic } from "../../app/dishStatistic";
-import { DishStatistic } from "../../app/measurements";
+import { DishStatistic, Measurement } from "../../app/measurements";
 import { Loader } from "../../components/Loader/Loader";
 import { HtmlTooltip } from "../../components/HtmlTooltip/HtmlTooltip";
 import InfoIcon from "@mui/icons-material/Info";
@@ -367,7 +366,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
       (item) => item.name === formData.typeOfMeasurement
     );
 
-    let data: MeasurementData = {
+    let data: Measurement = {
       id: measurementId,
       createdAt: mergeDateAndTime(unixTimestampDate, unixTimestampTime),
       updatedAt: dayjs().unix(),
@@ -382,7 +381,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
           meal: formData.afterMealMeasurement.meal.map((item) => {
             const statistic = dishStatistic.find((el) => el.id === item.id);
             return {
-              id: item.id,
+              id: item.id || 0, // Сомнения
               portion: Number(item.portion),
               dish: item.dish,
               ...(statistic && { statistic }),

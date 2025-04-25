@@ -8,7 +8,6 @@ import {
 } from "../../../app/measurements";
 import {
   CheckoutState,
-  MeasurementData,
   RequestError,
 } from "../../../types/types";
 import { requestErrorInitial } from "../../../constants/constants";
@@ -47,7 +46,7 @@ export const fetchGetMeasurements = createAsyncThunk(
 
 export const fetchAddMeasurement = createAsyncThunk(
   "measurements/fetchAddMeasurement",
-  async (arg: MeasurementData) => {
+  async (arg: Measurement) => {
     const response = await addMeasurement(arg);
     const data = await response.json();
     return data;
@@ -65,7 +64,7 @@ export const fetchRemoveMeasurement = createAsyncThunk(
 
 export const fetchEditMeasurement = createAsyncThunk(
   "measurement/fetchEditMeasurement",
-  async (arg: MeasurementData) => {
+  async (arg: Measurement) => {
     const response = await editMeasurement(arg);
     const data = await response.json();
     return data;
@@ -105,7 +104,7 @@ export const measurementsSlice = createSlice({
     });
     builder.addCase(
       fetchAddMeasurement.fulfilled,
-      (state, action: PayloadAction<MeasurementData>) => {
+      (state, action: PayloadAction<Measurement>) => {
         state.checkoutAddMeasurementState = "READY";
         state.measurements = [...state.measurements, action.payload];
       }
@@ -125,7 +124,7 @@ export const measurementsSlice = createSlice({
     });
     builder.addCase(
       fetchRemoveMeasurement.fulfilled,
-      (state, action: PayloadAction<MeasurementData>) => {
+      (state, action: PayloadAction<Measurement>) => {
         state.checkoutRemoveMeasurementState = "READY";
         const newData = state.measurements.filter(
           (item) => item.id !== action.payload.id
@@ -147,7 +146,7 @@ export const measurementsSlice = createSlice({
     });
     builder.addCase(
       fetchEditMeasurement.fulfilled,
-      (state, action: PayloadAction<MeasurementData>) => {
+      (state, action: PayloadAction<Measurement>) => {
         state.checkoutEditMeasurementState = "READY";
         const index = state.measurements.findIndex(
           (item) => item.id === action.payload.id
