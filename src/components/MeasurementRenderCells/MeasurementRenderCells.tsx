@@ -4,6 +4,7 @@ import AnnouncementIcon from "@mui/icons-material/Announcement";
 import styles from "./measurementRenderCells.module.scss";
 import { scrollBarStyles } from "../../constants/constants";
 import { HtmlTooltip } from "../HtmlTooltip/HtmlTooltip";
+import InfoIcon from "@mui/icons-material/Info";
 
 interface MeasurementRenderCells {
   row: Measurement;
@@ -29,10 +30,54 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
               <Box sx={scrollBarStyles} className={`${styles.list} list-reset`}>
                 {meals.map((item, index) => (
                   <Box key={index} className={styles["list-item"]}>
-                    <span className={styles.descr}>{`${item.dish}:`}</span>
-                    <span
-                      className={styles.value}
-                    >{`${item.portion} g`}</span>
+                    <Box className={styles.descr}>
+                      {item.statistic && (
+                        <Box sx={{ display: "inline-block" }}>
+                          <HtmlTooltip
+                            title={
+                              <Box
+                                sx={scrollBarStyles}
+                                className={`${styles.list} list-reset`}
+                              >
+                                {Object.entries(item.statistic).map(
+                                  ([key, value], fieldIndex) => (
+                                    <Box
+                                      key={fieldIndex}
+                                      className={styles["list-item"]}
+                                    >
+                                      <span className={styles.descr}>
+                                        {`${key}:`}
+                                      </span>
+                                      <span className={styles.value}>
+                                        {`${value} ${
+                                          ![
+                                            "comment",
+                                            "calories",
+                                            "id",
+                                          ].includes(key)
+                                            ? "g"
+                                            : ""
+                                        }`}
+                                      </span>
+                                    </Box>
+                                  )
+                                )}
+                              </Box>
+                            }
+                          >
+                            <InfoIcon
+                              fontSize="small"
+                              sx={{ marginRight: "3px" }}
+                            />
+                          </HtmlTooltip>
+                        </Box>
+                      )}
+
+                      <Box
+                        sx={{ display: "inline-block" }}
+                      >{`${item.dish}:`}</Box>
+                    </Box>
+                    <Box className={styles.value}>{`${item.portion} g`}</Box>
                   </Box>
                 ))}
               </Box>
