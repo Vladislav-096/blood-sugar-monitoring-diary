@@ -48,67 +48,35 @@
       }
     },
     {
-      "id": "01966444-877f-7608-84d1-5593456a0b2d",
-      "createdAt": 1745438820,
-      "updatedAt": 1745438934,
+      "id": "01967235-ad39-7255-8d64-6148c3d7c16a",
+      "createdAt": 1745672760,
+      "updatedAt": 1745672996,
       "typeOfMeasurement": "2",
       "measurement": 33,
       "afterMealMeasurement": {
         "meal": [
           {
             "id": 0,
-            "portion": 11,
-            "dish": "яблоко",
-            "statistic": {
-              "id": 0,
-              "calories": 52,
-              "proteins": 0.2,
-              "fats": 0.2,
-              "carbohydrates": 13.8,
-              "comment": "Low glycemic index"
-            }
-          },
-          {
-            "id": 1,
             "portion": 22,
-            "dish": "амлет",
-            "statistic": {
-              "id": 1,
-              "calories": 165,
-              "proteins": 11.3,
-              "fats": 12.3,
-              "carbohydrates": 1.1,
-              "comment": "The glycemic index is relatively low"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "01966d99-7aa4-76ec-96e0-4c1bdd405f0d",
-      "createdAt": 1745595420,
-      "updatedAt": 1745595497,
-      "typeOfMeasurement": "2",
-      "measurement": 33,
-      "afterMealMeasurement": {
-        "meal": [
-          {
-            "id": 0,
-            "portion": 33,
-            "dish": "Какахи"
+            "dish": "бфыафыа"
           },
           {
             "id": 1,
             "portion": 33,
-            "dish": "макароны",
+            "dish": "банан",
             "statistic": {
               "id": 1,
-              "calories": 158,
-              "proteins": 5.5,
-              "fats": 1.1,
-              "carbohydrates": 30.2,
-              "comment": "Glycemic index is relatively high"
+              "calories": 89,
+              "proteins": 1.09,
+              "fats": 0.33,
+              "carbohydrates": 22.84,
+              "comment": "Bananas have a relatively high glycemic index"
             }
+          },
+          {
+            "id": 2,
+            "portion": 44,
+            "dish": "хуй"
           }
         ]
       }

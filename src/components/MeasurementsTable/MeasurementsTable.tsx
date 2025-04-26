@@ -25,7 +25,7 @@ import {
   mergeDateAndTime,
 } from "../../utils/dateTimeConvert";
 import dayjs from "dayjs";
-import { areObjectsEqual } from "../../utils/areObjectsEqual";
+import { areTableRowsEqual } from "../../utils/areTableRowsEqual";
 import { TimeEditCells } from "../TimeEditCells/TimeEditCells";
 import { CustomTableToolbar } from "../CustomTableToolbar/CustomTableToolbar";
 import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
@@ -278,7 +278,8 @@ export const MeasurementsTable = ({
 
   const processRowUpdate = React.useCallback(
     async (newRow: GridRowModel, oldRow: GridValidRowModel) => {
-      const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
+      console.log("new row", newRow);
+      const areObjectsTheSame = areTableRowsEqual(newRow, oldRow);
 
       if (areObjectsTheSame.field === "createdAt") {
         const isValid = validationRules.createdAt.validate(newRow.createdAt);

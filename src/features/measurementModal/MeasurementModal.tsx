@@ -108,6 +108,8 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
   const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
     {}
   );
+  console.log(dishStatistic);
+
   const isAnyLoading = Object.values(loadingStates).some(Boolean);
 
   const handleDateChange = (newValue: dayjs.Dayjs | null) => {
@@ -190,14 +192,15 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
         const filtered = prev.filter((item) => item.id !== index);
 
         // Сдвигаем все id после удалённого вниз на 1
-        const updated = filtered.map((item) => {
-          if (item.id > index) {
-            return { ...item, id: item.id - 1 };
-          }
-          return item;
-        });
+        // const updated = filtered.map((item) => {
+        //   if (item.id > index) {
+        //     return { ...item, id: item.id - 1 };
+        //   }
+        //   return item;
+        // });
 
-        return updated;
+        // return updated;
+        return filtered;
       });
 
       try {
@@ -230,13 +233,13 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
         }
 
         setDishStatistic((prev) => {
-          const existingIndex = prev.findIndex((item) => item.id === index);
+          // const existingIndex = prev.findIndex((item) => item.id === index);
 
-          if (existingIndex !== -1) {
-            const newArray = [...prev];
-            newArray[existingIndex] = DishStatisticData;
-            return newArray;
-          }
+          // if (existingIndex !== -1) {
+          //   const newArray = [...prev];
+          //   newArray[existingIndex] = DishStatisticData;
+          //   return newArray;
+          // }
 
           return [...prev, DishStatisticData];
         });
@@ -381,7 +384,7 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
           meal: formData.afterMealMeasurement.meal.map((item) => {
             const statistic = dishStatistic.find((el) => el.id === item.id);
             return {
-              id: item.id || 0, // Сомнения
+              id: Number(item.id), // Сомнения
               portion: Number(item.portion),
               dish: item.dish,
               ...(statistic && { statistic }),
