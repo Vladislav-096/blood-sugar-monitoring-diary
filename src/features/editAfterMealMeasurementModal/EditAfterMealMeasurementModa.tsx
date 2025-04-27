@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   FieldNameEditMeasurementForm,
@@ -30,13 +30,13 @@ import {
 import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAlert/CustomRequestErrorAlert";
 import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import dayjs from "dayjs";
-import { DishStatistic, Measurement } from "../../app/measurements";
+import { Measurement } from "../../app/measurements";
 import { HtmlTooltip } from "../../components/HtmlTooltip/HtmlTooltip";
 import styles from "./editAfterMealMeasurementModal.module.scss";
 import InfoIcon from "@mui/icons-material/Info";
-import { getDishStatistic } from "../../app/dishStatistic";
 import { Loader } from "../../components/Loader/Loader";
 import { areMeasurementsEqual } from "../../utils/areMeasurementsEqual";
+import { useMeasurementsModal } from "../../hooks/useMeasurementsModals";
 
 interface EditAfterMeasurementModal {
   afterMealMeasurement: Measurement;
@@ -61,16 +61,27 @@ export const EditAfterMeasurementModal = ({
   );
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [measurement, setMeasurement] = useState<string>(" "); // Чтобы визуально не уезжал лэйбл при открытии модалки. Оставлю?
-  const [dishStatistic, setDishStatistic] = useState<DishStatistic[]>([]);
-  const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
-    {}
-  );
-  const abortControllersRef = useRef<Record<number, AbortController>>({});
-  const debounceTimeoutsRef = useRef<
-    Record<number, ReturnType<typeof setTimeout>>
-  >({});
 
-  const isAnyLoading = Object.values(loadingStates).some(Boolean);
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    trigger,
+    formState: { errors },
+    clearErrors,
+  } = useForm<FormTypesEditMeasurement>();
+
+  const {
+    handleDishChange,
+    dishStatistic,
+    setDishStatistic,
+    isAnyLoading,
+    abortControllersRef,
+    loadingStates,
+    setLoadingStates,
+  } = useMeasurementsModal<FormTypesEditMeasurement>({ setValue, trigger });
+
   console.log(dishStatistic);
 
   const handlePortionChange = (
@@ -103,111 +114,6 @@ export const EditAfterMeasurementModal = ({
     setValue(fieldName as FieldNameEditMeasurementForm, numericValue);
     trigger(fieldName as FieldNameEditMeasurementForm);
   };
-
-  const handleDishChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    const { value } = event.target;
-    const fieldName = `afterMealMeasurement.meal.${index}.dish`;
-    setValue(fieldName as FieldNameEditMeasurementForm, value);
-    trigger(fieldName as FieldNameEditMeasurementForm);
-
-    // Очистить старый debounce таймер
-    if (debounceTimeoutsRef.current[index]) {
-      clearTimeout(debounceTimeoutsRef.current[index]);
-    }
-
-    debounceTimeoutsRef.current[index] = setTimeout(async () => {
-      // Отменяем предыдущий запрос
-      if (abortControllersRef.current[index]) {
-        abortControllersRef.current[index].abort();
-      }
-
-      // Создаём новый AbortController
-      const controller = new AbortController();
-      abortControllersRef.current[index] = controller;
-
-      // Установить флаг загрузки
-      setLoadingStates((prev) => ({ ...prev, [index]: true }));
-
-      // Удаляю предыдущую статистику если он есть
-      setDishStatistic((prev) => {
-        // Удаляем нужный индекс
-        const filtered = prev.filter((item) => item.id !== index);
-
-        // // Сдвигаем все id после удалённого вниз на 1
-        // const updated = filtered.map((item) => {
-        //   if (item.id > index) {
-        //     return { ...item, id: item.id - 1 };
-        //   }
-        //   return item;
-        // });
-
-        // return updated;
-
-        return filtered;
-      });
-
-      try {
-        // console.log(`started loading ${index}`);
-        const DishStatisticResponse = await getDishStatistic({
-          dishName: value,
-          signal: controller.signal,
-        });
-
-        const DishStatisticJson = await DishStatisticResponse.json();
-        console.log("DishStatisticJson", DishStatisticJson);
-
-        // console.log(`stopped loading ${index}`);
-        const DishStatisticData: DishStatistic = {
-          id: index,
-          ...JSON.parse(DishStatisticJson.choices[0].message.content),
-        };
-        console.log("DishStatisticData", DishStatisticData);
-
-        // Тупая нейросеть отказывается отвечать мне пустой строкой, как я прошу, в случае
-        // если dishName не еда. Вместо этого она отвечает объектом, в котором proteins,
-        // fats, carbs и calories равны 0. Поэтому делаю проверку по этим полям
-        if (
-          DishStatisticData.calories === 0 &&
-          DishStatisticData.proteins === 0 &&
-          DishStatisticData.fats === 0 &&
-          DishStatisticData.carbohydrates === 0
-        ) {
-          return;
-        }
-
-        setDishStatistic((prev) => {
-          // const existingIndex = prev.findIndex((item) => item.id === index);
-
-          // if (existingIndex !== -1) {
-          //   const newArray = [...prev];
-          //   newArray[existingIndex] = DishStatisticData;
-          //   return newArray;
-          // }
-
-          return [...prev, DishStatisticData];
-        });
-      } catch (err) {
-        console.log(err);
-        return;
-      } finally {
-        // Сбросить флаг загрузки
-        setLoadingStates((prev) => ({ ...prev, [index]: false }));
-      }
-    }, 400);
-  };
-
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    reset,
-    trigger,
-    formState: { errors },
-    clearErrors,
-  } = useForm<FormTypesEditMeasurement>();
 
   const { fields, append, remove } = useFieldArray({
     control,

@@ -13,7 +13,7 @@ import {
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styles from "./addMeasurementModal.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { v7 as uuidv4 } from "uuid";
 import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
 import {
@@ -45,11 +45,11 @@ import {
   timePickerMenu,
   validationRules,
 } from "../../constants/constants";
-import { getDishStatistic } from "../../app/dishStatistic";
-import { DishStatistic, Measurement } from "../../app/measurements";
+import { Measurement } from "../../app/measurements";
 import { Loader } from "../../components/Loader/Loader";
 import { HtmlTooltip } from "../../components/HtmlTooltip/HtmlTooltip";
 import InfoIcon from "@mui/icons-material/Info";
+import { useMeasurementsModal } from "../../hooks/useMeasurementsModals";
 
 interface AddMeasurementModal {
   open: boolean;
@@ -64,6 +64,25 @@ export const AddMeasurementModal = ({
   open,
   handleClose,
 }: AddMeasurementModal) => {
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    trigger,
+    formState: { errors },
+    clearErrors,
+  } = useForm<FormTypesCreateMeasurement>();
+
+  const {
+    handleDishChange,
+    dishStatistic,
+    setDishStatistic,
+    isAnyLoading,
+    abortControllersRef,
+    loadingStates,
+    setLoadingStates,
+  } = useMeasurementsModal<FormTypesCreateMeasurement>({ setValue, trigger });
   const dispatch = useAppDispatch();
   const typeOfMeasurementsState = useAppSelector(
     (state) => state.typesOfMeasurements
@@ -94,13 +113,6 @@ export const AddMeasurementModal = ({
   //     comment: "The glycemic index is considered low",
   //   },
   // ];
-  const [dishStatistic, setDishStatistic] = useState<DishStatistic[]>([]);
-  // const abortControllerRef = useRef<AbortController | null>(null);
-  // const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const abortControllersRef = useRef<Record<number, AbortController>>({});
-  const debounceTimeoutsRef = useRef<
-    Record<number, ReturnType<typeof setTimeout>>
-  >({});
   const [createdAt, setCreatedAt] = useState<string>(
     convertTimestampToDate(dayjs().unix())
   ); // YYYY-MM-DD
@@ -108,12 +120,8 @@ export const AddMeasurementModal = ({
     convertTime(dayjs().format("HH:mm"))
   ); // YYYY-MM-DDTHH:mm
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
-  const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
-    {}
-  );
-  console.log(dishStatistic);
 
-  const isAnyLoading = Object.values(loadingStates).some(Boolean);
+  console.log(dishStatistic);
 
   const handleDateChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
@@ -160,100 +168,6 @@ export const AddMeasurementModal = ({
       event,
       fieldName as FieldNameCreateMeasurementForm
     );
-  };
-
-  const handleDishChange = async (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    const { value } = event.target;
-    const fieldName = `afterMealMeasurement.meal.${index}.dish`;
-    setValue(fieldName as FieldNameCreateMeasurementForm, value);
-    trigger(fieldName as FieldNameCreateMeasurementForm);
-
-    // Очистить старый debounce таймер
-    if (debounceTimeoutsRef.current[index]) {
-      clearTimeout(debounceTimeoutsRef.current[index]);
-    }
-
-    debounceTimeoutsRef.current[index] = setTimeout(async () => {
-      // Отменяем предыдущий запрос
-      if (abortControllersRef.current[index]) {
-        abortControllersRef.current[index].abort();
-      }
-
-      // Создаём новый AbortController
-      const controller = new AbortController();
-      abortControllersRef.current[index] = controller;
-
-      // Установить флаг загрузки
-      setLoadingStates((prev) => ({ ...prev, [index]: true }));
-
-      // Удаляю предыдущую статистику если она есть
-      setDishStatistic((prev) => {
-        // Удаляем нужный индекс
-        const filtered = prev.filter((item) => item.id !== index);
-
-        // Сдвигаем все id после удалённого вниз на 1
-        // const updated = filtered.map((item) => {
-        //   if (item.id > index) {
-        //     return { ...item, id: item.id - 1 };
-        //   }
-        //   return item;
-        // });
-
-        // return updated;
-        return filtered;
-      });
-
-      try {
-        console.log(`started loading ${index}`);
-        const DishStatisticResponse = await getDishStatistic({
-          dishName: value,
-          signal: controller.signal,
-        });
-
-        const DishStatisticJson = await DishStatisticResponse.json();
-        console.log("DishStatisticJson", DishStatisticJson);
-
-        console.log(`stopped loading ${index}`);
-        const DishStatisticData: DishStatistic = {
-          id: index,
-          ...JSON.parse(DishStatisticJson.choices[0].message.content),
-        };
-        console.log("DishStatisticData", DishStatisticData);
-
-        // Тупая нейросеть отказывается отвечать мне пустой строкой, как я прошу, в случае
-        // если dishName не еда. Вместо этого она отвечает объектом, в котором proteins,
-        // fats, carbs и calories равны 0. Поэтому делаю проверку по этим полям
-        if (
-          DishStatisticData.calories === 0 &&
-          DishStatisticData.proteins === 0 &&
-          DishStatisticData.fats === 0 &&
-          DishStatisticData.carbohydrates === 0
-        ) {
-          return;
-        }
-
-        setDishStatistic((prev) => {
-          // const existingIndex = prev.findIndex((item) => item.id === index);
-
-          // if (existingIndex !== -1) {
-          //   const newArray = [...prev];
-          //   newArray[existingIndex] = DishStatisticData;
-          //   return newArray;
-          // }
-
-          return [...prev, DishStatisticData];
-        });
-      } catch (err) {
-        console.log(err);
-        return;
-      } finally {
-        // Сбросить флаг загрузки
-        setLoadingStates((prev) => ({ ...prev, [index]: false }));
-      }
-    }, 400);
   };
 
   const handleMeasurementChange = (
@@ -330,16 +244,6 @@ export const AddMeasurementModal = ({
       return newStates;
     });
   };
-
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    reset,
-    trigger,
-    formState: { errors },
-    clearErrors,
-  } = useForm<FormTypesCreateMeasurement>();
 
   const { fields, append, remove } = useFieldArray({
     control,
