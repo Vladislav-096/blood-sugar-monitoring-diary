@@ -73,19 +73,25 @@ export const AddMeasurementModal = ({
     clearErrors,
   } = useForm<FormTypesCreateMeasurement>();
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "afterMealMeasurement.meal",
+  });
+
   const {
     handleDishChange,
     handlePortionChange,
     handleMeasurementChange,
     handleDishAndPortionFocus,
+    handleRemoveMeal,
     measurement,
     resetMeasurement,
     dishStatistic,
-    setDishStatistic,
+    // setDishStatistic,
     isAnyLoading,
-    abortControllersRef,
+    // abortControllersRef,
     loadingStates,
-    setLoadingStates,
+    // setLoadingStates,
   } = useMeasurementsModal<FormTypesCreateMeasurement>({ setValue, trigger });
   const dispatch = useAppDispatch();
   const typeOfMeasurementsState = useAppSelector(
@@ -142,52 +148,6 @@ export const AddMeasurementModal = ({
       setValue("typeOfMeasurement", typeId[0].name);
     }
   };
-
-  const handleRemoveMeal = (index: number) => {
-    // Отменяем текущий запрос
-    if (abortControllersRef.current[index]) {
-      abortControllersRef.current[index].abort();
-    }
-
-    remove(index);
-
-    setDishStatistic((prev) => {
-      // Удаляем нужный индекс
-      const filtered = prev.filter((item) => item.id !== index);
-
-      // Сдвигаем все id после удалённого вниз на 1
-      const updated = filtered.map((item) => {
-        if (item.id > index) {
-          return { ...item, id: item.id - 1 };
-        }
-        return item;
-      });
-
-      return updated;
-    });
-
-    setLoadingStates((prev) => {
-      const newStates: Record<number, boolean> = {};
-
-      for (const key in prev) {
-        const keyNum = Number(key);
-
-        if (keyNum < index) {
-          newStates[keyNum] = prev[keyNum];
-        } else if (keyNum > index) {
-          newStates[keyNum - 1] = prev[keyNum];
-        }
-        // keyNum === index → не добавляем
-      }
-
-      return newStates;
-    });
-  };
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "afterMealMeasurement.meal",
-  });
 
   const resetValues = () => {
     reset();
@@ -558,7 +518,7 @@ export const AddMeasurementModal = ({
                         <Button
                           variant="outlined"
                           color="error"
-                          onClick={() => handleRemoveMeal(index)}
+                          onClick={() => handleRemoveMeal(index, remove)}
                         >
                           Remove
                         </Button>

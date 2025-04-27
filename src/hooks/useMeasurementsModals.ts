@@ -68,6 +68,47 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
     formatInputValueToNumbers(event, fieldName);
   };
 
+  const handleRemoveMeal = (index: number, remove: (index?: number | number[]) => void) => {
+    // Отменяем текущий запрос
+    if (abortControllersRef.current[index]) {
+      abortControllersRef.current[index].abort();
+    }
+
+    remove(index);
+
+    setDishStatistic((prev) => {
+      // Удаляем нужный индекс
+      const filtered = prev.filter((item) => item.id !== index);
+
+      // Сдвигаем все id после удалённого вниз на 1
+      const updated = filtered.map((item) => {
+        if (item.id > index) {
+          return { ...item, id: item.id - 1 };
+        }
+        return item;
+      });
+
+      return updated;
+    });
+
+    setLoadingStates((prev) => {
+      const newStates: Record<number, boolean> = {};
+
+      for (const key in prev) {
+        const keyNum = Number(key);
+
+        if (keyNum < index) {
+          newStates[keyNum] = prev[keyNum];
+        } else if (keyNum > index) {
+          newStates[keyNum - 1] = prev[keyNum];
+        }
+        // keyNum === index → не добавляем
+      }
+
+      return newStates;
+    });
+  };
+
   const handleDishChange = async (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
@@ -173,6 +214,7 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
     handlePortionChange,
     handleMeasurementChange,
     handleDishAndPortionFocus,
+    handleRemoveMeal,
     formatInputValueToNumbers,
     measurement,
     resetMeasurement,

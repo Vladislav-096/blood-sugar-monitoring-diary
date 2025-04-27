@@ -84,7 +84,7 @@
     {
       "id": "01967724-b982-718f-99ff-1c3080d712ee",
       "createdAt": 1745755560,
-      "updatedAt": 1745760481,
+      "updatedAt": 1745764455,
       "typeOfMeasurement": "2",
       "measurement": 77,
       "afterMealMeasurement": {
@@ -101,11 +101,6 @@
               "carbohydrates": 6.6,
               "comment": "The glycemic index is relatively low due to the presence of vegetables and broth"
             }
-          },
-          {
-            "id": 2,
-            "portion": 33,
-            "dish": "хуй"
           }
         ]
       }
