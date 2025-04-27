@@ -315,6 +315,7 @@ export const EditAfterMeasurementModal = ({
 
   useEffect(() => {
     if (afterMealMeasurement.id) {
+      console.log("here");
       const measurement =
         afterMealMeasurement.measurement.toString() as FieldNameEditMeasurementForm;
       setValue("measurement", measurement);
@@ -354,6 +355,7 @@ export const EditAfterMeasurementModal = ({
           resetValues();
           setAfterMealMeasurement(initialAfterMealMeasurement);
           handleClose();
+          setDishStatistic([]);
         }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -494,27 +496,28 @@ export const EditAfterMeasurementModal = ({
                                   {dishStatistic.map((statisticItem, _) => {
                                     if (statisticItem.id === index) {
                                       return Object.entries(statisticItem).map(
-                                        ([key, value], fieldIndex) => (
-                                          <Box
-                                            key={fieldIndex}
-                                            className={styles["list-item"]}
-                                          >
-                                            <span className={styles.descr}>
-                                              {`${key}:`}
-                                            </span>
-                                            <span className={styles.value}>
-                                              {`${value} ${
-                                                ![
-                                                  "comment",
-                                                  "calories",
-                                                  "id",
-                                                ].includes(key)
-                                                  ? "g"
-                                                  : ""
-                                              }`}
-                                            </span>
-                                          </Box>
-                                        )
+                                        ([key, value], fieldIndex) =>
+                                          key !== "id" && (
+                                            <Box
+                                              key={fieldIndex}
+                                              className={styles["list-item"]}
+                                            >
+                                              <span className={styles.descr}>
+                                                {`${key}:`}
+                                              </span>
+                                              <span className={styles.value}>
+                                                {`${value} ${
+                                                  ![
+                                                    "comment",
+                                                    "calories",
+                                                    "id",
+                                                  ].includes(key)
+                                                    ? "g"
+                                                    : ""
+                                                }`}
+                                              </span>
+                                            </Box>
+                                          )
                                       );
                                     }
                                   })}

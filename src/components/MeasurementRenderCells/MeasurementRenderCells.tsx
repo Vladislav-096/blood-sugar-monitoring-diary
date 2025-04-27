@@ -40,27 +40,28 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
                                 className={`${styles.list} list-reset`}
                               >
                                 {Object.entries(item.statistic).map(
-                                  ([key, value], fieldIndex) => (
-                                    <Box
-                                      key={fieldIndex}
-                                      className={styles["list-item"]}
-                                    >
-                                      <span className={styles.descr}>
-                                        {`${key}:`}
-                                      </span>
-                                      <span className={styles.value}>
-                                        {`${value} ${
-                                          ![
-                                            "comment",
-                                            "calories",
-                                            "id",
-                                          ].includes(key)
-                                            ? "g"
-                                            : ""
-                                        }`}
-                                      </span>
-                                    </Box>
-                                  )
+                                  ([key, value], fieldIndex) =>
+                                    key !== "id" && (
+                                      <Box
+                                        key={fieldIndex}
+                                        className={styles["list-item"]}
+                                      >
+                                        <span className={styles.descr}>
+                                          {`${key}:`}
+                                        </span>
+                                        <span className={styles.value}>
+                                          {`${value} ${
+                                            ![
+                                              "comment",
+                                              "calories",
+                                              "id",
+                                            ].includes(key)
+                                              ? "g"
+                                              : ""
+                                          }`}
+                                        </span>
+                                      </Box>
+                                    )
                                 )}
                               </Box>
                             }

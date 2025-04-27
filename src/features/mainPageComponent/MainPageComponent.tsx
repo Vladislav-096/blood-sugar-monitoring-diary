@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Box, Button } from "@mui/material";
-import { MeasurementModal } from "../measurementModal/MeasurementModal";
 import {
   fetchEditMeasurement,
   fetchRemoveMeasurement,
@@ -10,6 +9,7 @@ import { MeasurementsTable } from "../../components/MeasurementsTable/Measuremen
 import { getTimeStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 import { PagesCommonProps } from "../shared/pagesCommon/PagesCommon";
 import { Measurement } from "../../app/measurements";
+import { AddMeasurementModal } from "../measurementModal/AddMeasurementModal";
 
 export const MainPageComponent = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -64,7 +64,7 @@ export const MainPageComponent = () => {
           add measurement
         </Button>
       </Box>
-      <MeasurementModal open={open} handleClose={handleClose} />
+      <AddMeasurementModal open={open} handleClose={handleClose} />
     </PagesCommonProps>
   );
 };

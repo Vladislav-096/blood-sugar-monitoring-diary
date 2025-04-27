@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import styles from "./measurementModal.module.scss";
+import styles from "./addMeasurementModal.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useRef, useState } from "react";
 import { v7 as uuidv4 } from "uuid";
@@ -51,7 +51,7 @@ import { Loader } from "../../components/Loader/Loader";
 import { HtmlTooltip } from "../../components/HtmlTooltip/HtmlTooltip";
 import InfoIcon from "@mui/icons-material/Info";
 
-interface MeasurementModal {
+interface AddMeasurementModal {
   open: boolean;
   handleClose: () => void;
 }
@@ -60,7 +60,10 @@ const alertAddMeasurementError = "Failed to add measurement";
 const measurementAndPortionMaxLength = 5;
 const dishNameLegth = 100;
 
-export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
+export const AddMeasurementModal = ({
+  open,
+  handleClose,
+}: AddMeasurementModal) => {
   const dispatch = useAppDispatch();
   const typeOfMeasurementsState = useAppSelector(
     (state) => state.typesOfMeasurements
@@ -629,27 +632,30 @@ export const MeasurementModal = ({ open, handleClose }: MeasurementModal) => {
                                       if (statisticItem.id === index) {
                                         return Object.entries(
                                           statisticItem
-                                        ).map(([key, value], fieldIndex) => (
-                                          <Box
-                                            key={fieldIndex}
-                                            className={styles["list-item"]}
-                                          >
-                                            <span className={styles.descr}>
-                                              {`${key}:`}
-                                            </span>
-                                            <span className={styles.value}>
-                                              {`${value} ${
-                                                ![
-                                                  "comment",
-                                                  "calories",
-                                                  "id",
-                                                ].includes(key)
-                                                  ? "g"
-                                                  : ""
-                                              }`}
-                                            </span>
-                                          </Box>
-                                        ));
+                                        ).map(
+                                          ([key, value], fieldIndex) =>
+                                            key !== "id" && (
+                                              <Box
+                                                key={fieldIndex}
+                                                className={styles["list-item"]}
+                                              >
+                                                <span className={styles.descr}>
+                                                  {`${key}:`}
+                                                </span>
+                                                <span className={styles.value}>
+                                                  {`${value} ${
+                                                    ![
+                                                      "comment",
+                                                      "calories",
+                                                      "id",
+                                                    ].includes(key)
+                                                      ? "g"
+                                                      : ""
+                                                  }`}
+                                                </span>
+                                              </Box>
+                                            )
+                                        );
                                       }
                                     })}
                                   </Box>
