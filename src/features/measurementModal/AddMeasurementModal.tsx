@@ -78,6 +78,8 @@ export const AddMeasurementModal = ({
     handleDishChange,
     handlePortionChange,
     handleMeasurementChange,
+    measurement,
+    resetMeasurement,
     dishStatistic,
     setDishStatistic,
     isAnyLoading,
@@ -95,7 +97,6 @@ export const AddMeasurementModal = ({
 
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [measurementType, setMeasurementType] = useState<string>("");
-  const [measurement, setMeasurement] = useState<string>("");
   const [createdAt, setCreatedAt] = useState<string>(
     convertTimestampToDate(dayjs().unix())
   ); // YYYY-MM-DD
@@ -205,7 +206,7 @@ export const AddMeasurementModal = ({
     setCreatedAt(dayjs().format("YYYY-MM-DD"));
     setConvertedTime(dayjs().format("YYYY-MM-DDTHH:mm"));
     setMeasurementType("");
-    setMeasurement("");
+    resetMeasurement();
     clearErrors();
     remove();
   };
@@ -592,7 +593,7 @@ export const AddMeasurementModal = ({
                     render={() => (
                       <TextField
                         value={measurement}
-                        onChange={(e) => handleMeasurementChange(e, setMeasurement)}
+                        onChange={handleMeasurementChange}
                         label="Measurement"
                         variant="outlined"
                         error={errors.measurement ? true : false}

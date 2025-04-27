@@ -60,7 +60,6 @@ export const EditAfterMeasurementModal = ({
     (state) => state.measurements.checkoutEditMeasurementState
   );
   const [isAlert, setIsAlert] = useState<boolean>(false);
-  const [measurement, setMeasurement] = useState<string>(" "); // Чтобы визуально не уезжал лэйбл при открытии модалки. Оставлю?
 
   const {
     control,
@@ -76,13 +75,19 @@ export const EditAfterMeasurementModal = ({
     handleDishChange,
     handlePortionChange,
     handleMeasurementChange,
+    measurement,
+    resetMeasurement,
     dishStatistic,
     setDishStatistic,
     isAnyLoading,
     abortControllersRef,
     loadingStates,
     setLoadingStates,
-  } = useMeasurementsModal<FormTypesEditMeasurement>({ setValue, trigger });
+  } = useMeasurementsModal<FormTypesEditMeasurement>({ 
+    setValue, 
+    trigger,
+    initialMeasurement: " " // Чтобы визуально не уезжал лэйбл при открытии модалки
+  });
 
   console.log(dishStatistic);
 
@@ -101,7 +106,7 @@ export const EditAfterMeasurementModal = ({
   const resetValues = () => {
     reset();
     setValue("measurement", "");
-    setMeasurement(" ");
+    resetMeasurement(" ");
     clearErrors();
     remove();
   };
@@ -193,11 +198,11 @@ export const EditAfterMeasurementModal = ({
   useEffect(() => {
     if (afterMealMeasurement.id) {
       console.log("here");
-      const measurement =
+      const measurementValue =
         afterMealMeasurement.measurement.toString() as FieldNameEditMeasurementForm;
-      setValue("measurement", measurement);
+      setValue("measurement", measurementValue);
       setValue("typeOfMeasurement", "After meal");
-      setMeasurement(measurement);
+      resetMeasurement(measurementValue);
 
       afterMealMeasurement.afterMealMeasurement?.meal.forEach((item) => {
         const statistic = item.statistic;
@@ -479,7 +484,7 @@ export const EditAfterMeasurementModal = ({
                     render={() => (
                       <TextField
                         value={measurement}
-                        onChange={(e) => handleMeasurementChange(e, setMeasurement)}
+                        onChange={handleMeasurementChange}
                         label="Measurement"
                         variant="outlined"
                         error={errors.measurement ? true : false}

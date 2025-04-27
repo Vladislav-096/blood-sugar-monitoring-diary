@@ -10,13 +10,16 @@ import { getDishStatistic } from "../app/dishStatistic";
 interface UseMeasurementsModalProps<T extends FormTypesCreateMeasurement | FormTypesEditMeasurement> {
   setValue: UseFormSetValue<T>;
   trigger: UseFormTrigger<T>;
+  initialMeasurement?: string;
 }
 
 export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | FormTypesEditMeasurement>({
   setValue,
   trigger,
+  initialMeasurement = "",
 }: UseMeasurementsModalProps<T>) => {
   const [dishStatistic, setDishStatistic] = useState<DishStatistic[]>([]);
+  const [measurement, setMeasurement] = useState<string>(initialMeasurement);
   const abortControllersRef = useRef<Record<number, AbortController>>({});
   const debounceTimeoutsRef = useRef<
     Record<number, ReturnType<typeof setTimeout>>
@@ -30,15 +33,14 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
 
   const formatInputValueToNumbers = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    fieldName: FieldPath<T>,
-    setStateFunction?: React.Dispatch<React.SetStateAction<string>>
+    fieldName: FieldPath<T>
   ) => {
     const { value } = event.target;
     const pattern = /[^0-9]/g;
     const numericValue = value.replace(pattern, "");
 
-    if (setStateFunction) {
-      setStateFunction(numericValue);
+    if (fieldName === "measurement" as FieldPath<T>) {
+      setMeasurement(numericValue);
     }
 
     setValue(fieldName, numericValue as unknown as PathValue<T, typeof fieldName>);
@@ -54,11 +56,10 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
   };
 
   const handleMeasurementChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    setMeasurement?: React.Dispatch<React.SetStateAction<string>>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const fieldName = "measurement" as FieldPath<T>;
-    formatInputValueToNumbers(event, fieldName, setMeasurement);
+    formatInputValueToNumbers(event, fieldName);
   };
 
   const handleDishChange = async (
@@ -157,11 +158,17 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
     }, 400);
   };
 
+  const resetMeasurement = (value: string = "") => {
+    setMeasurement(value);
+  };
+
   return {
     handleDishChange,
     handlePortionChange,
     handleMeasurementChange,
     formatInputValueToNumbers,
+    measurement,
+    resetMeasurement,
     dishStatistic,
     setDishStatistic,
     isAnyLoading,
