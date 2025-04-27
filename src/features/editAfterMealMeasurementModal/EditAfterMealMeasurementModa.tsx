@@ -75,6 +75,7 @@ export const EditAfterMeasurementModal = ({
     handleDishChange,
     handlePortionChange,
     handleMeasurementChange,
+    handleDishAndPortionFocus,
     measurement,
     resetMeasurement,
     dishStatistic,
@@ -90,13 +91,6 @@ export const EditAfterMeasurementModal = ({
   });
 
   console.log(dishStatistic);
-
-  const handleDishAndPortionFocus = (index: number) => {
-    setValue(
-      `afterMealMeasurement.meal.${index}.id` as FieldNameEditMeasurementForm,
-      index
-    );
-  };
 
   const { fields, append, remove } = useFieldArray({
     control,

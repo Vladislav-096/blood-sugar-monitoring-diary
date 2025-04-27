@@ -31,6 +31,12 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
 
   const isAnyLoading = Object.values(loadingStates).some(Boolean);
 
+  const handleDishAndPortionFocus = (index: number) => {
+    // Using type assertion to handle nested field paths in form types
+    const fieldPath = `afterMealMeasurement.meal.${index}.id` as unknown as FieldPath<T>;
+    setValue(fieldPath, index as unknown as PathValue<T, typeof fieldPath>);
+  };
+
   const formatInputValueToNumbers = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     fieldName: FieldPath<T>
@@ -166,6 +172,7 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
     handleDishChange,
     handlePortionChange,
     handleMeasurementChange,
+    handleDishAndPortionFocus,
     formatInputValueToNumbers,
     measurement,
     resetMeasurement,

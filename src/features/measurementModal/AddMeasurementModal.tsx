@@ -17,7 +17,6 @@ import { useEffect, useState } from "react";
 import { v7 as uuidv4 } from "uuid";
 import { fetchAddMeasurement } from "../shared/slices/measurementsSlice";
 import {
-  FieldNameCreateMeasurementForm,
   FormTypesCreateMeasurement,
 } from "../../types/types";
 import {
@@ -78,6 +77,7 @@ export const AddMeasurementModal = ({
     handleDishChange,
     handlePortionChange,
     handleMeasurementChange,
+    handleDishAndPortionFocus,
     measurement,
     resetMeasurement,
     dishStatistic,
@@ -141,14 +141,6 @@ export const AddMeasurementModal = ({
     if (typeId.length > 0) {
       setValue("typeOfMeasurement", typeId[0].name);
     }
-  };
-
-  const handleDishAndPortionFocus = (index: number) => {
-    console.log(index);
-    setValue(
-      `afterMealMeasurement.meal.${index}.id` as FieldNameCreateMeasurementForm,
-      index
-    );
   };
 
   const handleRemoveMeal = (index: number) => {
