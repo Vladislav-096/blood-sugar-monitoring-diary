@@ -28,6 +28,39 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
 
   const isAnyLoading = Object.values(loadingStates).some(Boolean);
 
+  const formatInputValueToNumbers = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    fieldName: FieldPath<T>,
+    setStateFunction?: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    const { value } = event.target;
+    const pattern = /[^0-9]/g;
+    const numericValue = value.replace(pattern, "");
+
+    if (setStateFunction) {
+      setStateFunction(numericValue);
+    }
+
+    setValue(fieldName, numericValue as unknown as PathValue<T, typeof fieldName>);
+    trigger(fieldName);
+  };
+
+  const handlePortionChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number
+  ) => {
+    const fieldName = `afterMealMeasurement.meal.${index}.portion` as FieldPath<T>;
+    formatInputValueToNumbers(event, fieldName);
+  };
+
+  const handleMeasurementChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setMeasurement?: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    const fieldName = "measurement" as FieldPath<T>;
+    formatInputValueToNumbers(event, fieldName, setMeasurement);
+  };
+
   const handleDishChange = async (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
@@ -126,6 +159,9 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
 
   return {
     handleDishChange,
+    handlePortionChange,
+    handleMeasurementChange,
+    formatInputValueToNumbers,
     dishStatistic,
     setDishStatistic,
     isAnyLoading,

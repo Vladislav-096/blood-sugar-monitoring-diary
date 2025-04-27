@@ -76,6 +76,8 @@ export const AddMeasurementModal = ({
 
   const {
     handleDishChange,
+    handlePortionChange,
+    handleMeasurementChange,
     dishStatistic,
     setDishStatistic,
     isAnyLoading,
@@ -94,25 +96,6 @@ export const AddMeasurementModal = ({
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [measurementType, setMeasurementType] = useState<string>("");
   const [measurement, setMeasurement] = useState<string>("");
-  // const testData = [
-  //   {
-  //     id: 0,
-  //     calories: 111,
-  //     proteins: 1.29,
-  //     fats: 0.33,
-  //     carbohydrates: 22.84,
-  //     comment:
-  //       "medium glycemic indexmedium glycemic indexmedium glycemic indexmedium glycemic indexmedium glycemic index",
-  //   },
-  //   {
-  //     id: 1,
-  //     calories: 222,
-  //     proteins: 9.8,
-  //     fats: 29.5,
-  //     carbohydrates: 3.8,
-  //     comment: "The glycemic index is considered low",
-  //   },
-  // ];
   const [createdAt, setCreatedAt] = useState<string>(
     convertTimestampToDate(dayjs().unix())
   ); // YYYY-MM-DD
@@ -157,43 +140,6 @@ export const AddMeasurementModal = ({
     if (typeId.length > 0) {
       setValue("typeOfMeasurement", typeId[0].name);
     }
-  };
-
-  const handlePortionChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    const fieldName = `afterMealMeasurement.meal.${index}.portion`;
-    formatInputValueToNumbers(
-      event,
-      fieldName as FieldNameCreateMeasurementForm
-    );
-  };
-
-  const handleMeasurementChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const fieldName = "measurement";
-    formatInputValueToNumbers(
-      event,
-      fieldName as FieldNameCreateMeasurementForm
-    );
-  };
-
-  const formatInputValueToNumbers = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    fieldName: FieldNameCreateMeasurementForm
-  ) => {
-    const { value } = event.target;
-    const pettern = /[^0-9]/g;
-    const numericValue = value.replace(pettern, "");
-
-    if (fieldName === "measurement") {
-      setMeasurement(numericValue);
-    }
-
-    setValue(fieldName, numericValue);
-    trigger(fieldName);
   };
 
   const handleDishAndPortionFocus = (index: number) => {
@@ -646,7 +592,7 @@ export const AddMeasurementModal = ({
                     render={() => (
                       <TextField
                         value={measurement}
-                        onChange={handleMeasurementChange}
+                        onChange={(e) => handleMeasurementChange(e, setMeasurement)}
                         label="Measurement"
                         variant="outlined"
                         error={errors.measurement ? true : false}

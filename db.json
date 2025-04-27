@@ -84,9 +84,9 @@
     {
       "id": "01967724-b982-718f-99ff-1c3080d712ee",
       "createdAt": 1745755560,
-      "updatedAt": 1745755617,
+      "updatedAt": 1745760481,
       "typeOfMeasurement": "2",
-      "measurement": 44,
+      "measurement": 77,
       "afterMealMeasurement": {
         "meal": [
           {
@@ -109,6 +109,13 @@
           }
         ]
       }
+    },
+    {
+      "id": "0196776e-bd03-739b-85f1-49a5c1d6741d",
+      "createdAt": 1745760420,
+      "updatedAt": 1745760473,
+      "typeOfMeasurement": "1",
+      "measurement": 66
     }
   ],
   "typesOfMeasuremens": [

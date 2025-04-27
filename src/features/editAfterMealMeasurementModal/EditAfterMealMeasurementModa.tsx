@@ -74,6 +74,8 @@ export const EditAfterMeasurementModal = ({
 
   const {
     handleDishChange,
+    handlePortionChange,
+    handleMeasurementChange,
     dishStatistic,
     setDishStatistic,
     isAnyLoading,
@@ -84,35 +86,11 @@ export const EditAfterMeasurementModal = ({
 
   console.log(dishStatistic);
 
-  const handlePortionChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    const fieldName = `afterMealMeasurement.meal.${index}.portion`;
-    formatInputValueToNumbers(event, fieldName as FieldNameEditMeasurementForm);
-  };
-
-  const handleMeasurementChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const fieldName = "measurement";
-    formatInputValueToNumbers(event, fieldName as FieldNameEditMeasurementForm);
-  };
-
-  const formatInputValueToNumbers = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    fieldName: FieldNameEditMeasurementForm
-  ) => {
-    const { value } = event.target;
-    const pettern = /[^0-9]/g;
-    const numericValue = value.replace(pettern, "");
-
-    if (fieldName === "measurement") {
-      setMeasurement(numericValue);
-    }
-
-    setValue(fieldName as FieldNameEditMeasurementForm, numericValue);
-    trigger(fieldName as FieldNameEditMeasurementForm);
+  const handleDishAndPortionFocus = (index: number) => {
+    setValue(
+      `afterMealMeasurement.meal.${index}.id` as FieldNameEditMeasurementForm,
+      index
+    );
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -169,13 +147,6 @@ export const EditAfterMeasurementModal = ({
 
     resetValues();
     handleClose();
-  };
-
-  const handleDishAndPortionFocus = (index: number) => {
-    setValue(
-      `afterMealMeasurement.meal.${index}.id` as FieldNameEditMeasurementForm,
-      index
-    );
   };
 
   const handleRemoveMeal = (index: number) => {
@@ -508,7 +479,7 @@ export const EditAfterMeasurementModal = ({
                     render={() => (
                       <TextField
                         value={measurement}
-                        onChange={handleMeasurementChange}
+                        onChange={(e) => handleMeasurementChange(e, setMeasurement)}
                         label="Measurement"
                         variant="outlined"
                         error={errors.measurement ? true : false}
