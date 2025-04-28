@@ -41,7 +41,7 @@ interface MeasurementModal<
   handleSubmit: UseFormHandleSubmit<T, undefined>;
   onSubmit: (formData: T) => void;
   errors: FieldErrors<T>;
-  control: Control<T>; // ?
+  control: Control<T>;
   handleMeasurementChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;

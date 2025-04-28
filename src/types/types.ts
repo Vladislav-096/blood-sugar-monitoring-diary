@@ -29,7 +29,7 @@ export type FieldNameEditMeasurementForm = Exclude<
 // Переписал значение тип свойства portion
 type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
 
-// Не нужен (?)
+// Не нужен
 export interface MeasurementData {
   id: string;
   createdAt: number;
@@ -40,14 +40,6 @@ export interface MeasurementData {
     meal: ModifiedMeal[];
   };
 }
-
-// Не используется
-// export interface EditMeasurement {
-//   id: string;
-//   data: PartialMeasurementData;
-// }
-
-// export type PartialMeasurementData = Partial<MeasurementData>;
 
 export interface FormTypesCreateMeasurement {
   createdAt: number;

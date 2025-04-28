@@ -1,12 +1,6 @@
 @use "./_variables.scss" as *;
 
 @mixin foodTooltip() {
-  // .list {
-  //   width: 100%;
-  //   max-height: 50vh;
-  //   max-width: 300px;
-  //   overflow-y: auto;
-
   .list-item {
     position: relative;
     display: flex;
@@ -39,7 +33,6 @@
     }
 
     .value {
-      // margin-left: 5px;
     }
   }
   // }

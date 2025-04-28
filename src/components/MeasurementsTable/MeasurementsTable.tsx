@@ -275,7 +275,6 @@ export const MeasurementsTable = ({
 
   const processRowUpdate = React.useCallback(
     async (newRow: GridRowModel, oldRow: GridValidRowModel) => {
-      console.log("new row", newRow);
       const areObjectsTheSame = areTableRowsEqual(newRow, oldRow);
 
       if (areObjectsTheSame.field === "createdAt") {
@@ -366,6 +365,7 @@ export const MeasurementsTable = ({
   );
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+    // Тут надо сделать чо та нормальное
     console.log("error", error);
   }, []);
 

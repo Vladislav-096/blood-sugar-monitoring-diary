@@ -160,34 +160,23 @@ export const useMeasurementsModal = <
         // Удаляем нужный индекс
         const filtered = prev.filter((item) => item.id !== index);
 
-        // Сдвигаем все id после удалённого вниз на 1
-        // const updated = filtered.map((item) => {
-        //   if (item.id > index) {
-        //     return { ...item, id: item.id - 1 };
-        //   }
-        //   return item;
-        // });
-
-        // return updated;
         return filtered;
       });
 
       try {
-        console.log(`started loading ${index}`);
+        // console.log(`started loading ${index}`);
         const DishStatisticResponse = await getDishStatistic({
           dishName: value,
           signal: controller.signal,
         });
 
         const DishStatisticJson = await DishStatisticResponse.json();
-        // console.log("DishStatisticJson", DishStatisticJson);
 
-        console.log(`stopped loading ${index}`);
+        // console.log(`stopped loading ${index}`);
         const DishStatisticData: DishStatistic = {
           id: index,
           ...JSON.parse(DishStatisticJson.choices[0].message.content),
         };
-        // console.log("DishStatisticData", DishStatisticData);
 
         // Тупая нейросеть отказывается отвечать мне пустой строкой, как я прошу, в случае
         // если dishName не еда. Вместо этого она отвечает объектом, в котором proteins,
@@ -202,14 +191,6 @@ export const useMeasurementsModal = <
         }
 
         setDishStatistic((prev) => {
-          // const existingIndex = prev.findIndex((item) => item.id === index);
-
-          // if (existingIndex !== -1) {
-          //   const newArray = [...prev];
-          //   newArray[existingIndex] = DishStatisticData;
-          //   return newArray;
-          // }
-
           return [...prev, DishStatisticData];
         });
       } catch (err) {
