@@ -28,8 +28,9 @@ import {
   FormTypesCreateMeasurement,
   FormTypesEditMeasurement,
 } from "../../types/types";
-import styles from "./measurementModal.module.scss";
 import { CustomRequestErrorAlert } from "../CustomRequestErrorAlert/CustomRequestErrorAlert";
+import { SubmitModalButton } from "../SubmitModalButton/SubmitModalButton";
+import { ReactNode } from "react";
 
 interface MeasurementModal<
   T extends FormTypesCreateMeasurement | FormTypesEditMeasurement
@@ -38,15 +39,19 @@ interface MeasurementModal<
   onClose: () => void;
   title: string;
   handleSubmit: UseFormHandleSubmit<T, undefined>;
-  onSubmit: () => void;
+  onSubmit: (formData: T) => void;
   errors: FieldErrors<T>;
   control: Control<T>; // ?
-  handleMeasurementChange: () => void;
+  handleMeasurementChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   measurement: string;
   alertMeasurementError: string;
   isAlert: boolean;
   setIsAlert: React.Dispatch<React.SetStateAction<boolean>>;
-  measurementsErrorStatus: CheckoutState;
+  measurementStatus: CheckoutState;
+  isAnyLoading: boolean;
+  children: ReactNode;
 }
 
 const measurementAndPortionMaxLength = 5;
@@ -66,7 +71,9 @@ export const MeasurementModal = <
   alertMeasurementError,
   isAlert,
   setIsAlert,
-  measurementsErrorStatus,
+  measurementStatus,
+  isAnyLoading,
+  children,
 }: MeasurementModal<T>) => {
   return (
     <>
@@ -93,6 +100,7 @@ export const MeasurementModal = <
                 {title}
               </Typography>
               <form onSubmit={handleSubmit(onSubmit)}>
+                {children}
                 <FormControl
                   error={errors.measurement ? true : false}
                   fullWidth
@@ -130,6 +138,11 @@ export const MeasurementModal = <
                     </FormHelperText>
                   )}
                 </FormControl>
+                <SubmitModalButton
+                  requestStatus={measurementStatus}
+                  buttonName={"submit"}
+                  isDisbled={isAnyLoading}
+                />
               </form>
             </Box>
           </Box>
@@ -139,7 +152,7 @@ export const MeasurementModal = <
         title={alertMeasurementError}
         isAlert={isAlert}
         setIsAlert={setIsAlert}
-        status={measurementsErrorStatus}
+        status={measurementStatus}
       />
     </>
   );

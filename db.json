@@ -50,9 +50,9 @@
     {
       "id": "01967235-ad39-7255-8d64-6148c3d7c16a",
       "createdAt": 1745672760,
-      "updatedAt": 1745835459,
+      "updatedAt": 1745842961,
       "typeOfMeasurement": "2",
-      "measurement": 33,
+      "measurement": 123,
       "afterMealMeasurement": {
         "meal": [
           {
@@ -72,14 +72,16 @@
               "carbohydrates": 22.84,
               "comment": "Bananas have a relatively high glycemic index"
             }
-          },
-          {
-            "id": 2,
-            "portion": 44,
-            "dish": "про"
           }
         ]
       }
+    },
+    {
+      "id": "01967c14-e1cd-731e-b08b-c5204bb090db",
+      "createdAt": 1745976300,
+      "updatedAt": 1745838465,
+      "typeOfMeasurement": "5",
+      "measurement": 4
     }
   ],
   "typesOfMeasuremens": [
