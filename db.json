@@ -9,14 +9,17 @@
       "afterMealMeasurement": {
         "meal": [
           {
+            "id": 0,
             "portion": 12345,
             "dish": "Мороженное"
           },
           {
+            "id": 1,
             "portion": 12345,
             "dish": "Гречневая каша с сельдереем залитые байкалом"
           },
           {
+            "id": 2,
             "portion": 1,
             "dish": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestt100"
           }
@@ -24,233 +27,54 @@
       }
     },
     {
-      "id": "0196350b-4e0e-718c-aef1-c92140f4578a",
-      "createdAt": 1744646580,
-      "updatedAt": 1744646753,
+      "id": "01965e9a-b5d4-7355-99ae-0331a3a92015",
+      "createdAt": 1745343660,
+      "updatedAt": 1745343919,
       "typeOfMeasurement": "2",
-      "measurement": 123,
+      "measurement": 33,
       "afterMealMeasurement": {
         "meal": [
           {
-            "portion": 1,
-            "dish": "test1"
+            "id": 0,
+            "portion": 11,
+            "dish": "qq"
           },
           {
-            "portion": 2,
-            "dish": "test2"
+            "id": 1,
+            "portion": 22,
+            "dish": "ww"
           }
         ]
       }
     },
     {
-      "id": "1",
-      "createdAt": 1744670553,
-      "updatedAt": 1744840553,
-      "typeOfMeasurement": "1",
-      "measurement": 57
-    },
-    {
-      "id": "2",
-      "createdAt": 1744757781,
-      "updatedAt": 1744757781,
-      "typeOfMeasurement": "1",
-      "measurement": 138
-    },
-    {
-      "id": "3",
-      "createdAt": 1744837866,
-      "updatedAt": 1744837866,
-      "typeOfMeasurement": "1",
-      "measurement": 102
-    },
-    {
-      "id": "4",
-      "createdAt": 1744926523,
-      "updatedAt": 1744926523,
-      "typeOfMeasurement": "1",
-      "measurement": 49
-    },
-    {
-      "id": "5",
-      "createdAt": 1745007111,
-      "updatedAt": 1745007111,
-      "typeOfMeasurement": "1",
-      "measurement": 190
-    },
-    {
-      "id": "6",
-      "createdAt": 1745101722,
-      "updatedAt": 1745101722,
-      "typeOfMeasurement": "1",
-      "measurement": 28
-    },
-    {
-      "id": "7",
-      "createdAt": 1745177994,
-      "updatedAt": 1745177994,
-      "typeOfMeasurement": "1",
-      "measurement": 7
-    },
-    {
-      "id": "8",
-      "createdAt": 1745274063,
-      "updatedAt": 1745274063,
-      "typeOfMeasurement": "1",
-      "measurement": 144
-    },
-    {
-      "id": "9",
-      "createdAt": 1745353189,
-      "updatedAt": 1745353189,
-      "typeOfMeasurement": "1",
-      "measurement": 72
-    },
-    {
-      "id": "10",
-      "createdAt": 1745452354,
-      "updatedAt": 1745452354,
-      "typeOfMeasurement": "1",
-      "measurement": 3
-    },
-    {
-      "id": "11",
-      "createdAt": 1745531901,
-      "updatedAt": 1745531901,
-      "typeOfMeasurement": "1",
-      "measurement": 167
-    },
-    {
-      "id": "12",
-      "createdAt": 1745616812,
-      "updatedAt": 1745616812,
-      "typeOfMeasurement": "1",
-      "measurement": 113
-    },
-    {
-      "id": "13",
-      "createdAt": 1745700869,
-      "updatedAt": 1745700869,
-      "typeOfMeasurement": "1",
-      "measurement": 131
-    },
-    {
-      "id": "14",
-      "createdAt": 1745784720,
-      "updatedAt": 1745784720,
-      "typeOfMeasurement": "1",
-      "measurement": 85
-    },
-    {
-      "id": "15",
-      "createdAt": 1745871983,
-      "updatedAt": 1745871983,
-      "typeOfMeasurement": "1",
-      "measurement": 122
-    },
-    {
-      "id": "16",
-      "createdAt": 1745956978,
-      "updatedAt": 1745956978,
-      "typeOfMeasurement": "1",
-      "measurement": 41
-    },
-    {
-      "id": "17",
-      "createdAt": 1746045189,
-      "updatedAt": 1746045189,
-      "typeOfMeasurement": "1",
-      "measurement": 93
-    },
-    {
-      "id": "18",
-      "createdAt": 1746130204,
-      "updatedAt": 1746130204,
-      "typeOfMeasurement": "1",
-      "measurement": 110
-    },
-    {
-      "id": "19",
-      "createdAt": 1746218649,
-      "updatedAt": 1746218649,
-      "typeOfMeasurement": "1",
-      "measurement": 5
-    },
-    {
-      "id": "20",
-      "createdAt": 1746306241,
-      "updatedAt": 1746306241,
-      "typeOfMeasurement": "1",
-      "measurement": 179
-    },
-    {
-      "id": "21",
-      "createdAt": 1746395774,
-      "updatedAt": 1746395774,
-      "typeOfMeasurement": "1",
-      "measurement": 161
-    },
-    {
-      "id": "22",
-      "createdAt": 1746477275,
-      "updatedAt": 1746477275,
-      "typeOfMeasurement": "1",
-      "measurement": 34
-    },
-    {
-      "id": "23",
-      "createdAt": 1746567382,
-      "updatedAt": 1746567382,
-      "typeOfMeasurement": "1",
-      "measurement": 199
-    },
-    {
-      "id": "24",
-      "createdAt": 1746652096,
-      "updatedAt": 1746652096,
-      "typeOfMeasurement": "1",
-      "measurement": 124
-    },
-    {
-      "id": "25",
-      "createdAt": 1746737745,
-      "updatedAt": 1746737745,
-      "typeOfMeasurement": "1",
-      "measurement": 99
-    },
-    {
-      "id": "26",
-      "createdAt": 1746823829,
-      "updatedAt": 1746823829,
-      "typeOfMeasurement": "1",
-      "measurement": 86
-    },
-    {
-      "id": "27",
-      "createdAt": 1746908991,
-      "updatedAt": 1746908991,
-      "typeOfMeasurement": "1",
-      "measurement": 12
-    },
-    {
-      "id": "28",
-      "createdAt": 1746998548,
-      "updatedAt": 1746998548,
-      "typeOfMeasurement": "1",
-      "measurement": 154
-    },
-    {
-      "id": "29",
-      "createdAt": 1747079793,
-      "updatedAt": 1747079793,
-      "typeOfMeasurement": "1",
-      "measurement": 65
-    },
-    {
-      "id": "30",
-      "createdAt": 1747168870,
-      "updatedAt": 1747168870,
-      "typeOfMeasurement": "1",
-      "measurement": 200
+      "id": "01967235-ad39-7255-8d64-6148c3d7c16a",
+      "createdAt": 1745672760,
+      "updatedAt": 1745842961,
+      "typeOfMeasurement": "2",
+      "measurement": 123,
+      "afterMealMeasurement": {
+        "meal": [
+          {
+            "id": 0,
+            "portion": 22,
+            "dish": "ййй"
+          },
+          {
+            "id": 1,
+            "portion": 33,
+            "dish": "банан",
+            "statistic": {
+              "id": 1,
+              "calories": 89,
+              "proteins": 1.09,
+              "fats": 0.33,
+              "carbohydrates": 22.84,
+              "comment": "Bananas have a relatively high glycemic index"
+            }
+          }
+        ]
+      }
     }
   ],
   "typesOfMeasuremens": [

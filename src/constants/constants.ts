@@ -2,9 +2,11 @@ import dayjs from "dayjs";
 
 export const API_URL = "http://localhost:8653";
 
+export const loaderDefaultColor = "#f0f6fc";
+export const loaderDarkColor = "#010409";
+
 export const initialAfterMealMeasurement = {
   id: "",
-  time: "",
   createdAt: 0,
   updatedAt: 0,
   typeOfMeasurement: "",
@@ -524,4 +526,12 @@ export const controlPanelStyles = {
       backgroundImage: "none",
     },
   },
+};
+
+export const statisticContentStyles = {
+  width: "100%",
+  maxHeight: "50vh",
+  maxWidth: "300px",
+  overflowY: "auto",
+  ...scrollBarStyles,
 };

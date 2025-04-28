@@ -1,9 +1,10 @@
+import { loaderDefaultColor } from "../../constants/constants";
 import styles from "./loader.module.scss";
 interface Loader {
   lineColor?: string;
 }
 
-export const Loader = ({ lineColor = "#f0f6fc" }: Loader) => {
+export const Loader = ({ lineColor = loaderDefaultColor }: Loader) => {
   const length = 12;
 
   return (

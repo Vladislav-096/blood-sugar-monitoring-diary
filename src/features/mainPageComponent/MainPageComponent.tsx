@@ -1,15 +1,15 @@
 import { useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Box, Button } from "@mui/material";
-import { MeasurementModal } from "../measurementModal/MeasurementModal";
 import {
   fetchEditMeasurement,
   fetchRemoveMeasurement,
 } from "../shared/slices/measurementsSlice";
 import { MeasurementsTable } from "../../components/MeasurementsTable/MeasurementsTable";
-import { MeasurementData } from "../../types/types";
 import { getTimeStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 import { PagesCommonProps } from "../shared/pagesCommon/PagesCommon";
+import { Measurement } from "../../app/measurements";
+import { AddMeasurementModal } from "../addMeasurementModal/AddMeasurementModal";
 
 export const MainPageComponent = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -22,7 +22,7 @@ export const MainPageComponent = () => {
     dispatch(fetchRemoveMeasurement(id));
   };
 
-  const dispatchEditMeasurementSync = async (data: MeasurementData) => {
+  const dispatchEditMeasurementSync = async (data: Measurement) => {
     const response = await dispatch(fetchEditMeasurement(data));
     return response;
   };
@@ -64,7 +64,7 @@ export const MainPageComponent = () => {
           add measurement
         </Button>
       </Box>
-      <MeasurementModal open={open} handleClose={handleClose} />
+      <AddMeasurementModal open={open} handleClose={handleClose} />
     </PagesCommonProps>
   );
 };

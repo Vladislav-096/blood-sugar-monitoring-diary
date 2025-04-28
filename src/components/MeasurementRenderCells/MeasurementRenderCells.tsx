@@ -1,38 +1,17 @@
-import {
-  Box,
-  styled,
-  Tooltip,
-  tooltipClasses,
-  TooltipProps,
-  Typography,
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Meals, Measurement } from "../../app/measurements";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import styles from "./measurementRenderCells.module.scss";
-import { scrollBarStyles } from "../../constants/constants";
+import { statisticContentStyles } from "../../constants/constants";
+import { HtmlTooltip } from "../HtmlTooltip/HtmlTooltip";
+import InfoIcon from "@mui/icons-material/Info";
+import { StatisticTooltipContent } from "../StatisticTooltipContent/StatisticTooltipContent";
 
 interface MeasurementRenderCells {
   row: Measurement;
 }
 
-const afterMealMeasurementTooltipStyles = {
-  padding: "20px",
-  border: "1px solid #9198a1",
-  borderRadius: "4px",
-  backgroundColor: "#0d1117",
-  color: "#f0f6fc",
-};
-
 export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
-  const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-      ...afterMealMeasurementTooltipStyles,
-      fontSize: theme.typography.pxToRem(14),
-    },
-  }));
-
   if (row.typeOfMeasurement === "2" && row.afterMealMeasurement) {
     const meals: Meals = row.afterMealMeasurement?.meal;
 
@@ -49,13 +28,45 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
         <HtmlTooltip
           title={
             <>
-              <Box sx={scrollBarStyles} className={`${styles.list} list-reset`}>
+              <Box sx={statisticContentStyles} className="list-reset">
                 {meals.map((item, index) => (
                   <Box key={index} className={styles["list-item"]}>
-                    <span className={styles.dish}>{`${item.dish}:`}</span>
-                    <span
-                      className={styles.portion}
-                    >{`${item.portion} g`}</span>
+                    <Box className={styles.descr}>
+                      {item.statistic && (
+                        <Box sx={{ display: "inline-block" }}>
+                          <HtmlTooltip
+                            title={
+                              <Box
+                                sx={statisticContentStyles}
+                                className="list-reset"
+                              >
+                                {Object.entries(item.statistic).map(
+                                  ([key, value], fieldIndex) =>
+                                    key !== "id" && (
+                                      <Box key={fieldIndex}>
+                                        <StatisticTooltipContent
+                                          name={key}
+                                          value={value}
+                                        />
+                                      </Box>
+                                    )
+                                )}
+                              </Box>
+                            }
+                          >
+                            <InfoIcon
+                              fontSize="small"
+                              sx={{ marginRight: "3px" }}
+                            />
+                          </HtmlTooltip>
+                        </Box>
+                      )}
+
+                      <Box
+                        sx={{ display: "inline-block" }}
+                      >{`${item.dish}:`}</Box>
+                    </Box>
+                    <Box className={styles.value}>{`${item.portion} g`}</Box>
                   </Box>
                 ))}
               </Box>

@@ -10,7 +10,7 @@ import {
 import { Paper } from "@mui/material";
 import React, { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { CheckoutState, MeasurementData } from "../../types/types";
+import { CheckoutState } from "../../types/types";
 import { EditAfterMeasurementModal } from "../../features/editAfterMealMeasurementModal/EditAfterMealMeasurementModa";
 import {
   controlPanelStyles,
@@ -25,7 +25,7 @@ import {
   mergeDateAndTime,
 } from "../../utils/dateTimeConvert";
 import dayjs from "dayjs";
-import { areObjectsEqual } from "../../utils/areObjectsEqual";
+import { areTableRowsEqual } from "../../utils/areTableRowsEqual";
 import { TimeEditCells } from "../TimeEditCells/TimeEditCells";
 import { CustomTableToolbar } from "../CustomTableToolbar/CustomTableToolbar";
 import { CustomDateFilterField } from "../CustomDateFilterField/CustomDateFilterField";
@@ -45,12 +45,9 @@ interface MeasurementsTable {
   rows: Rows[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchRemoveMeasurement: (id: string) => void;
+  // Нету типа никакого, решить эту проблему
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatchEditMeasurementSync: any;
-  // Нету типа никакого, решить эту проблему
-  // (
-  //   data: MeasurementData
-  // ) => Promise<FetchMeasurementResponse>;
   editStatus: CheckoutState;
   removeStatus: CheckoutState;
 }
@@ -80,8 +77,11 @@ export const MeasurementsTable = ({
   const handleCloseEditAfterMealMeasurementModal = () =>
     setOpenEditAfterMealMeasurementModal(false);
   const [idToRemove, setIdToRemove] = useState<string>("");
-  const [afterMealMeasurement, setAfterMealMeasurement] =
-    useState<MeasurementData>(initialAfterMealMeasurement);
+  // Для модалки редактирования after meal замеров, а так туда полностью замер отдаю.
+  // Переименовать по человечески стейт
+  const [afterMealMeasurement, setAfterMealMeasurement] = useState<Measurement>(
+    initialAfterMealMeasurement
+  );
   const [isAlert, setIsAlert] = useState<boolean>(false);
   const [alertTitle, setAlertTitle] = useState<string>("");
 
@@ -265,7 +265,7 @@ export const MeasurementsTable = ({
   };
 
   const useEditMutation = () => {
-    return React.useCallback(async (data: MeasurementData) => {
+    return React.useCallback(async (data: Measurement) => {
       const res = dispatchEditMeasurementSync(data);
       return res;
     }, []);
@@ -275,7 +275,7 @@ export const MeasurementsTable = ({
 
   const processRowUpdate = React.useCallback(
     async (newRow: GridRowModel, oldRow: GridValidRowModel) => {
-      const areObjectsTheSame = areObjectsEqual(newRow, oldRow);
+      const areObjectsTheSame = areTableRowsEqual(newRow, oldRow);
 
       if (areObjectsTheSame.field === "createdAt") {
         const isValid = validationRules.createdAt.validate(newRow.createdAt);
@@ -338,8 +338,8 @@ export const MeasurementsTable = ({
       if (!areObjectsTheSame.result) {
         const { time: _, ...theRest } = newRow;
 
-        const row: MeasurementData = {
-          ...(theRest as MeasurementData),
+        const row: Measurement = {
+          ...(theRest as Measurement),
           updatedAt: dayjs().unix(),
         };
 
@@ -350,7 +350,7 @@ export const MeasurementsTable = ({
           delete row.afterMealMeasurement;
         }
 
-        const res = await mutateRow(row as MeasurementData);
+        const res = await mutateRow(row as Measurement);
 
         if (res.payload) {
           return row;
@@ -365,6 +365,7 @@ export const MeasurementsTable = ({
   );
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+    // Тут надо сделать чо та нормальное
     console.log("error", error);
   }, []);
 
@@ -373,7 +374,7 @@ export const MeasurementsTable = ({
       params.field === "measurement" &&
       params.row.typeOfMeasurement === "2"
     ) {
-      const data: MeasurementData = params.row;
+      const data: Measurement = params.row;
 
       setAfterMealMeasurement(data);
 

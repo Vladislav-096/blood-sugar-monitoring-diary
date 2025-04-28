@@ -3,47 +3,39 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   FieldNameEditMeasurementForm,
   FormTypesEditMeasurement,
-  MeasurementData,
 } from "../../types/types";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { fetchEditMeasurement } from "../shared/slices/measurementsSlice";
 import {
-  Backdrop,
   Box,
   Button,
-  Fade,
   FormControl,
   FormHelperText,
-  Modal,
   TextField,
-  Typography,
 } from "@mui/material";
 import {
   formHelperErrorStyles,
   initialAfterMealMeasurement,
-  modalContentStyles,
-  modalInnerContentStyles,
   selectDropdowStyles,
   textFieldStyle,
   validationRules,
 } from "../../constants/constants";
-import { CustomRequestErrorAlert } from "../../components/CustomRequestErrorAlert/CustomRequestErrorAlert";
-import { SubmitModalButton } from "../../components/SubmitModalButton/SubmitModalButton";
 import dayjs from "dayjs";
-import { areObjectsEqual } from "../../utils/areObjectsEqual";
+import { Measurement } from "../../app/measurements";
+import { areMeasurementsEqual } from "../../utils/areMeasurementsEqual";
+import { useMeasurementsModal } from "../../hooks/useMeasurementsModals";
+import { MeasurementModal } from "../../components/MeasurementModal/MeasurementModal";
+import { MeasurementModalsDynamicFields } from "../../components/MeasurementModalsDynamicFields/MeasurementModalsDynamicFields";
 
 interface EditAfterMeasurementModal {
-  afterMealMeasurement: MeasurementData;
-  setAfterMealMeasurement: React.Dispatch<
-    React.SetStateAction<MeasurementData>
-  >;
+  afterMealMeasurement: Measurement;
+  setAfterMealMeasurement: React.Dispatch<React.SetStateAction<Measurement>>;
   open: boolean;
   handleClose: () => void;
 }
 
+const modalTitle = "Edit measurement";
 const alertEditMeasurementError = "Failed to edit measurement";
-const measurementAndPortionMaxLength = 5;
-const dishNameLegth = 100;
 
 export const EditAfterMeasurementModal = ({
   open,
@@ -52,52 +44,10 @@ export const EditAfterMeasurementModal = ({
   setAfterMealMeasurement,
 }: EditAfterMeasurementModal) => {
   const dispatch = useAppDispatch();
-  const editMeasurementsErrorStatus = useAppSelector(
+  const editMeasurementsStatus = useAppSelector(
     (state) => state.measurements.checkoutEditMeasurementState
   );
   const [isAlert, setIsAlert] = useState<boolean>(false);
-  const [measurement, setMeasurement] = useState<string>(" "); // Чтобы визуально не уезжал лэйбл при открытии модалки. Оставлю?
-
-  const handlePortionChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    const fieldName = `afterMealMeasurement.meal.${index}.portion`;
-    formatInputValueToNumbers(event, fieldName as FieldNameEditMeasurementForm);
-  };
-
-  const handleMeasurementChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const fieldName = "measurement";
-    formatInputValueToNumbers(event, fieldName as FieldNameEditMeasurementForm);
-  };
-
-  const handleDishChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    const { value } = event.target;
-    const fieldName = `afterMealMeasurement.meal.${index}.dish`;
-    setValue(fieldName as FieldNameEditMeasurementForm, value);
-    trigger(fieldName as FieldNameEditMeasurementForm);
-  };
-
-  const formatInputValueToNumbers = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    fieldName: FieldNameEditMeasurementForm
-  ) => {
-    const { value } = event.target;
-    const pettern = /[^0-9]/g;
-    const numericValue = value.replace(pettern, "");
-
-    if (fieldName === "measurement") {
-      setMeasurement(numericValue);
-    }
-
-    setValue(fieldName as FieldNameEditMeasurementForm, numericValue);
-    trigger(fieldName as FieldNameEditMeasurementForm);
-  };
 
   const {
     control,
@@ -114,16 +64,34 @@ export const EditAfterMeasurementModal = ({
     name: "afterMealMeasurement.meal",
   });
 
+  const {
+    handleDishChange,
+    handlePortionChange,
+    handleMeasurementChange,
+    handleDishAndPortionFocus,
+    handleRemoveMeal,
+    measurement,
+    resetMeasurement,
+    dishStatistic,
+    setDishStatistic,
+    isAnyLoading,
+    loadingStates,
+  } = useMeasurementsModal<FormTypesEditMeasurement>({
+    setValue,
+    trigger,
+    initialMeasurement: " ", // Чтобы визуально не уезжал лэйбл при открытии модалки
+  });
+
   const resetValues = () => {
     reset();
     setValue("measurement", "");
-    setMeasurement(" ");
+    resetMeasurement(" ");
     clearErrors();
     remove();
   };
 
   const onSubmit = async (formData: FormTypesEditMeasurement) => {
-    const data: MeasurementData = {
+    const data: Measurement = {
       id: afterMealMeasurement.id,
       createdAt: afterMealMeasurement.createdAt,
       updatedAt: afterMealMeasurement.updatedAt,
@@ -132,13 +100,19 @@ export const EditAfterMeasurementModal = ({
       ...(formData.afterMealMeasurement.meal.length > 0 && {
         afterMealMeasurement: {
           meal: formData.afterMealMeasurement.meal.map((item) => {
-            return { portion: Number(item.portion), dish: item.dish };
+            const statistic = dishStatistic.find((el) => el.id === item.id);
+            return {
+              id: Number(item.id), // Сомнения,
+              portion: Number(item.portion),
+              dish: item.dish,
+              ...(statistic && { statistic }),
+            };
           }),
         },
       }),
     };
 
-    const areObjectsTheSame = areObjectsEqual(afterMealMeasurement, data);
+    const areObjectsTheSame = areMeasurementsEqual(afterMealMeasurement, data);
 
     if (areObjectsTheSame.result) {
       resetValues();
@@ -159,16 +133,39 @@ export const EditAfterMeasurementModal = ({
     handleClose();
   };
 
+  const onClose = () => {
+    resetValues();
+    setAfterMealMeasurement(initialAfterMealMeasurement);
+    handleClose();
+    setDishStatistic([]);
+  };
+
   useEffect(() => {
     if (afterMealMeasurement.id) {
-      const measurement =
+      const measurementValue =
         afterMealMeasurement.measurement.toString() as FieldNameEditMeasurementForm;
-      setValue("measurement", measurement);
+      setValue("measurement", measurementValue);
       setValue("typeOfMeasurement", "After meal");
-      setMeasurement(measurement);
+      resetMeasurement(measurementValue);
 
       afterMealMeasurement.afterMealMeasurement?.meal.forEach((item) => {
+        const statistic = item.statistic;
+        if (statistic) {
+          setDishStatistic((prev) => [
+            ...prev,
+            {
+              id: statistic.id,
+              calories: statistic.calories,
+              proteins: statistic.proteins,
+              fats: statistic.fats,
+              carbohydrates: statistic.carbohydrates,
+              comment: statistic.comment,
+            },
+          ]);
+        }
+
         append({
+          id: item.id,
           portion: item.portion.toString(),
           dish: item.dish,
         });
@@ -178,213 +175,70 @@ export const EditAfterMeasurementModal = ({
 
   return (
     <>
-      <Modal
+      <MeasurementModal<FormTypesEditMeasurement>
         open={open}
-        onClose={() => {
-          resetValues();
-          setAfterMealMeasurement(initialAfterMealMeasurement);
-          handleClose();
-        }}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 200,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={modalContentStyles}>
-            <Box sx={modalInnerContentStyles}>
-              <Typography
-                component="h2"
-                sx={{ marginBottom: "10px", fontSize: "20px" }}
-              >
-                Edit measurement
-              </Typography>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <FormControl
-                  fullWidth
-                  error={errors.typeOfMeasurement ? true : false}
-                >
-                  <Controller
-                    name="typeOfMeasurement"
-                    control={control}
-                    rules={validationRules.typeOfMeasurement}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        slotProps={selectDropdowStyles}
-                        error={errors.typeOfMeasurement ? true : false}
-                        label="Type of measurement"
-                        variant="outlined"
-                        disabled={true}
-                        sx={textFieldStyle}
-                      ></TextField>
-                    )}
-                  />
-                  {errors.typeOfMeasurement && (
-                    <FormHelperText sx={formHelperErrorStyles}>
-                      {errors.typeOfMeasurement?.message}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-                <Box sx={{ marginBottom: "10px", padding: "0 10px 0 10px" }}>
-                  {fields.map((item, index) => (
-                    <Box key={item.id} sx={{ marginBottom: "10px" }}>
-                      <FormControl
-                        error={
-                          errors.afterMealMeasurement?.meal?.[index]?.dish
-                            ? true
-                            : false
-                        }
-                        fullWidth
-                      >
-                        <Controller
-                          name={`afterMealMeasurement.meal.${index}.dish`}
-                          control={control}
-                          rules={validationRules.mealItems.dish}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              onChange={(e) => handleDishChange(e, index)}
-                              label="Dish"
-                              variant="outlined"
-                              error={
-                                errors.afterMealMeasurement?.meal?.[index]?.dish
-                                  ? true
-                                  : false
-                              }
-                              slotProps={{
-                                input: {
-                                  inputProps: {
-                                    maxLength: dishNameLegth,
-                                  },
-                                },
-                              }}
-                              sx={textFieldStyle}
-                            />
-                          )}
-                        />
-                        {errors.afterMealMeasurement?.meal?.[index]?.dish && (
-                          <FormHelperText sx={formHelperErrorStyles}>
-                            {
-                              errors.afterMealMeasurement.meal?.[index].dish
-                                .message
-                            }
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                      <FormControl
-                        error={
-                          errors.afterMealMeasurement?.meal?.[index]?.portion
-                            ? true
-                            : false
-                        }
-                        fullWidth
-                      >
-                        <Controller
-                          name={`afterMealMeasurement.meal.${index}.portion`}
-                          control={control}
-                          rules={validationRules.mealItems.dish}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              onChange={(e) => handlePortionChange(e, index)}
-                              label="Portion (grams)"
-                              variant="outlined"
-                              error={
-                                errors.afterMealMeasurement?.meal?.[index]
-                                  ?.portion
-                                  ? true
-                                  : false
-                              }
-                              slotProps={{
-                                input: {
-                                  inputProps: {
-                                    maxLength: measurementAndPortionMaxLength,
-                                  },
-                                },
-                              }}
-                              sx={textFieldStyle}
-                            />
-                          )}
-                        />
-                        {errors.afterMealMeasurement?.meal?.[index]
-                          ?.portion && (
-                          <FormHelperText sx={formHelperErrorStyles}>
-                            {
-                              errors.afterMealMeasurement?.meal?.[index]
-                                ?.portion?.message
-                            }
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={() => remove(index)}
-                      >
-                        Remove
-                      </Button>
-                    </Box>
-                  ))}
-                  <Button
-                    variant="contained"
-                    onClick={() => append({ dish: "", portion: "" })}
-                  >
-                    Add Meal
-                  </Button>
-                </Box>
-                <FormControl
-                  error={errors.measurement ? true : false}
-                  fullWidth
-                >
-                  <Controller
-                    name="measurement"
-                    control={control}
-                    rules={validationRules.measurement}
-                    render={() => (
-                      <TextField
-                        value={measurement}
-                        onChange={handleMeasurementChange}
-                        label="Measurement"
-                        variant="outlined"
-                        error={errors.measurement ? true : false}
-                        slotProps={{
-                          input: {
-                            inputProps: {
-                              maxLength: measurementAndPortionMaxLength,
-                            },
-                          },
-                        }}
-                        sx={textFieldStyle}
-                      />
-                    )}
-                  />
-                  {errors.measurement && (
-                    <FormHelperText sx={formHelperErrorStyles}>
-                      {errors.measurement?.message}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-                <SubmitModalButton
-                  requestStatus={editMeasurementsErrorStatus}
-                  buttonName={"submit"}
-                />
-              </form>
-            </Box>
-          </Box>
-        </Fade>
-      </Modal>
-      <CustomRequestErrorAlert
-        title={alertEditMeasurementError}
+        onClose={onClose}
+        title={modalTitle}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        errors={errors}
+        control={control}
+        handleMeasurementChange={handleMeasurementChange}
+        measurement={measurement}
+        alertMeasurementError={alertEditMeasurementError}
         isAlert={isAlert}
         setIsAlert={setIsAlert}
-        status={editMeasurementsErrorStatus}
-      />
+        measurementStatus={editMeasurementsStatus}
+        isAnyLoading={isAnyLoading}
+      >
+        <FormControl fullWidth error={errors.typeOfMeasurement ? true : false}>
+          <Controller
+            name="typeOfMeasurement"
+            control={control}
+            rules={validationRules.typeOfMeasurement}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                slotProps={selectDropdowStyles}
+                error={errors.typeOfMeasurement ? true : false}
+                label="Type of measurement"
+                variant="outlined"
+                disabled={true}
+                sx={textFieldStyle}
+              ></TextField>
+            )}
+          />
+          {errors.typeOfMeasurement && (
+            <FormHelperText sx={formHelperErrorStyles}>
+              {errors.typeOfMeasurement?.message}
+            </FormHelperText>
+          )}
+        </FormControl>
+        <Box sx={{ marginBottom: "10px", padding: "0 10px 0 10px" }}>
+          {fields.map((item, index) => (
+            <Box key={item.id} sx={{ marginBottom: "10px" }}>
+              <MeasurementModalsDynamicFields
+                index={index}
+                control={control}
+                errors={errors}
+                handleDishChange={handleDishChange}
+                handleDishAndPortionFocus={handleDishAndPortionFocus}
+                loadingStates={loadingStates}
+                dishStatistic={dishStatistic}
+                handlePortionChange={handlePortionChange}
+                handleRemoveMeal={handleRemoveMeal}
+                remove={remove}
+              />
+            </Box>
+          ))}
+          <Button
+            variant="contained"
+            onClick={() => append({ id: null, dish: "", portion: "" })}
+          >
+            Add Meal
+          </Button>
+        </Box>
+      </MeasurementModal>
     </>
   );
 };

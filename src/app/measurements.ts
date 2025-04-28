@@ -1,11 +1,23 @@
 import { z } from "zod";
 import { API_URL } from "../constants/constants";
 import { validateGetResponse, validateResponse } from "./validationResponse";
-import { MeasurementData } from "../types/types";
+
+const DishStatisticSchema = z.object({
+  id: z.number(),
+  calories: z.number(),
+  proteins: z.number(),
+  carbohydrates: z.number(),
+  fats: z.number(),
+  comment: z.string(),
+});
+
+export type DishStatistic = z.infer<typeof DishStatisticSchema>;
 
 const MealSchema = z.object({
+  id: z.number(),
   portion: z.number(),
   dish: z.string(),
+  statistic: DishStatisticSchema.optional(),
 });
 
 const MealsSchema = z.array(MealSchema);
@@ -75,7 +87,7 @@ export const getTypesOfMeasurements = async () => {
     });
 };
 
-export const addMeasurement = async (data: MeasurementData) => {
+export const addMeasurement = async (data: Measurement) => {
   return fetch(`${API_URL}/measurements`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
@@ -88,7 +100,7 @@ export const addMeasurement = async (data: MeasurementData) => {
     });
 };
 
-export const editMeasurement = async (data: MeasurementData) => {
+export const editMeasurement = async (data: Measurement) => {
   return fetch(`${API_URL}/measurements/${data.id}`, {
     method: "PUT",
     headers: { "Content-type": "application/json" },

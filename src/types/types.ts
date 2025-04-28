@@ -1,15 +1,16 @@
 export type CheckoutState = "LOADING" | "READY" | "ERROR";
 
-export interface Meal {
+interface Meal {
+  id: number | null;
   portion: string;
   dish: string;
 }
 
-export interface AfterMealMeasurement {
+interface AfterMealMeasurement {
   meal: Meal[];
 }
 
-export type FieldNameCreateMeasurementForm =
+type FieldNameCreateMeasurementForm =
   | "typeOfMeasurement"
   | "measurement"
   | "time"
@@ -17,15 +18,18 @@ export type FieldNameCreateMeasurementForm =
   | "afterMealMeasurement"
   | `afterMealMeasurement.meal.${number}`
   | `afterMealMeasurement.meal.${number}.portion`
-  | `afterMealMeasurement.meal.${number}.dish`;
+  | `afterMealMeasurement.meal.${number}.dish`
+  | `afterMealMeasurement.meal.${number}.id`;
 
 export type FieldNameEditMeasurementForm = Exclude<
   FieldNameCreateMeasurementForm,
   "time" | "createdAt"
 >;
 
-export type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
+// Переписал значение тип свойства portion
+type ModifiedMeal = Omit<Meal, "portion"> & { portion: number };
 
+// Не нужен
 export interface MeasurementData {
   id: string;
   createdAt: number;
@@ -36,14 +40,6 @@ export interface MeasurementData {
     meal: ModifiedMeal[];
   };
 }
-
-// Не используется
-// export interface EditMeasurement {
-//   id: string;
-//   data: PartialMeasurementData;
-// }
-
-export type PartialMeasurementData = Partial<MeasurementData>;
 
 export interface FormTypesCreateMeasurement {
   createdAt: number;

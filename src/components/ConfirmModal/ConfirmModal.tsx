@@ -11,7 +11,7 @@ import { CheckoutState } from "../../types/types";
 import { Loader } from "../Loader/Loader";
 import { useEffect, useRef, useState } from "react";
 import { CustomRequestErrorAlert } from "../CustomRequestErrorAlert/CustomRequestErrorAlert";
-import { modalContentStyles } from "../../constants/constants";
+import { loaderDarkColor, modalContentStyles } from "../../constants/constants";
 
 interface ConfirmModal {
   open: boolean;
@@ -89,7 +89,7 @@ export const ConfirmModal = ({
                       right: "7px",
                     }}
                   >
-                    <Loader lineColor="#010409" />
+                    <Loader lineColor={loaderDarkColor} />
                   </Box>
                 )}
               </Button>
