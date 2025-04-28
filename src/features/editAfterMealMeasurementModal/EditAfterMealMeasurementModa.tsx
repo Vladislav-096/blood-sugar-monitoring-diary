@@ -16,20 +16,16 @@ import {
 import {
   formHelperErrorStyles,
   initialAfterMealMeasurement,
-  scrollBarStyles,
   selectDropdowStyles,
   textFieldStyle,
   validationRules,
 } from "../../constants/constants";
 import dayjs from "dayjs";
 import { Measurement } from "../../app/measurements";
-import { HtmlTooltip } from "../../components/HtmlTooltip/HtmlTooltip";
-import styles from "./editAfterMealMeasurementModal.module.scss";
-import InfoIcon from "@mui/icons-material/Info";
-import { Loader } from "../../components/Loader/Loader";
 import { areMeasurementsEqual } from "../../utils/areMeasurementsEqual";
 import { useMeasurementsModal } from "../../hooks/useMeasurementsModals";
 import { MeasurementModal } from "../../components/MeasurementModal/MeasurementModal";
+import { MeasurementModalsDynamicFields } from "../../components/MeasurementModalsDynamicFields/MeasurementModalsDynamicFields";
 
 interface EditAfterMeasurementModal {
   afterMealMeasurement: Measurement;
@@ -40,8 +36,6 @@ interface EditAfterMeasurementModal {
 
 const modalTitle = "Edit measurement";
 const alertEditMeasurementError = "Failed to edit measurement";
-const measurementAndPortionMaxLength = 5;
-const dishNameLegth = 100;
 
 export const EditAfterMeasurementModal = ({
   open,
@@ -81,16 +75,12 @@ export const EditAfterMeasurementModal = ({
     dishStatistic,
     setDishStatistic,
     isAnyLoading,
-    // abortControllersRef,
     loadingStates,
-    // setLoadingStates,
   } = useMeasurementsModal<FormTypesEditMeasurement>({
     setValue,
     trigger,
     initialMeasurement: " ", // Чтобы визуально не уезжал лэйбл при открытии модалки
   });
-
-  console.log(dishStatistic);
 
   const resetValues = () => {
     reset();
@@ -152,7 +142,6 @@ export const EditAfterMeasurementModal = ({
 
   useEffect(() => {
     if (afterMealMeasurement.id) {
-      console.log("here");
       const measurementValue =
         afterMealMeasurement.measurement.toString() as FieldNameEditMeasurementForm;
       setValue("measurement", measurementValue);
@@ -228,175 +217,18 @@ export const EditAfterMeasurementModal = ({
         <Box sx={{ marginBottom: "10px", padding: "0 10px 0 10px" }}>
           {fields.map((item, index) => (
             <Box key={item.id} sx={{ marginBottom: "10px" }}>
-              <FormControl sx={{ display: "none" }}>
-                <Controller
-                  name={`afterMealMeasurement.meal.${index}.id`}
-                  control={control}
-                  render={() => <TextField />}
-                />
-              </FormControl>
-              <FormControl
-                error={
-                  errors.afterMealMeasurement?.meal?.[index]?.dish
-                    ? true
-                    : false
-                }
-                fullWidth
-              >
-                <Controller
-                  name={`afterMealMeasurement.meal.${index}.dish`}
-                  control={control}
-                  rules={validationRules.mealItems.dish}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      onChange={(e) => handleDishChange(e, index)}
-                      onFocus={() => handleDishAndPortionFocus(index)}
-                      label="Dish"
-                      variant="outlined"
-                      error={
-                        errors.afterMealMeasurement?.meal?.[index]?.dish
-                          ? true
-                          : false
-                      }
-                      slotProps={{
-                        input: {
-                          inputProps: {
-                            maxLength: dishNameLegth,
-                          },
-                        },
-                      }}
-                      sx={textFieldStyle}
-                    />
-                  )}
-                />
-                {errors.afterMealMeasurement?.meal?.[index]?.dish && (
-                  <FormHelperText sx={formHelperErrorStyles}>
-                    {errors.afterMealMeasurement.meal?.[index].dish.message}
-                  </FormHelperText>
-                )}
-                {loadingStates[index] && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      width: "10%",
-                      height: "40%",
-                      top: "50%",
-                      transform: errors.afterMealMeasurement?.meal?.[index]
-                        ?.dish
-                        ? "translateY(-30px)"
-                        : "translateY(-22px)",
-                      right: "14px",
-                    }}
-                  >
-                    <Loader />
-                  </Box>
-                )}
-                {dishStatistic.some((stat) => stat.id === index) && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      transform: errors.afterMealMeasurement?.meal?.[index]
-                        ?.dish
-                        ? "translateY(-28px)"
-                        : "translateY(-20px)",
-                      right: "14px",
-                    }}
-                  >
-                    <HtmlTooltip
-                      title={
-                        <Box
-                          sx={scrollBarStyles}
-                          className={`${styles.list} list-reset`}
-                        >
-                          {dishStatistic.map((statisticItem, _) => {
-                            if (statisticItem.id === index) {
-                              return Object.entries(statisticItem).map(
-                                ([key, value], fieldIndex) =>
-                                  key !== "id" && (
-                                    <Box
-                                      key={fieldIndex}
-                                      className={styles["list-item"]}
-                                    >
-                                      <span className={styles.descr}>
-                                        {`${key}:`}
-                                      </span>
-                                      <span className={styles.value}>
-                                        {`${value} ${
-                                          ![
-                                            "comment",
-                                            "calories",
-                                            "id",
-                                          ].includes(key)
-                                            ? "g"
-                                            : ""
-                                        }`}
-                                      </span>
-                                    </Box>
-                                  )
-                              );
-                            }
-                          })}
-                        </Box>
-                      }
-                    >
-                      <InfoIcon />
-                    </HtmlTooltip>
-                  </Box>
-                )}
-              </FormControl>
-              <FormControl
-                error={
-                  errors.afterMealMeasurement?.meal?.[index]?.portion
-                    ? true
-                    : false
-                }
-                fullWidth
-              >
-                <Controller
-                  name={`afterMealMeasurement.meal.${index}.portion`}
-                  control={control}
-                  rules={validationRules.mealItems.dish}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      onChange={(e) => handlePortionChange(e, index)}
-                      onFocus={() => handleDishAndPortionFocus(index)}
-                      label="Portion (grams)"
-                      variant="outlined"
-                      error={
-                        errors.afterMealMeasurement?.meal?.[index]?.portion
-                          ? true
-                          : false
-                      }
-                      slotProps={{
-                        input: {
-                          inputProps: {
-                            maxLength: measurementAndPortionMaxLength,
-                          },
-                        },
-                      }}
-                      sx={textFieldStyle}
-                    />
-                  )}
-                />
-                {errors.afterMealMeasurement?.meal?.[index]?.portion && (
-                  <FormHelperText sx={formHelperErrorStyles}>
-                    {
-                      errors.afterMealMeasurement?.meal?.[index]?.portion
-                        ?.message
-                    }
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => handleRemoveMeal(index, remove)}
-              >
-                Remove
-              </Button>
+              <MeasurementModalsDynamicFields
+                index={index}
+                control={control}
+                errors={errors}
+                handleDishChange={handleDishChange}
+                handleDishAndPortionFocus={handleDishAndPortionFocus}
+                loadingStates={loadingStates}
+                dishStatistic={dishStatistic}
+                handlePortionChange={handlePortionChange}
+                handleRemoveMeal={handleRemoveMeal}
+                remove={remove}
+              />
             </Box>
           ))}
           <Button

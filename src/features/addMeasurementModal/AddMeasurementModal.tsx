@@ -7,7 +7,6 @@ import {
   TextField,
 } from "@mui/material";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import styles from "./addMeasurementModal.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
 import { v7 as uuidv4 } from "uuid";
@@ -28,18 +27,15 @@ import {
 import {
   dataPisckerCalendar,
   formHelperErrorStyles,
-  scrollBarStyles,
   selectDropdowStyles,
   textFieldStyle,
   timePickerMenu,
   validationRules,
 } from "../../constants/constants";
 import { Measurement } from "../../app/measurements";
-import { Loader } from "../../components/Loader/Loader";
-import { HtmlTooltip } from "../../components/HtmlTooltip/HtmlTooltip";
-import InfoIcon from "@mui/icons-material/Info";
 import { useMeasurementsModal } from "../../hooks/useMeasurementsModals";
 import { MeasurementModal } from "../../components/MeasurementModal/MeasurementModal";
+import { MeasurementModalsDynamicFields } from "../../components/MeasurementModalsDynamicFields/MeasurementModalsDynamicFields";
 
 interface AddMeasurementModal {
   open: boolean;
@@ -48,8 +44,6 @@ interface AddMeasurementModal {
 
 const modalTitle = "Create measurement";
 const alertAddMeasurementError = "Failed to add measurement";
-const measurementAndPortionMaxLength = 5;
-const dishNameLegth = 100;
 
 export const AddMeasurementModal = ({
   open,
@@ -79,11 +73,8 @@ export const AddMeasurementModal = ({
     measurement,
     resetMeasurement,
     dishStatistic,
-    // setDishStatistic,
     isAnyLoading,
-    // abortControllersRef,
     loadingStates,
-    // setLoadingStates,
   } = useMeasurementsModal<FormTypesCreateMeasurement>({ setValue, trigger });
   const dispatch = useAppDispatch();
   const typeOfMeasurementsState = useAppSelector(
@@ -102,8 +93,6 @@ export const AddMeasurementModal = ({
     convertTime(dayjs().format("HH:mm"))
   ); // YYYY-MM-DDTHH:mm
   const typesOptions = [...typeOfMeasurementsState.typesOfMeasurements];
-
-  console.log(dishStatistic);
 
   const handleDateChange = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
@@ -156,9 +145,6 @@ export const AddMeasurementModal = ({
   };
 
   const onSubmit = async (formData: FormTypesCreateMeasurement) => {
-    // console.log(formData);
-    console.log("dishStatistic", dishStatistic);
-    console.log("loadingStates", loadingStates);
     const measurementId = uuidv4();
     const unixTimestampDate = formData.createdAt;
     const unixTimestampTime = dayjs(convertedTime).unix();
@@ -327,175 +313,18 @@ export const AddMeasurementModal = ({
           <Box sx={{ marginBottom: "10px", padding: "0 10px 0 10px" }}>
             {fields.map((item, index) => (
               <Box key={item.id} sx={{ marginBottom: "10px" }}>
-                <FormControl sx={{ display: "none" }}>
-                  <Controller
-                    name={`afterMealMeasurement.meal.${index}.id`}
-                    control={control}
-                    render={() => <TextField />}
-                  />
-                </FormControl>
-                <FormControl
-                  error={
-                    errors.afterMealMeasurement?.meal?.[index]?.dish
-                      ? true
-                      : false
-                  }
-                  fullWidth
-                >
-                  <Controller
-                    name={`afterMealMeasurement.meal.${index}.dish`}
-                    control={control}
-                    rules={validationRules.mealItems.dish}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        onChange={(e) => handleDishChange(e, index)}
-                        onFocus={() => handleDishAndPortionFocus(index)}
-                        label="Dish"
-                        variant="outlined"
-                        error={
-                          errors.afterMealMeasurement?.meal?.[index]?.dish
-                            ? true
-                            : false
-                        }
-                        slotProps={{
-                          input: {
-                            inputProps: {
-                              maxLength: dishNameLegth,
-                            },
-                          },
-                        }}
-                        sx={textFieldStyle}
-                      />
-                    )}
-                  />
-                  {errors.afterMealMeasurement?.meal?.[index]?.dish && (
-                    <FormHelperText sx={formHelperErrorStyles}>
-                      {errors.afterMealMeasurement.meal?.[index].dish.message}
-                    </FormHelperText>
-                  )}
-                  {loadingStates[index] && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        width: "10%",
-                        height: "40%",
-                        top: "50%",
-                        transform: errors.afterMealMeasurement?.meal?.[index]
-                          ?.dish
-                          ? "translateY(-30px)"
-                          : "translateY(-22px)",
-                        right: "14px",
-                      }}
-                    >
-                      <Loader />
-                    </Box>
-                  )}
-                  {dishStatistic.some((stat) => stat.id === index) && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: "50%",
-                        transform: errors.afterMealMeasurement?.meal?.[index]
-                          ?.dish
-                          ? "translateY(-28px)"
-                          : "translateY(-20px)",
-                        right: "14px",
-                      }}
-                    >
-                      <HtmlTooltip
-                        title={
-                          <Box
-                            sx={scrollBarStyles}
-                            className={`${styles.list} list-reset`}
-                          >
-                            {dishStatistic.map((statisticItem, _) => {
-                              if (statisticItem.id === index) {
-                                return Object.entries(statisticItem).map(
-                                  ([key, value], fieldIndex) =>
-                                    key !== "id" && (
-                                      <Box
-                                        key={fieldIndex}
-                                        className={styles["list-item"]}
-                                      >
-                                        <span className={styles.descr}>
-                                          {`${key}:`}
-                                        </span>
-                                        <span className={styles.value}>
-                                          {`${value} ${
-                                            ![
-                                              "comment",
-                                              "calories",
-                                              "id",
-                                            ].includes(key)
-                                              ? "g"
-                                              : ""
-                                          }`}
-                                        </span>
-                                      </Box>
-                                    )
-                                );
-                              }
-                            })}
-                          </Box>
-                        }
-                      >
-                        <InfoIcon />
-                      </HtmlTooltip>
-                    </Box>
-                  )}
-                </FormControl>
-                <FormControl
-                  error={
-                    errors.afterMealMeasurement?.meal?.[index]?.portion
-                      ? true
-                      : false
-                  }
-                  fullWidth
-                >
-                  <Controller
-                    name={`afterMealMeasurement.meal.${index}.portion`}
-                    control={control}
-                    rules={validationRules.mealItems.portion}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        onChange={(e) => handlePortionChange(e, index)}
-                        onFocus={() => handleDishAndPortionFocus(index)}
-                        label="Portion (grams)"
-                        variant="outlined"
-                        error={
-                          errors.afterMealMeasurement?.meal?.[index]?.portion
-                            ? true
-                            : false
-                        }
-                        sx={textFieldStyle}
-                        slotProps={{
-                          input: {
-                            inputProps: {
-                              maxLength: measurementAndPortionMaxLength,
-                            },
-                          },
-                        }}
-                      />
-                    )}
-                  />
-                  {errors.afterMealMeasurement?.meal?.[index]?.portion && (
-                    <FormHelperText sx={formHelperErrorStyles}>
-                      {
-                        errors.afterMealMeasurement?.meal?.[index]?.portion
-                          ?.message
-                      }
-                    </FormHelperText>
-                  )}
-                </FormControl>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => handleRemoveMeal(index, remove)}
-                >
-                  Remove
-                </Button>
+                <MeasurementModalsDynamicFields
+                  index={index}
+                  control={control}
+                  errors={errors}
+                  handleDishChange={handleDishChange}
+                  handleDishAndPortionFocus={handleDishAndPortionFocus}
+                  loadingStates={loadingStates}
+                  dishStatistic={dishStatistic}
+                  handlePortionChange={handlePortionChange}
+                  handleRemoveMeal={handleRemoveMeal}
+                  remove={remove}
+                />
               </Box>
             ))}
             <Button

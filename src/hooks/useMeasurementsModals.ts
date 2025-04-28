@@ -1,5 +1,10 @@
 import { useRef, useState } from "react";
-import { FieldPath, PathValue, UseFormSetValue, UseFormTrigger } from "react-hook-form";
+import {
+  FieldPath,
+  PathValue,
+  UseFormSetValue,
+  UseFormTrigger,
+} from "react-hook-form";
 import {
   FormTypesCreateMeasurement,
   FormTypesEditMeasurement,
@@ -7,13 +12,17 @@ import {
 import { DishStatistic } from "../app/measurements";
 import { getDishStatistic } from "../app/dishStatistic";
 
-interface UseMeasurementsModalProps<T extends FormTypesCreateMeasurement | FormTypesEditMeasurement> {
+interface UseMeasurementsModalProps<
+  T extends FormTypesCreateMeasurement | FormTypesEditMeasurement
+> {
   setValue: UseFormSetValue<T>;
   trigger: UseFormTrigger<T>;
   initialMeasurement?: string;
 }
 
-export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | FormTypesEditMeasurement>({
+export const useMeasurementsModal = <
+  T extends FormTypesCreateMeasurement | FormTypesEditMeasurement
+>({
   setValue,
   trigger,
   initialMeasurement = "",
@@ -33,7 +42,8 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
 
   const handleDishAndPortionFocus = (index: number) => {
     // Using type assertion to handle nested field paths in form types
-    const fieldPath = `afterMealMeasurement.meal.${index}.id` as unknown as FieldPath<T>;
+    const fieldPath =
+      `afterMealMeasurement.meal.${index}.id` as unknown as FieldPath<T>;
     setValue(fieldPath, index as unknown as PathValue<T, typeof fieldPath>);
   };
 
@@ -45,11 +55,14 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
     const pattern = /[^0-9]/g;
     const numericValue = value.replace(pattern, "");
 
-    if (fieldName === "measurement" as FieldPath<T>) {
+    if (fieldName === ("measurement" as FieldPath<T>)) {
       setMeasurement(numericValue);
     }
 
-    setValue(fieldName, numericValue as unknown as PathValue<T, typeof fieldName>);
+    setValue(
+      fieldName,
+      numericValue as unknown as PathValue<T, typeof fieldName>
+    );
     trigger(fieldName);
   };
 
@@ -57,7 +70,8 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
-    const fieldName = `afterMealMeasurement.meal.${index}.portion` as FieldPath<T>;
+    const fieldName =
+      `afterMealMeasurement.meal.${index}.portion` as FieldPath<T>;
     formatInputValueToNumbers(event, fieldName);
   };
 
@@ -68,7 +82,10 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
     formatInputValueToNumbers(event, fieldName);
   };
 
-  const handleRemoveMeal = (index: number, remove: (index?: number | number[]) => void) => {
+  const handleRemoveMeal = (
+    index: number,
+    remove: (index?: number | number[]) => void
+  ) => {
     // Отменяем текущий запрос
     if (abortControllersRef.current[index]) {
       abortControllersRef.current[index].abort();
@@ -115,7 +132,7 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
   ) => {
     const { value } = event.target;
     const fieldName = `afterMealMeasurement.meal.${index}.dish` as FieldPath<T>;
-    
+
     // Use type assertion to handle the complex nested form structure
     setValue(fieldName, value as unknown as PathValue<T, typeof fieldName>);
     trigger(fieldName);
@@ -163,14 +180,14 @@ export const useMeasurementsModal = <T extends FormTypesCreateMeasurement | Form
         });
 
         const DishStatisticJson = await DishStatisticResponse.json();
-        console.log("DishStatisticJson", DishStatisticJson);
+        // console.log("DishStatisticJson", DishStatisticJson);
 
         console.log(`stopped loading ${index}`);
         const DishStatisticData: DishStatistic = {
           id: index,
           ...JSON.parse(DishStatisticJson.choices[0].message.content),
         };
-        console.log("DishStatisticData", DishStatisticData);
+        // console.log("DishStatisticData", DishStatisticData);
 
         // Тупая нейросеть отказывается отвечать мне пустой строкой, как я прошу, в случае
         // если dishName не еда. Вместо этого она отвечает объектом, в котором proteins,

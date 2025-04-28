@@ -10,7 +10,7 @@ interface AfterMealMeasurement {
   meal: Meal[];
 }
 
-export type FieldNameCreateMeasurementForm =
+type FieldNameCreateMeasurementForm =
   | "typeOfMeasurement"
   | "measurement"
   | "time"
