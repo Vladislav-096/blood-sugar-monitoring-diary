@@ -12,7 +12,7 @@ export const CustomErrorAlert = ({
   setIsAlert,
 }: CustomErrorAlert) => {
   const handleClose = (
-    event: React.SyntheticEvent | Event,
+    _: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason
   ) => {
     if (reason === "clickaway") {
@@ -27,7 +27,7 @@ export const CustomErrorAlert = ({
       <Snackbar
         open={isAlert}
         autoHideDuration={3500}
-        onClose={handleClose}
+        onClose={(_, reason) => handleClose(_, reason)}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert variant="filled" severity="error">
