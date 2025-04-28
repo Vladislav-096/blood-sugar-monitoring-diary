@@ -43,7 +43,8 @@ export const ChartTable = ({ rows }: ChartTable) => {
       sx={{
         margin: "0 auto",
         width: "260px",
-        height: "calc(44.4vh - 45px)",
+        // height: "calc(44.4vh - 45px)",
+        height: "372px",
       }}
     >
       <DataGrid
