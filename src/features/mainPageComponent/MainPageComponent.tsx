@@ -9,7 +9,7 @@ import { MeasurementsTable } from "../../components/MeasurementsTable/Measuremen
 import { getTimeStringFromUnix } from "../../utils/getDateTimeStringFromUnix";
 import { PagesCommonProps } from "../shared/pagesCommon/PagesCommon";
 import { Measurement } from "../../app/measurements";
-import { AddMeasurementModal } from "../measurementModal/AddMeasurementModal";
+import { AddMeasurementModal } from "../addMeasurementModal/AddMeasurementModal";
 
 export const MainPageComponent = () => {
   const [open, setOpen] = useState<boolean>(false);

@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { measurementsSlice } from "../features/shared/slices/measurementsSlice";
-import { typesOfMeasurementsSlice } from "../features/measurementModal/typesOfMeasurementsSlice";
+import { typesOfMeasurementsSlice } from "../features/addMeasurementModal/typesOfMeasurementsSlice";
 
 export const store = configureStore({
   reducer: {

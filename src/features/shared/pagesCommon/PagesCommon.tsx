@@ -4,7 +4,7 @@ import { GetMeasurementsErrorNotification } from "../../../components/GetMeasure
 import { requestErrorInitial } from "../../../constants/constants";
 import { Box } from "@mui/material";
 import { fetchGetMeasurements } from "../slices/measurementsSlice";
-import { recieveTypesOfMeasurements } from "../../measurementModal/typesOfMeasurementsSlice";
+import { recieveTypesOfMeasurements } from "../../addMeasurementModal/typesOfMeasurementsSlice";
 import { Loader } from "../../../components/Loader/Loader";
 
 interface PagesCommonProps {
