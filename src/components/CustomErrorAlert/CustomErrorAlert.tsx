@@ -27,7 +27,7 @@ export const CustomErrorAlert = ({
       <Snackbar
         open={isAlert}
         autoHideDuration={3500}
-        onClose={(_, reason) => handleClose(_, reason)}
+        onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert variant="filled" severity="error">

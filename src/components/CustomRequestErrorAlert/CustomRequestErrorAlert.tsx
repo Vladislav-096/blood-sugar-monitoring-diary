@@ -16,7 +16,7 @@ export const CustomRequestErrorAlert = ({
   status,
 }: CustomRequestErrorAlert) => {
   const handleClose = (
-    event: React.SyntheticEvent | Event,
+    _: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason
   ) => {
     if (reason === "clickaway") {
