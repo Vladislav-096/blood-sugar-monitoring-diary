@@ -45,12 +45,9 @@ interface MeasurementsTable {
   rows: Rows[];
   typesOfMeasurement: TypesOfMeasurements;
   dispatchRemoveMeasurement: (id: string) => void;
+  // Нету типа никакого, решить эту проблему
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatchEditMeasurementSync: any;
-  // Нету типа никакого, решить эту проблему
-  // (
-  //   data: MeasurementData
-  // ) => Promise<FetchMeasurementResponse>;
   editStatus: CheckoutState;
   removeStatus: CheckoutState;
 }

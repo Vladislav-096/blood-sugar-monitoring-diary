@@ -527,3 +527,11 @@ export const controlPanelStyles = {
     },
   },
 };
+
+export const statisticContentStyles = {
+  width: "100%",
+  maxHeight: "50vh",
+  maxWidth: "300px",
+  overflowY: "auto",
+  ...scrollBarStyles,
+};

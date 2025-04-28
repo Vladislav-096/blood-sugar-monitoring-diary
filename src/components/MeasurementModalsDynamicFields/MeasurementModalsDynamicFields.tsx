@@ -17,7 +17,7 @@ import {
   validationRules,
   textFieldStyle,
   formHelperErrorStyles,
-  scrollBarStyles,
+  statisticContentStyles,
 } from "../../constants/constants";
 import { HtmlTooltip } from "../HtmlTooltip/HtmlTooltip";
 import { Loader } from "../Loader/Loader";
@@ -27,7 +27,7 @@ import {
 } from "../../types/types";
 import { DishStatistic } from "../../app/measurements";
 import InfoIcon from "@mui/icons-material/Info";
-import styles from "./measurementModalsDynamicFields.module.scss";
+import { StatisticTooltipContent } from "../StatisticTooltipContent/StatisticTooltipContent";
 
 interface MeasurementModalsDynamicFields<
   T extends FormTypesCreateMeasurement | FormTypesEditMeasurement
@@ -161,27 +161,17 @@ export const MeasurementModalsDynamicFields = <
           >
             <HtmlTooltip
               title={
-                <Box
-                  sx={scrollBarStyles}
-                  className={`${styles.list} list-reset`}
-                >
+                <Box sx={statisticContentStyles} className="list-reset">
                   {dishStatistic.map((statisticItem, _) => {
                     if (statisticItem.id === index) {
                       return Object.entries(statisticItem).map(
                         ([key, value], fieldIndex) =>
                           key !== "id" && (
-                            <Box
-                              key={fieldIndex}
-                              className={styles["list-item"]}
-                            >
-                              <span className={styles.descr}>{`${key}:`}</span>
-                              <span className={styles.value}>
-                                {`${value} ${
-                                  !["comment", "calories", "id"].includes(key)
-                                    ? "g"
-                                    : ""
-                                }`}
-                              </span>
+                            <Box key={fieldIndex}>
+                              <StatisticTooltipContent
+                                name={key}
+                                value={value}
+                              />
                             </Box>
                           )
                       );

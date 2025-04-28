@@ -2,9 +2,10 @@ import { Box, Typography } from "@mui/material";
 import { Meals, Measurement } from "../../app/measurements";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import styles from "./measurementRenderCells.module.scss";
-import { scrollBarStyles } from "../../constants/constants";
+import { statisticContentStyles } from "../../constants/constants";
 import { HtmlTooltip } from "../HtmlTooltip/HtmlTooltip";
 import InfoIcon from "@mui/icons-material/Info";
+import { StatisticTooltipContent } from "../StatisticTooltipContent/StatisticTooltipContent";
 
 interface MeasurementRenderCells {
   row: Measurement;
@@ -27,7 +28,7 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
         <HtmlTooltip
           title={
             <>
-              <Box sx={scrollBarStyles} className={`${styles.list} list-reset`}>
+              <Box sx={statisticContentStyles} className="list-reset">
                 {meals.map((item, index) => (
                   <Box key={index} className={styles["list-item"]}>
                     <Box className={styles.descr}>
@@ -36,30 +37,17 @@ export const MeasurementRenderCells = ({ row }: MeasurementRenderCells) => {
                           <HtmlTooltip
                             title={
                               <Box
-                                sx={scrollBarStyles}
-                                className={`${styles.list} list-reset`}
+                                sx={statisticContentStyles}
+                                className="list-reset"
                               >
                                 {Object.entries(item.statistic).map(
                                   ([key, value], fieldIndex) =>
                                     key !== "id" && (
-                                      <Box
-                                        key={fieldIndex}
-                                        className={styles["list-item"]}
-                                      >
-                                        <span className={styles.descr}>
-                                          {`${key}:`}
-                                        </span>
-                                        <span className={styles.value}>
-                                          {`${value} ${
-                                            ![
-                                              "comment",
-                                              "calories",
-                                              "id",
-                                            ].includes(key)
-                                              ? "g"
-                                              : ""
-                                          }`}
-                                        </span>
+                                      <Box key={fieldIndex}>
+                                        <StatisticTooltipContent
+                                          name={key}
+                                          value={value}
+                                        />
                                       </Box>
                                     )
                                 )}
