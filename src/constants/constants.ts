@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 
 // export const API_URL = "http://localhost:8653";
-export const API_URL =
-  "https://blood-sugar-monitoring-diary-json-server-vld2.onrender.com";
+// export const API_URL =
+//   "https://blood-sugar-monitoring-diary-json-server.onrender.com";
+export const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const loaderDefaultColor = "#f0f6fc";
 export const loaderDarkColor = "#010409";
